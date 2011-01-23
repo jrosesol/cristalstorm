@@ -18,4 +18,10 @@ public interface AppStartPageUiHandlers extends UiHandlers{
      */
     public void onContentA();
     public void onContentB();
+    
+    
+    /**
+     * When user clicks stormit.
+     */
+    public void onStormit();
 }

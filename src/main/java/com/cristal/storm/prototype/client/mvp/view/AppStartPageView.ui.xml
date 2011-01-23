@@ -5,25 +5,60 @@
         /* Add CSS here. See the GWT docs on UI Binder for more details */
         .important {
         	vertical-align: middle;
-        	text-align: center;
-        	background-color: gray;
+        	text-align: left;
         	height: 400;
+        }
+        
+        .west {
+            vertical-align: middle;
+            text-align: center;
+            background-color: yellow;
+            height: 400;
         }
     </ui:style>
 
-    <g:DecoratorPanel>
-        <g:VerticalPanel ui:field="mainLayout">
-            <g:HorizontalPanel>
-                <g:VerticalPanel addStyleNames="{style.important}">
-                    <g:Button ui:field="contentA">Content A</g:Button>
-                    <g:Button ui:field="contentB">Content B</g:Button>
-                </g:VerticalPanel>
+    <g:DockLayoutPanel unit="PCT" width="100" height="100" addStyleNames="{style.important}">
+        <g:north size="20">
+            <g:VerticalPanel>
+                <g:Label>Doe, John</g:Label>
+                <g:FlowPanel>
+                    <g:TextBox ui:field="uriText"></g:TextBox>
+                    <g:TextBox ui:field="tagsText"></g:TextBox>
+                    <g:Button ui:field="stormitButton">Storm it!</g:Button>
+                </g:FlowPanel>
+            </g:VerticalPanel>
+        </g:north>
+        <g:east size="30">
+            <g:Label>east</g:Label>
+        </g:east>
+        <g:west size="20" addStyleNames="{style.west}">
+            <g:VerticalPanel>
+                <g:Label>Stack</g:Label>
+                <g:ListBox visibleItemCount="10" width="20" ui:field="mcnStack"></g:ListBox>
+                <g:TextBox ui:field="tagFilter">tags</g:TextBox>
+            </g:VerticalPanel>
+        </g:west>
+        <g:south size="10">
+            <g:Label>Cristal Storm TM. Copyright 2011, all rights reserved.</g:Label>
+        </g:south>
 
-                <g:SimplePanel ui:field="simplePanel">
-                </g:SimplePanel>
-            </g:HorizontalPanel>
-            <!-- <custom:CommandLineBoxView></custom:CommandLineBoxView> -->
-        </g:VerticalPanel>
-    </g:DecoratorPanel>
+        <g:center>
+            <g:DecoratorPanel>
+                <g:VerticalPanel ui:field="mainLayout">
+                    <g:HorizontalPanel>
+                        <g:VerticalPanel addStyleNames="{style.important}">
+                            <g:Button ui:field="contentA">Content A</g:Button>
+                            <g:Button ui:field="contentB">Content B</g:Button>
+                        </g:VerticalPanel>
+
+                        <g:SimplePanel ui:field="simplePanel">
+                        </g:SimplePanel>
+                    </g:HorizontalPanel>
+                    <!-- <custom:CommandLineBoxView></custom:CommandLineBoxView> -->
+                </g:VerticalPanel>
+            </g:DecoratorPanel>
+        </g:center>
+    </g:DockLayoutPanel>
+
 
 </ui:UiBinder>

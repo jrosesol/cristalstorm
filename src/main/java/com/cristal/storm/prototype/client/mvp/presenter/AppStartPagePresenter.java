@@ -66,6 +66,9 @@ public class AppStartPagePresenter extends
      * Here it extends HasUiHandlers to be able to call setUiHandlers.
      */
     public interface AppStartPageViewInterface extends View, HasUiHandlers<AppStartPageUiHandlers> {
+        public String getUriText();
+        public String getTagsText();
+        public void addToUriStack(String uriText);
     }
 
     /*
@@ -115,7 +118,12 @@ public class AppStartPagePresenter extends
         PlaceRequest myRequest = new PlaceRequest("top");
         myRequest = myRequest.with( "type", "phone" );
         placeManager.revealPlace(myRequest);
-    }    
+    }
+
+    @Override
+    public void onStormit() {
+        getView().addToUriStack(getView().getUriText());
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // Functions
