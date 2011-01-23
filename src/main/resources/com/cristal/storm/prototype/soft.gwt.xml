@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='Soft'>
+  <!-- Inherit the core Web Toolkit stuff.                        -->
+  <inherits name='com.google.gwt.user.User'/>
+
+  <!-- Inherit the default GWT style sheet.  You can change       -->
+  <!-- the theme of your GWT application by uncommenting          -->
+  <!-- any one of the following lines.                            -->
+  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+  <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
+  <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
+
+  <!-- Other module inherits                                      -->
+  <!-- GWT Platform -->
+  <inherits name='com.gwtplatform.dispatch.Dispatch' />
+  <inherits name='com.gwtplatform.mvp.Mvp' />
+  
+  <!-- EXT-GWT --> 
+  <!-- <inherits name="com.extjs.gxt.ui.GXT"/> -->
+
+  <!-- Specify the app entry point class.                         -->
+  <entry-point class='com.cristal.storm.prototype.client.Soft'/>
+  
+  <!-- Specify the paths for translatable code                    -->
+  <source path='client'/>
+  <source path='shared'/>
+
+  <define-configuration-property name="gin.ginjector" is-multi-valued="false" />
+  <set-configuration-property name="gin.ginjector" 
+      value="com.cristal.storm.prototype.client.gin.MyGinjector" />
+
+    <!--
+  <stylesheet src="js/ext/resources/css/ext-all.css"/>
+  <script src="js/ext/adapter/ext/ext-base.js"/>
+  <script src="js/ext/ext-all.js"/>
+  -->
+
+</module>

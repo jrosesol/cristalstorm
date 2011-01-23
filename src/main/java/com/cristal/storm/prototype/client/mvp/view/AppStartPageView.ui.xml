@@ -1,0 +1,29 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:custom="urn:import:com.cristal.storm.prototype.client.ui">
+    <ui:style>
+        /* Add CSS here. See the GWT docs on UI Binder for more details */
+        .important {
+        	vertical-align: middle;
+        	text-align: center;
+        	background-color: gray;
+        	height: 400;
+        }
+    </ui:style>
+
+    <g:DecoratorPanel>
+        <g:VerticalPanel ui:field="mainLayout">
+            <g:HorizontalPanel>
+                <g:VerticalPanel addStyleNames="{style.important}">
+                    <g:Button ui:field="contentA">Content A</g:Button>
+                    <g:Button ui:field="contentB">Content B</g:Button>
+                </g:VerticalPanel>
+
+                <g:SimplePanel ui:field="simplePanel">
+                </g:SimplePanel>
+            </g:HorizontalPanel>
+            <!-- <custom:CommandLineBoxView></custom:CommandLineBoxView> -->
+        </g:VerticalPanel>
+    </g:DecoratorPanel>
+
+</ui:UiBinder>
