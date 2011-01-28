@@ -6,7 +6,7 @@
   <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->
   <!-- any one of the following lines.                            -->
-  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+  <!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
@@ -15,6 +15,12 @@
   <inherits name='com.gwtplatform.dispatch.Dispatch' />
   <inherits name='com.gwtplatform.mvp.Mvp' />
   
+  <!-- GWT-DND -->
+  <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
+  
+  <!-- GWT-query-pluggins -->
+   <inherits name='gwtquery.plugins.droppable.Droppable'/>
+
   <!-- EXT-GWT --> 
   <!-- <inherits name="com.extjs.gxt.ui.GXT"/> -->
 

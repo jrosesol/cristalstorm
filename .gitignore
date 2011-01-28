@@ -1,5 +1,6 @@
 *.class
-/target
+/target/pr*
+/target/te*
 /src/main/webapp/Soft
 /src/main/webapp/WEB-INF/classes
 toto*

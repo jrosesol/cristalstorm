@@ -1,185 +1,206 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <!-- POM file generated with GWT webAppCreator -->
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.cristal.storm</groupId>
-  <artifactId>prototype</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>GWT Maven Archetype</name>
+    <!-- POM file generated with GWT webAppCreator -->
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.cristal.storm</groupId>
+    <artifactId>prototype</artifactId>
+    <packaging>war</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>GWT Maven Archetype</name>
 
-  <properties>
-    <!-- Convenience property to set the GWT version -->
-    <gwtVersion>2.1.0</gwtVersion>
-    <!-- GWT needs at least java 1.5 -->
-    <maven.compiler.source>1.6</maven.compiler.source>
-    <maven.compiler.target>1.6</maven.compiler.target>
-    <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
-    <!-- Convenience property to set the GWTP version -->
-    <gwtp-version>0.4</gwtp-version>
-  </properties>
+    <properties>
+        <!-- Convenience property to set the GWT version -->
+        <gwtVersion>2.1.0</gwtVersion>
+        <!-- GWT needs at least java 1.5 -->
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
+        <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+        <!-- Convenience property to set the GWTP version -->
+        <gwtp-version>0.4</gwtp-version>
+    </properties>
 
-  <dependencies>
+    <dependencies>
 
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-user</artifactId>
-      <version>${gwtVersion}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.7</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.gwtplatform</groupId>
-      <artifactId>gwtp</artifactId>
-      <version>${gwtp-version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-      <version>2.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.google.inject.extensions</groupId>
-      <artifactId>guice-servlet</artifactId>
-      <version>2.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-gin</artifactId>
-      <version>1.0-r137</version>
-    </dependency>
-
-    <!-- GXT
-    <dependency>
-        <groupId>com.extjs</groupId>
-        <artifactId>gxt</artifactId>
-        <version>2.2.0</version>
-    </dependency>
-    -->
-  </dependencies>
-
-  <profiles>
-    <profile>
-      <!-- Activate only when within eclipse -->
-      <id>m2eclipse</id>
-      <activation>
-        <property>
-          <name>!m2e.version</name>
-        </property>
-      </activation>
-
-      <!-- GWT SDK is provided by GWT SDK Classpath Container -->
-      <dependencies>
         <dependency>
-          <groupId>com.google.gwt</groupId>
-          <artifactId>gwt-servlet</artifactId>
-          <version>${gwtVersion}</version>
-          <scope>runtime</scope>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>${gwtVersion}</version>
+            <scope>provided</scope>
         </dependency>
+
         <dependency>
-          <groupId>com.google.gwt</groupId>
-          <artifactId>gwt-user</artifactId>
-          <version>${gwtVersion}</version>
-          <scope>provided</scope>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.7</version>
+            <scope>test</scope>
         </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 
-  <build>
-    <!-- Generate compiled stuff in the folder used for developing mode -->
-    <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
+        <dependency>
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp</artifactId>
+            <version>${gwtp-version}</version>
+        </dependency>
 
-    <plugins>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>2.0</version>
+        </dependency>
 
-      <!-- GWT Maven Plugin -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>gwt-maven-plugin</artifactId>
-        <version>${gwtVersion}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-              <goal>test</goal>
-              <goal>generateAsync</goal>
-            </goals>
-          </execution>
-        </executions>
-        <!-- Plugin configuration. There are many available options, see gwt-maven-plugin 
-          documentation at codehaus.org -->
-        <configuration>
-          <runTarget>soft.html</runTarget>
-          <hostedWebapp>${webappDirectory}</hostedWebapp>
-        </configuration>
-      </plugin>
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-servlet</artifactId>
+            <version>2.0</version>
+        </dependency>
 
-      <!-- Copy static web files before executing gwt:run -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>2.1</version>
-        <executions>
-          <execution>
-            <phase>compile</phase>
-            <goals>
-              <goal>exploded</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <webappDirectory>${webappDirectory}</webappDirectory>
-        </configuration>
-      </plugin>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-gin</artifactId>
+            <version>1.0-r137</version>
+        </dependency>
 
-    </plugins>
-  </build>
+        <dependency>
+            <groupId>com.google.code.gwt-dnd</groupId>
+            <artifactId>gwt-dnd</artifactId>
+            <version>3.0.0</version>
+        </dependency>
 
-  <repositories>
-    <!-- until gwt 2.1.0 gets final and deployed on central <repository> <id>gwt-repo</id> 
-      <url>http://google-web-toolkit.googlecode.com/svn/2.1.0.M3/gwt/maven </url> 
-      <name>Google Web Toolkit Repository</name> </repository> -->
+        <dependency>
+            <groupId>com.googlecode.gwtquery.bundles</groupId>
+            <artifactId>gquery-dnd-bundle</artifactId>
+            <version>1.0.1</version>
+            <scope>provided</scope>
+        </dependency>
 
-    <repository>
-      <id>gwtp</id>
-      <name>gwt-platform</name>
-      <url>http://maven.gwt-platform.googlecode.com/hg/</url>
-      <releases>
-      </releases>
-      <snapshots>
-      </snapshots>
-    </repository>
+        <!-- GXT <dependency> <groupId>com.extjs</groupId> <artifactId>gxt</artifactId> 
+            <version>2.2.0</version> </dependency> -->
+    </dependencies>
 
-    <repository>
-      <id>guice</id>
-      <url>http://guice-maven.googlecode.com/svn/trunk/</url>
-    </repository>
+    <profiles>
+        <profile>
+            <!-- Activate only when within eclipse -->
+            <id>m2eclipse</id>
+            <activation>
+                <property>
+                    <name>!m2e.version</name>
+                </property>
+            </activation>
 
-    <repository>
-      <id>guice-servlet</id>
-      <url>http://guice-maven.googlecode.com/svn/trunk/</url>
-    </repository>
+            <!-- GWT SDK is provided by GWT SDK Classpath Container -->
+            <dependencies>
+                <dependency>
+                    <groupId>com.google.gwt</groupId>
+                    <artifactId>gwt-servlet</artifactId>
+                    <version>${gwtVersion}</version>
+                    <scope>runtime</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.google.gwt</groupId>
+                    <artifactId>gwt-user</artifactId>
+                    <version>${gwtVersion}</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 
-    <repository>
-      <id>Platform related releases</id>
-      <url>http://nejakyusername-maven.googlecode.com/hg/repository-releases</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-      </releases>
-    </repository>
+    <build>
+        <!-- Generate compiled stuff in the folder used for developing mode -->
+        <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
 
-  </repositories>
+        <plugins>
+
+            <!-- GWT Maven Plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>${gwtVersion}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>test</goal>
+                            <goal>generateAsync</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <!-- Plugin configuration. There are many available options, 
+                    see gwt-maven-plugin documentation at codehaus.org -->
+                <configuration>
+                    <runTarget>soft.html</runTarget>
+                    <hostedWebapp>${webappDirectory}</hostedWebapp>
+                </configuration>
+            </plugin>
+
+            <!-- Copy static web files before executing gwt:run -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exploded</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <webappDirectory>${webappDirectory}</webappDirectory>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <repositories>
+        <!-- until gwt 2.1.0 gets final and deployed on central <repository> 
+            <id>gwt-repo</id> <url>http://google-web-toolkit.googlecode.com/svn/2.1.0.M3/gwt/maven 
+            </url> <name>Google Web Toolkit Repository</name> </repository> -->
+
+        <repository>
+            <id>gwtp</id>
+            <name>gwt-platform</name>
+            <url>http://maven.gwt-platform.googlecode.com/hg/</url>
+            <releases>
+            </releases>
+            <snapshots>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>guice</id>
+            <url>http://guice-maven.googlecode.com/svn/trunk/</url>
+        </repository>
+
+        <repository>
+            <id>guice-servlet</id>
+            <url>http://guice-maven.googlecode.com/svn/trunk/</url>
+        </repository>
+
+        <repository>
+            <id>Platform related releases</id>
+            <url>http://nejakyusername-maven.googlecode.com/hg/repository-releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+            </releases>
+        </repository>
+
+        <!-- REMOVE THIS WHEN AVAILABLE IN MAVEN CENTRAL REPO -->
+        <repository>
+            <id>z80-repository.fr</id>
+            <name>z80-repository</name>
+            <url>http://z80-repository.googlecode.com/svn/maven2</url>
+        </repository>
+
+        <repository>
+            <id>plugins</id>
+            <url>http://gwtquery-plugins.googlecode.com/svn/mavenrepo</url>
+        </repository>
+
+    </repositories>
 </project>

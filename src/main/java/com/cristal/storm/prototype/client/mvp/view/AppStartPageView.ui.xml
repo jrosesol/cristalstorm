@@ -7,6 +7,8 @@
         	vertical-align: middle;
         	text-align: left;
         	height: 400;
+       	    border: 1px solid #BBBBBB;
+            padding: 3px;
         }
         
         .west {
@@ -29,20 +31,6 @@
             </g:VerticalPanel>
         </g:north>
         <g:east size="30">
-            <g:Label>east</g:Label>
-        </g:east>
-        <g:west size="20" addStyleNames="{style.west}">
-            <g:VerticalPanel>
-                <g:Label>Stack</g:Label>
-                <g:ListBox visibleItemCount="10" width="20" ui:field="mcnStack"></g:ListBox>
-                <g:TextBox ui:field="tagFilter">tags</g:TextBox>
-            </g:VerticalPanel>
-        </g:west>
-        <g:south size="10">
-            <g:Label>Cristal Storm TM. Copyright 2011, all rights reserved.</g:Label>
-        </g:south>
-
-        <g:center>
             <g:DecoratorPanel>
                 <g:VerticalPanel ui:field="mainLayout">
                     <g:HorizontalPanel>
@@ -57,6 +45,21 @@
                     <!-- <custom:CommandLineBoxView></custom:CommandLineBoxView> -->
                 </g:VerticalPanel>
             </g:DecoratorPanel>
+        </g:east>
+        <g:west size="20" addStyleNames="{style.west}">
+            <g:VerticalPanel>
+                <g:Label>Stack</g:Label>
+                <g:ListBox visibleItemCount="10" width="20" ui:field="mcnStack"></g:ListBox>
+                <g:TextBox ui:field="tagFilter">tags</g:TextBox>
+            </g:VerticalPanel>
+        </g:west>
+        <g:south size="10">
+            <g:Label>Cristal Storm TM. Copyright 2011, all rights reserved.</g:Label>
+        </g:south>
+
+        <g:center>
+            <g:AbsolutePanel ui:field="centerAbsPanel">
+            </g:AbsolutePanel>
         </g:center>
     </g:DockLayoutPanel>
 
