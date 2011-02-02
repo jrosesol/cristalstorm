@@ -1,6 +1,5 @@
 package com.cristal.storm.prototype.client.gin;
 
-import com.google.gwt.inject.client.AsyncProvider;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 import com.google.inject.Provider;
@@ -9,8 +8,6 @@ import com.gwtplatform.mvp.client.EventBus;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyFailureHandler;
 import com.cristal.storm.prototype.client.mvp.presenter.AppStartPagePresenter;
-import com.cristal.storm.prototype.client.mvp.presenter.ToolbarPresenter;
-import com.cristal.storm.prototype.client.mvp.presenter.TopPresenter;
 import com.cristal.storm.prototype.client.ui.CommandDigester;
 import com.cristal.storm.prototype.client.ui.CommandLineBoxPresenter;
 
@@ -33,9 +30,4 @@ public interface MyGinjector extends Ginjector {
     PlaceManager getPlaceManager();
 
     ProxyFailureHandler getProxyFailureHandler();
-
-    AsyncProvider<TopPresenter> getTopPresenter();
-    
-    AsyncProvider<ToolbarPresenter> getToolbarPresenter();
-    
 }

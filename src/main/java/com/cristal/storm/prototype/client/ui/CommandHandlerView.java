@@ -21,7 +21,6 @@ import com.gwtplatform.mvp.client.PopupViewImpl;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.inject.Inject;
 import com.cristal.storm.prototype.client.mvp.presenter.*;
-import com.cristal.storm.prototype.client.mvp.view.TopView;
 
 /**
  * CommandHandler Presenter's view

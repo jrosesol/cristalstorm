@@ -7,6 +7,7 @@
 package com.cristal.storm.prototype.client.mvp.presenter;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.client.DispatchAsync;
 import com.gwtplatform.mvp.client.EventBus;
@@ -24,6 +25,10 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.client.proxy.RevealRootLayoutContentEvent;
 import com.cristal.storm.prototype.client.mvp.view.AppStartPageUiHandlers;
 import com.cristal.storm.prototype.client.ui.CommandLineBoxPresenter;
+import com.cristal.storm.prototype.shared.action.SendTextToServer;
+import com.cristal.storm.prototype.shared.action.SendTextToServerResult;
+
+import com.gwtplatform.dispatch.client.DispatchAsync;
 
 /**
  * AppStartPage Presenter implementation
@@ -39,6 +44,8 @@ public class AppStartPagePresenter extends
     public static final String nameToken = "main";
     
     private final PlaceManager placeManager;
+    
+    private final DispatchAsync dispatcher;
     
     /**
      * Use this in leaf presenters, inside their {@link #revealInParent} method.
@@ -63,9 +70,11 @@ public class AppStartPagePresenter extends
      * Here it extends HasUiHandlers to be able to call setUiHandlers.
      */
     public interface AppStartPageViewInterface extends View, HasUiHandlers<AppStartPageUiHandlers> {
-        public String getUriText();
-        public String getTagsText();
-        public void addToUriStack(String uriText);
+        public String getDocUID();
+        public String getRepoUID();
+        public String getRepoURI();
+        public void setServerResponse(String serverResponse);
+        public void showServerResponseMessage();
     }
 
     /*
@@ -89,6 +98,8 @@ public class AppStartPagePresenter extends
         getView().setUiHandlers(this);
 
         this.placeManager = placeManager;
+        this.dispatcher = dispatcher;
+        
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -104,22 +115,23 @@ public class AppStartPagePresenter extends
     }
 
     @Override
-    public void onContentA() {
-        PlaceRequest myRequest = new PlaceRequest("top");
-        myRequest = myRequest.with( "type", "info" );
-        placeManager.revealPlace(myRequest);
-    }
-    
-    @Override
-    public void onContentB() {
-        PlaceRequest myRequest = new PlaceRequest("top");
-        myRequest = myRequest.with( "type", "phone" );
-        placeManager.revealPlace(myRequest);
-    }
+    public void onRetrieveDocumentSet() {
+        dispatcher.execute(new SendTextToServer(getView().getDocUID(),
+                getView().getRepoUID(), getView().getRepoURI()),
+                new AsyncCallback<SendTextToServerResult>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        getView().setServerResponse(
+                                "An error occured: " + caught.getMessage());
+                        getView().showServerResponseMessage();
+                    }
 
-    @Override
-    public void onStormit() {
-        getView().addToUriStack(getView().getUriText());
+                    @Override
+                    public void onSuccess(SendTextToServerResult result) {
+                        getView().setServerResponse(result.getResponse());
+                        getView().showServerResponseMessage();
+                    }
+                });
     }
 
     ///////////////////////////////////////////////////////////////////////////

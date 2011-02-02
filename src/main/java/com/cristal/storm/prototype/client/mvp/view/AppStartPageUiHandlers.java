@@ -12,16 +12,6 @@ import com.gwtplatform.mvp.client.UiHandlers;
  * TODO: Add comments for AppStartPageUiHandlers
  *
  */
-public interface AppStartPageUiHandlers extends UiHandlers{
-    /**
-     * Add some content when the button is clicked.
-     */
-    public void onContentA();
-    public void onContentB();
-    
-    
-    /**
-     * When user clicks stormit.
-     */
-    public void onStormit();
+public interface AppStartPageUiHandlers extends UiHandlers {
+    public void onRetrieveDocumentSet();
 }
