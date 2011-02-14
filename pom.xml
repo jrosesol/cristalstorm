@@ -20,8 +20,8 @@
         <!-- Convenience property to set the GWTP version -->
         <gwtp-version>0.4</gwtp-version>
         <ohf.version>1.2.0</ohf.version>
-        <log4j.version>1.2.16</log4j.version>
-        <xds.consumer-wrapper.version>0.0.1</xds.consumer-wrapper.version>
+        <log4j.version>1.2.16</log4j.version>        
+		<consumer-wrapper.version>0.0.1</consumer-wrapper.version>
     </properties>
 
     <dependencies>
@@ -85,9 +85,9 @@
         <dependency>
 			<groupId>org.ihe.xds</groupId>
 			<artifactId>consumer-wrapper</artifactId>
-			<version>0.0.1</version>
+			<version>${consumer-wrapper.version}</version>
 			<type>jar</type>
-		</dependency>        
+		</dependency>   
 
 		<dependency>
 			<groupId>log4j</groupId>

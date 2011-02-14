@@ -34,6 +34,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -84,7 +85,7 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     // Dialog box
     private final DialogBox dialogBox;
     private final VerticalPanel widgetContainer;
-    private final Label serverTextResult;
+    private final HTML dialogHtmlResponse;
     
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -102,12 +103,14 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
         widget = uiBinder.createAndBindUi(this);
 
         widgetContainer = new VerticalPanel();
-        serverTextResult = new Label();
+        dialogHtmlResponse = new HTML();
         
+        dialogHtmlResponse.setWidth("800px");
+
         dialogBox = createDialogBox();
-        dialogBox.setGlassEnabled(true);
-        dialogBox.setAnimationEnabled(true);  
-        dialogBox.center();
+        dialogBox.setWidget(widgetContainer);
+        widgetContainer.setWidth("800px");
+        dialogBox.setWidth("800px");
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -138,11 +141,12 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
 
     @Override
     public void setServerResponse(String serverResponse) {
-        serverTextResult.setText(serverResponse);
+        dialogHtmlResponse.setHTML(serverResponse);
     }
 
     @Override
     public void showServerResponseMessage() {
+        dialogBox.setWidth("800px");
         dialogBox.show();
     }
     
@@ -161,11 +165,14 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
         // Create a dialog box and set the caption text
         final DialogBox dialogBox = new DialogBox();
         dialogBox.ensureDebugId("cwDialogBox");
-        dialogBox.setText("Hello world");
+        dialogBox.setText("XDS.b Retrieve Document Set");
+        dialogBox.hide();
+        dialogBox.setGlassEnabled(true);
+        dialogBox.setAnimationEnabled(true);  
+        dialogBox.center();
 
         // Create a table to layout the content
-        dialogBox.setWidget(widgetContainer);
-        widgetContainer.add(serverTextResult);
+        widgetContainer.add(dialogHtmlResponse);
 
         // Add a close button at the bottom of the dialog
         Button closeButton = new Button(
