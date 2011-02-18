@@ -12,15 +12,10 @@ import com.gwtplatform.mvp.client.proxy.ProxyFailureHandler;
 import com.gwtplatform.mvp.client.proxy.TokenFormatter;
 import com.cristal.storm.prototype.client.controller.MyPlaceManager;
 import com.cristal.storm.prototype.client.mvp.presenter.AppStartPagePresenter;
-import com.cristal.storm.prototype.client.mvp.presenter.ToolbarPresenter;
-import com.cristal.storm.prototype.client.mvp.presenter.TopPresenter;
 import com.cristal.storm.prototype.client.mvp.view.AppStartPageView;
-import com.cristal.storm.prototype.client.mvp.view.ToolbarView;
-import com.cristal.storm.prototype.client.mvp.view.TopView;
 import com.cristal.storm.prototype.client.ui.CommandDigester;
 import com.cristal.storm.prototype.client.ui.CommandHandlerPresenter;
 import com.cristal.storm.prototype.client.ui.CommandHandlerView;
-import com.cristal.storm.prototype.client.ui.CommandHistory;
 import com.cristal.storm.prototype.client.ui.CommandLineBoxPresenter;
 import com.cristal.storm.prototype.client.ui.CommandLineBoxView;
 import com.cristal.storm.prototype.client.ui.PatientRequiredInfoPresenterWidget;
@@ -47,13 +42,6 @@ public class MyModule extends AbstractPresenterModule {
                 AppStartPagePresenter.AppStartPageViewInterface.class,
                 AppStartPageView.class,
                 AppStartPagePresenter.AppStartPageProxy.class);
-
-        bindPresenter(TopPresenter.class, TopPresenter.TopViewInterface.class,
-                TopView.class, TopPresenter.TopProxy.class);
-
-        bindPresenter(ToolbarPresenter.class,
-                ToolbarPresenter.ToolbarViewInterface.class, ToolbarView.class,
-                ToolbarPresenter.ToolbarProxy.class);
         
         bindPresenter(CommandLineBoxPresenter.class,
                 CommandLineBoxPresenter.CommandLineBoxViewInterface.class, CommandLineBoxView.class,

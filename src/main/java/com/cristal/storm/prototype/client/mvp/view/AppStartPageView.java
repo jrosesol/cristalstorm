@@ -22,6 +22,7 @@ import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -31,7 +32,9 @@ import com.google.gwt.user.cellview.client.CellList.Resources;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -63,26 +66,21 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     /*
      * @UiField annotated vars. can be used here from your ui.xml template
      */
-    @UiField
-    SimplePanel simplePanel;
     
     @UiField
-    VerticalPanel mainLayout;
+    public Button stormitButton;
     
     @UiField
-    Button stormitButton;
+    public TextBox uriText;
     
     @UiField
-    TextBox uriText;
+    public TextBox tagsText;
+    
+    @UiField(provided = true)
+    public final CellList<String> mceCollection;
     
     @UiField
-    TextBox tagsText;
-    
-    @UiField
-    ListBox mcnStack;
-    
-    @UiField
-    AbsolutePanel centerAbsPanel;
+    public AbsolutePanel centerAbsPanel;
 
     private final Widget widget;
     
@@ -123,12 +121,12 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     @Inject
-    public AppStartPageView(TopView topView, CommandLineBoxView commandLineBox) {
+    public AppStartPageView(CommandLineBoxView commandLineBox) {
         widget = uiBinder.createAndBindUi(this);
-
-        mainLayout.add(commandLineBox.asWidget());
-        simplePanel.add(topView.asWidget());
         
+        TextCell testCell = new TextCell();
+        mceCollection = new CellList<String>(testCell);
+
         // create a DragController to manage drag-n-drop actions
         // note: This creates an implicit DropController for the boundary panel
         //PickupDragController dragController = new PickupDragController(centerAbsPanel, true);
@@ -227,20 +225,6 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     // Functions
     ///////////////////////////////////////////////////////////////////////////
     
-    @UiHandler("contentA")
-    void onSaveButtonClicked(ClickEvent event) {
-      if (getUiHandlers() != null) {
-        getUiHandlers().onContentA();
-      }
-    }
-
-    @UiHandler("contentB")
-    void onSaveButtonClicked1(ClickEvent event) {
-      if (getUiHandlers() != null) {
-        getUiHandlers().onContentB();
-      }
-    }
-    
     @UiHandler("stormitButton")
     void onStormitButtonClicked(ClickEvent event) {
         if (getUiHandlers() != null) {
@@ -264,6 +248,5 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
 
     @Override
     public void addToUriStack(String uriText) {
-        mcnStack.addItem(uriText);
     }
 }
