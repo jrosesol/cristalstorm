@@ -13,6 +13,7 @@
     <properties>
         <!-- Convenience property to set the GWT version -->
         <gwtVersion>2.1.0</gwtVersion>
+        <gwt-mvn-plugin.version>2.1.0</gwt-mvn-plugin.version>
         <!-- GWT needs at least java 1.5 -->
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
@@ -116,7 +117,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>${gwtVersion}</version>
+                <version>${gwt-mvn-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>

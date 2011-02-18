@@ -8,12 +8,14 @@ package com.cristal.storm.prototype.client.mvp.view;
 
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
+import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 import gwtquery.plugins.droppable.client.DroppableOptions.DroppableTolerance;
 import gwtquery.plugins.droppable.client.events.DropEvent;
 import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
 import gwtquery.plugins.droppable.client.gwt.DragAndDropCellList;
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -77,15 +79,14 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     public TextBox tagsText;
     
     @UiField(provided = true)
-    public final DragAndDropCellList<String>mceCollectionDraggable;
+    public final DragAndDropCellList<MCE>mceCollectionDraggable;
     
     @UiField
     public AbsolutePanel centerAbsPanel;
 
     private final Widget widget;
     
-    private static final List<String> DAYS = Arrays.asList("Sunday", "Monday",
-            "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+    private static final List<MCE> MCELIST = Arrays.asList(new MCE("google.com",new ArrayList<String>()));
 
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -94,26 +95,45 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     interface AppStartPageViewUiBinder extends UiBinder<Widget, AppStartPageView> {
     }
     
-    private static class MyTextCell extends AbstractCell<String> {
+    private static class MCE {
+        private String uri;
+        private List<String> tags;
+        /**
+         * @param uri
+         * @param tags
+         */
+        public MCE(String uri, List<String> tags) {
+            this.uri = uri;
+            this.tags = tags;
+        }
+        
+        @Override
+        public String toString() {
+            return uri;
+        }
+    }
+    
+    private static class MCECell extends AbstractCell<MCE> {
 
-        public MyTextCell() {
+        public MCECell() {
         }
 
         @Override
-        public void render(String value, Object key, SafeHtmlBuilder sb) {
-          // Value can be null, so do a null check..
-          if (value == null) {
-            return;
-          }
+        public void render(MCE value, Object key, SafeHtmlBuilder sb) {
+            // Value can be null, so do a null check..
+            if (value == null) {
+              return;
+            }
 
-          sb.appendHtmlConstant("<table>");
+            sb.appendHtmlConstant("<table>");
 
-          // Add the name and address.
-          sb.appendHtmlConstant("<td style='font-size:95%;'>");
-          sb.appendEscaped(value);
-          sb.appendHtmlConstant("</td></tr></table>");
+            // Add the name and address.
+            sb.appendHtmlConstant("<td style='font-size:95%;'>");
+            sb.appendEscaped(value.toString());
+            sb.appendHtmlConstant("</td></tr></table>");
         }
-      }
+
+    }
     
     private static Resources DEFAULT_RESOURCES = GWT.create(Resources.class);
 
@@ -122,8 +142,8 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     ///////////////////////////////////////////////////////////////////////////
     @Inject
     public AppStartPageView(CommandLineBoxView commandLineBox) {
-        TextCell textCell = new TextCell();
-        mceCollectionDraggable = new DragAndDropCellList<String>(textCell, DEFAULT_RESOURCES);
+        MCECell textCell = new MCECell();
+        mceCollectionDraggable = new DragAndDropCellList<MCE>(textCell, DEFAULT_RESOURCES);
         
         widget = uiBinder.createAndBindUi(this);
         
@@ -144,7 +164,7 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
 
         mceCollectionDraggable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
         // Push the data into the widget.
-        mceCollectionDraggable.setRowData(0, DAYS);
+        mceCollectionDraggable.setRowData(0,MCELIST);
         
         
         // The cell of this CellList are only draggable
@@ -176,17 +196,21 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
 
             public void onDrop(DropEvent event) {
                 // retrieve the droppable widget
-                // DroppableWidget<Label> droppableLabel =
-                // (DroppableWidget<Label>)event.getDroppableWidget();
+                 DroppableWidget<FlowPanel> droppableLabel =
+                   (DroppableWidget<FlowPanel>)event.getDroppableWidget();
+                 
                 // retrieve the dropped draggable widget (we assume it is a
                 // draggable label)
-                // DraggableWidget<Label> draggableLabel =
-                // (DraggableWidget<Label>)event.getDraggableWidget();
+                 
+                DraggableWidget<Label> draggableLabel =
+                  (DraggableWidget<Label>)event.getDraggableWidget();
 
-                // droppableLabel.getOriginalWidget().setText("I ate : "+draggableLabel.getOriginalWidget().getText());
+                Label toto = (Label)(droppableLabel.getOriginalWidget().getWidget(0));
+                toto.setText("Let's eat!!!!");
 
                 // remove the draggabeLable
                 // draggableLabel.removeFromParent();
+                //event.getDraggableWidget().removeFromParent();
                 aGwtPanel.add(new Label("just dragged item"));
                 aGwtPanel.add(new Label("just dragged item"));
                 aGwtPanel.add(new Label("just dragged item"));
