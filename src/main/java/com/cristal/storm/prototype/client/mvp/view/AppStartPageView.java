@@ -77,7 +77,7 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     public TextBox tagsText;
     
     @UiField(provided = true)
-    public final CellList<String> mceCollection;
+    public final DragAndDropCellList<String>mceCollectionDraggable;
     
     @UiField
     public AbsolutePanel centerAbsPanel;
@@ -122,10 +122,11 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     ///////////////////////////////////////////////////////////////////////////
     @Inject
     public AppStartPageView(CommandLineBoxView commandLineBox) {
+        TextCell textCell = new TextCell();
+        mceCollectionDraggable = new DragAndDropCellList<String>(textCell, DEFAULT_RESOURCES);
+        
         widget = uiBinder.createAndBindUi(this);
         
-        TextCell testCell = new TextCell();
-        mceCollection = new CellList<String>(testCell);
 
         // create a DragController to manage drag-n-drop actions
         // note: This creates an implicit DropController for the boundary panel
@@ -135,21 +136,19 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
         
         // Create a cell to render each value.
         //MyTextCell textCell = new MyTextCell();
-        TextCell textCell = new TextCell();
         
         
         //CellList<String> cellList = new CellList<String>(textCell);
 
-        DragAndDropCellList<String> dndCellList = new DragAndDropCellList<String>(textCell, DEFAULT_RESOURCES);
 
 
-        dndCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+        mceCollectionDraggable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
         // Push the data into the widget.
-        dndCellList.setRowData(0, DAYS);
+        mceCollectionDraggable.setRowData(0, DAYS);
         
         
         // The cell of this CellList are only draggable
-        dndCellList.setCellDraggableOnly();
+        mceCollectionDraggable.setCellDraggableOnly();
         
         // setup the drag operation
         DraggableOptions options = new DraggableOptions();
@@ -160,9 +159,9 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
         // append the drag helper to the body element
         options.setAppendTo("body");
         // configure the drag operations of the cell list with this options
-        dndCellList.setDraggableOptions(options);
+        mceCollectionDraggable.setDraggableOptions(options);
         
-        horzPanel.add(dndCellList);
+        //horzPanel.add(mceCollectionDraggable);
         
         /**
          * Create a droppable CellList
