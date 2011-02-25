@@ -15,17 +15,18 @@ import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
 import gwtquery.plugins.droppable.client.gwt.DragAndDropCellList;
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.regexp.shared.MatchResult;
+import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.regexp.shared.SplitResult;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -34,17 +35,10 @@ import com.google.gwt.user.cellview.client.CellList.Resources;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -79,14 +73,16 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     public TextBox tagsText;
     
     @UiField(provided = true)
-    public final DragAndDropCellList<MCE>mceCollectionDraggable;
+    public DragAndDropCellList<MCE>mceCollectionDraggable;
     
     @UiField
     public AbsolutePanel centerAbsPanel;
 
-    private final Widget widget;
+    private Widget widget;
     
-    private static List<MCE> mceList;
+    private List<MCE> mceListShadow;
+    
+    private List<MCE> mceListVisible;
 
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -102,7 +98,7 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     ///////////////////////////////////////////////////////////////////////////
     @Inject
     public AppStartPageView(CommandLineBoxView commandLineBox) {
-    	Images images = GWT.create(Images.class);
+    	MCECell.Images images = GWT.create(MCECell.Images.class);
     	
         MCECell textCell = new MCECell(images.icon());
         
@@ -118,18 +114,16 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
         
         //TODO Remove this hardcoded definition of tags 
         Set<String> mcetags1 = new TreeSet<String>();
-        Set<String> mcetags2 = new TreeSet<String>();
         mcetags1.add("search");
         mcetags1.add("mail");
-        mcetags2.add("travel");
+        mcetags1.add("travel");
         
         //TODO Remove this hardcoded definition of MCE 
-        MCE mce1 = new MCE("google.com", mcetags1);
-        MCE mce2 = new MCE("kayak.com", mcetags2);
-        mceList = new ArrayList<MCE>();
-        mceList.add(mce1);
-        mceList.add(mce2);
-        mceCollectionDraggable.setRowData(0,mceList);
+        MCE mce = new MCE("kayak.com", mcetags1);
+        //MCE mce3 = new MCE("kayak.com", mcetags2);
+        mceListShadow = new LinkedList<MCE>();
+        mceListShadow.add(mce);
+        mceCollectionDraggable.setRowData(0,mceListShadow);
         
         
         // The cell of this CellList are only draggable
@@ -176,8 +170,6 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
                 //event.getDraggableWidget().removeFromParent();
                 aGwtPanel.add(new Label("just dragged item"));
                 aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
             }
         });
         
@@ -221,8 +213,39 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     public String getTagsText() {
         return tagsText.getText();
     }
-
+    
+    /**
+     * 
+     * @param uriText
+     * @param tagsText
+     */
     @Override
-    public void addToUriStack(String uriText) {
+    public void addToUriCollection(String uriText, String tagsText) {
+    	//Tokenize tags
+    	RegExp regExp = RegExp.compile("([A-Za-z0-9_\\-]+)");
+    	SplitResult split = regExp.split(tagsText.toLowerCase());
+    	Set<String> tags = new TreeSet<String>();
+    	for (int i = 0; i < split.length(); i++) {
+    		if(!split.get(i).isEmpty()){
+    			tags.add(split.get(i));
+    		}
+		}
+    	MCE mce = new MCE(uriText, tags);
+    	mceListShadow.add(mce);
+    	mceCollectionDraggable.setRowData(mceListShadow);
     }
+    
+    @Override
+    public void tagCollectionFilter(final String filter) {
+    	//TODO Algorithm to filter the MCE
+    	//Tokenize tags
+    	RegExp regExp = RegExp.compile(filter);
+    	for(MCE mce : mceListShadow){
+    		if(regExp.test(mce.getTags())){
+    		}
+    	}
+    	mceCollectionDraggable.setRowData(mceListShadow);
+    }
+    
+    
 }

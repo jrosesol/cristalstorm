@@ -8,20 +8,17 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 
-
-/**
- * The images used for this example.
- */
-interface Images extends ClientBundle {
-  ImageResource icon();
-}
-
-
 /**
  * The Cell used to render a {@link MCE}.
  */
 public class MCECell extends AbstractCell<MCE> {
-    
+
+	/**
+	 * The images used for this example.
+	 */
+	public static interface Images extends ClientBundle {
+	  ImageResource icon();
+	}
     /**
      * The html of the image used for contacts.
      */
@@ -47,7 +44,7 @@ public class MCECell extends AbstractCell<MCE> {
         // Add the name and address.
         sb.appendHtmlConstant("<td style='font-size:100%;'>");
         sb.appendEscaped(mce.getURI());
-        sb.appendHtmlConstant("</td></tr><tr><td style='font-size:95%;'>");
+        sb.appendHtmlConstant("</td></tr><tr><td style='font-size:75%;'>");
         sb.appendEscaped(mce.getTags());
         sb.appendHtmlConstant("</td></tr></table>");
     }

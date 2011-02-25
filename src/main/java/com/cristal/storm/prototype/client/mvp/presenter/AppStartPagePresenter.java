@@ -72,7 +72,8 @@ public class AppStartPagePresenter extends
     public interface AppStartPageViewInterface extends View, HasUiHandlers<AppStartPageUiHandlers> {
         public String getUriText();
         public String getTagsText();
-        public void addToUriStack(String uriText);
+		void addToUriCollection(String uriText, String tagsText);
+		void tagCollectionFilter(String filter);
     }
 
     /*
@@ -134,7 +135,7 @@ public class AppStartPagePresenter extends
 
     @Override
     public void onStormit() {
-        getView().addToUriStack(getView().getUriText());
+        getView().addToUriCollection(getView().getUriText(),getView().getTagsText());
     }
 
     ///////////////////////////////////////////////////////////////////////////

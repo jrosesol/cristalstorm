@@ -15,9 +15,17 @@ public class MCE {
         this.tags = tags;
     }
     
+	/**
+     * @return uri
+     */
     public String getURI() {
         return uri;
     }
+    
+	/**
+	 * Returns the tag list as a single String
+     * @return tagList
+     */
     public String getTags() {
     	StringBuffer taglist = new StringBuffer();
     	for(String tag: tags){
