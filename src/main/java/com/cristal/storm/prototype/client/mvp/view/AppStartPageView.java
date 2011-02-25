@@ -18,14 +18,14 @@ import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -86,53 +86,13 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
 
     private final Widget widget;
     
-    private static final List<MCE> MCELIST = Arrays.asList(new MCE("google.com",new ArrayList<String>()));
+    private static List<MCE> mceList;
 
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
     ///////////////////////////////////////////////////////////////////////////
 
     interface AppStartPageViewUiBinder extends UiBinder<Widget, AppStartPageView> {
-    }
-    
-    private static class MCE {
-        private String uri;
-        private List<String> tags;
-        /**
-         * @param uri
-         * @param tags
-         */
-        public MCE(String uri, List<String> tags) {
-            this.uri = uri;
-            this.tags = tags;
-        }
-        
-        @Override
-        public String toString() {
-            return uri;
-        }
-    }
-    
-    private static class MCECell extends AbstractCell<MCE> {
-
-        public MCECell() {
-        }
-
-        @Override
-        public void render(MCE value, Object key, SafeHtmlBuilder sb) {
-            // Value can be null, so do a null check..
-            if (value == null) {
-              return;
-            }
-
-            sb.appendHtmlConstant("<table>");
-
-            // Add the name and address.
-            sb.appendHtmlConstant("<td style='font-size:95%;'>");
-            sb.appendEscaped(value.toString());
-            sb.appendHtmlConstant("</td></tr></table>");
-        }
-
     }
     
     private static Resources DEFAULT_RESOURCES = GWT.create(Resources.class);
@@ -142,29 +102,34 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     ///////////////////////////////////////////////////////////////////////////
     @Inject
     public AppStartPageView(CommandLineBoxView commandLineBox) {
-        MCECell textCell = new MCECell();
+    	Images images = GWT.create(Images.class);
+    	
+        MCECell textCell = new MCECell(images.icon());
+        
         mceCollectionDraggable = new DragAndDropCellList<MCE>(textCell, DEFAULT_RESOURCES);
         
         widget = uiBinder.createAndBindUi(this);
         
-
-        // create a DragController to manage drag-n-drop actions
-        // note: This creates an implicit DropController for the boundary panel
-        //PickupDragController dragController = new PickupDragController(centerAbsPanel, true);
-
         HorizontalPanel horzPanel = new HorizontalPanel();
         
-        // Create a cell to render each value.
-        //MyTextCell textCell = new MyTextCell();
-        
-        
-        //CellList<String> cellList = new CellList<String>(textCell);
-
-
-
         mceCollectionDraggable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+        
         // Push the data into the widget.
-        mceCollectionDraggable.setRowData(0,MCELIST);
+        
+        //TODO Remove this hardcoded definition of tags 
+        Set<String> mcetags1 = new TreeSet<String>();
+        Set<String> mcetags2 = new TreeSet<String>();
+        mcetags1.add("search");
+        mcetags1.add("mail");
+        mcetags2.add("travel");
+        
+        //TODO Remove this hardcoded definition of MCE 
+        MCE mce1 = new MCE("google.com", mcetags1);
+        MCE mce2 = new MCE("kayak.com", mcetags2);
+        mceList = new ArrayList<MCE>();
+        mceList.add(mce1);
+        mceList.add(mce2);
+        mceCollectionDraggable.setRowData(0,mceList);
         
         
         // The cell of this CellList are only draggable
@@ -181,7 +146,6 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
         // configure the drag operations of the cell list with this options
         mceCollectionDraggable.setDraggableOptions(options);
         
-        //horzPanel.add(mceCollectionDraggable);
         
         /**
          * Create a droppable CellList
@@ -201,7 +165,6 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
                  
                 // retrieve the dropped draggable widget (we assume it is a
                 // draggable label)
-                 
                 DraggableWidget<Label> draggableLabel =
                   (DraggableWidget<Label>)event.getDraggableWidget();
 
@@ -211,16 +174,6 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
                 // remove the draggabeLable
                 // draggableLabel.removeFromParent();
                 //event.getDraggableWidget().removeFromParent();
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
                 aGwtPanel.add(new Label("just dragged item"));
                 aGwtPanel.add(new Label("just dragged item"));
                 aGwtPanel.add(new Label("just dragged item"));
