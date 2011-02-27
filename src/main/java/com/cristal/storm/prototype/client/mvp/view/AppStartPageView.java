@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Vector;
 
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.GWT;
@@ -80,9 +81,8 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
 
     private Widget widget;
     
-    private List<MCE> mceListShadow;
-    
     private List<MCE> mceListVisible;
+    
 
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -121,9 +121,9 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
         //TODO Remove this hardcoded definition of MCE 
         MCE mce = new MCE("kayak.com", mcetags1);
         //MCE mce3 = new MCE("kayak.com", mcetags2);
-        mceListShadow = new LinkedList<MCE>();
-        mceListShadow.add(mce);
-        mceCollectionDraggable.setRowData(0,mceListShadow);
+        mceListVisible = new Vector<MCE>();
+        mceListVisible.add(mce);
+        mceCollectionDraggable.setRowData(0,mceListVisible);
         
         
         // The cell of this CellList are only draggable
@@ -150,26 +150,32 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
         // configure the drop behaviour (see next paragraph)
         droppablePanel.setTolerance(DroppableTolerance.POINTER);
         
+        droppablePanel.getOriginalWidget();
+        
         droppablePanel.addDropHandler(new DropEventHandler() {
 
             public void onDrop(DropEvent event) {
                 // retrieve the droppable widget
                  DroppableWidget<FlowPanel> droppableLabel =
                    (DroppableWidget<FlowPanel>)event.getDroppableWidget();
-                 
+                
                 // retrieve the dropped draggable widget (we assume it is a
                 // draggable label)
                 DraggableWidget<Label> draggableLabel =
                   (DraggableWidget<Label>)event.getDraggableWidget();
 
                 Label toto = (Label)(droppableLabel.getOriginalWidget().getWidget(0));
-                toto.setText("Let's eat!!!!");
+                Label toto2 = (Label)(droppableLabel.getOriginalWidget().getWidget(0));
+                aGwtPanel.add(toto2);
+                //toto.setText("Let's eat!!!!");
 
                 // remove the draggabeLable
-                // draggableLabel.removeFromParent();
+                //draggableLabel.removeFromParent();
+                //aGwtPanel.add( new Label(event.getDraggableWidget().toString()));
                 //event.getDraggableWidget().removeFromParent();
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
+                
+                aGwtPanel.add(new Label("just dragged item1"));
+                aGwtPanel.add(new Label("just dragged item2"));
             }
         });
         
@@ -213,38 +219,51 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     public String getTagsText() {
         return tagsText.getText();
     }
-    
-    /**
-     * 
-     * @param uriText
-     * @param tagsText
-     */
-    @Override
-    public void addToUriCollection(String uriText, String tagsText) {
-    	//Tokenize tags
-    	RegExp regExp = RegExp.compile("([A-Za-z0-9_\\-]+)");
-    	SplitResult split = regExp.split(tagsText.toLowerCase());
-    	Set<String> tags = new TreeSet<String>();
-    	for (int i = 0; i < split.length(); i++) {
-    		if(!split.get(i).isEmpty()){
-    			tags.add(split.get(i));
-    		}
+
+	/**
+	 * The function adds an MCE to the MCE Collection. Tags are tokenized: we
+	 * assume a tag is succession of alphanum chars, a dash or an underscore
+	 * 
+	 * @param uriText
+	 * @param tagsText
+	 */
+	@Override
+	public void addToMCECollection(String uriText, String tagsText) {
+		RegExp regExp = RegExp.compile("([A-Za-z0-9_\\-]+)");
+		SplitResult split = regExp.split(tagsText.toLowerCase());
+		Set<String> tags = new TreeSet<String>();
+		for (int i = 0; i < split.length(); i++) {
+			if (!split.get(i).isEmpty()) {
+				tags.add(split.get(i));
+			}
 		}
-    	MCE mce = new MCE(uriText, tags);
-    	mceListShadow.add(mce);
-    	mceCollectionDraggable.setRowData(mceListShadow);
-    }
-    
-    @Override
-    public void tagCollectionFilter(final String filter) {
+		
+		MCE mce = new MCE(uriText, tags);
+		int mceIndex = ((Vector<MCE>) mceListVisible).indexOf(mce);
+		
+		// On verifie si le MCE (identifie par son URI) est deja present
+		if (mceIndex >= 0) {
+			MCE existingMCE = mceListVisible.get(mceIndex);
+			if (!existingMCE.getTags().equals(mce.getTags())) {
+				existingMCE.setTags(tags);
+			}
+		} else {
+			mceListVisible.add(mce);
+		}
+
+		mceCollectionDraggable.setRowData(mceListVisible);
+	}
+
+	@Override
+	public void tagCollectionFilter(final String filter) {
     	//TODO Algorithm to filter the MCE
     	//Tokenize tags
     	RegExp regExp = RegExp.compile(filter);
-    	for(MCE mce : mceListShadow){
+    	for(MCE mce : mceListVisible){
     		if(regExp.test(mce.getTags())){
     		}
     	}
-    	mceCollectionDraggable.setRowData(mceListShadow);
+    	mceCollectionDraggable.setRowData(mceListVisible);
     }
     
     
