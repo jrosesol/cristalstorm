@@ -1,7 +1,6 @@
 package com.cristal.storm.prototype.client.mvp.view;
 
 import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -12,7 +11,9 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
  * The Cell used to render a {@link MCE}.
  */
 public class MCECell extends AbstractCell<MCE> {
-
+	
+	public MCE mce;
+	
 	/**
 	 * The images used for this example.
 	 */
@@ -33,6 +34,9 @@ public class MCECell extends AbstractCell<MCE> {
         // Value can be null, so do a null check..
         if (mce == null) {
           return;
+        }
+        else{
+        	this.mce = mce;
         }
 
         sb.appendHtmlConstant("<table>");

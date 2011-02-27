@@ -41,6 +41,9 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ProvidesKey;
+import com.google.gwt.view.client.SelectionModel;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.cristal.storm.prototype.client.mvp.presenter.AppStartPagePresenter.AppStartPageViewInterface;
@@ -83,6 +86,8 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     
     private List<MCE> mceListVisible;
     
+    private SelectionModel<MCE> mceSelectionModel;
+    
 
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -100,16 +105,28 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     public AppStartPageView(CommandLineBoxView commandLineBox) {
     	MCECell.Images images = GWT.create(MCECell.Images.class);
     	
-        MCECell textCell = new MCECell(images.icon());
-        
-        mceCollectionDraggable = new DragAndDropCellList<MCE>(textCell, DEFAULT_RESOURCES);
-        
-        widget = uiBinder.createAndBindUi(this);
-        
-        HorizontalPanel horzPanel = new HorizontalPanel();
-        
-        mceCollectionDraggable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
-        
+    	   MCECell textCell = new MCECell(images.icon());
+
+    	   
+           ProvidesKey<MCE> keyProvider = new ProvidesKey<MCE>() {
+               public Object getKey(MCE item) {
+                 // Always do a null check.
+                 return (item == null) ? null : item.getURI();
+               }
+             };
+    	   
+           mceCollectionDraggable = new DragAndDropCellList<MCE>(textCell, DEFAULT_RESOURCES, keyProvider);
+
+		mceSelectionModel = new SingleSelectionModel<MCE>(keyProvider);
+		mceCollectionDraggable.setSelectionModel(mceSelectionModel);
+
+           //mceCollectionDraggable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+           
+           widget = uiBinder.createAndBindUi(this);
+           
+           HorizontalPanel horzPanel = new HorizontalPanel();
+           
+           
         // Push the data into the widget.
         
         //TODO Remove this hardcoded definition of tags 
@@ -124,6 +141,7 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
         mceListVisible = new Vector<MCE>();
         mceListVisible.add(mce);
         mceCollectionDraggable.setRowData(0,mceListVisible);
+        mceSelectionModel.setSelected(mce, true);
         
         
         // The cell of this CellList are only draggable
@@ -250,8 +268,8 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
 		} else {
 			mceListVisible.add(mce);
 		}
-
 		mceCollectionDraggable.setRowData(mceListVisible);
+		mceSelectionModel.setSelected(mce, true);
 	}
 
 	@Override

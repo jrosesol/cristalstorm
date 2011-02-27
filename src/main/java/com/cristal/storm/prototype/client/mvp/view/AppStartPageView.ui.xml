@@ -10,16 +10,13 @@
         .important {
         	vertical-align: middle;
         	text-align: left;
-        	height: 400;
-       	    border: 1px solid #BBBBBB;
             padding: 3px;
         }
         
         .west {
             vertical-align: middle;
             text-align: center;
-            background-color: yellow;
-            height: 400;
+       	    border: 1px solid blue;
         }
   
     .mceScrollable {
