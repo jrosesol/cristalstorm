@@ -2,8 +2,9 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
     xmlns:g="urn:import:com.google.gwt.user.client.ui"
     xmlns:custom="urn:import:com.cristal.storm.prototype.client.ui"
-    xmlns:c="urn:import:com.google.gwt.user.cellview.client" 
-    xmlns:drag="urn:import:gwtquery.plugins.droppable.client.gwt" >
+    xmlns:c="urn:import:com.google.gwt.user.cellview.client"  >
+    
+<!--    xmlns:drag="urn:import:gwtquery.plugins.droppable.client.gwt"-->
     <ui:style>
         /* Add CSS here. See the GWT docs on UI Binder for more details */
         .important {
@@ -42,7 +43,7 @@
         <g:west size="20" addStyleNames="{style.west}">
             <g:VerticalPanel>
                 <g:Label>Collection</g:Label>
-                <drag:DragAndDropCellList ui:field="mceCollectionDraggable"></drag:DragAndDropCellList>
+                <!-- <drag:DragAndDropCellList ui:field="mceCollectionDraggable"></drag:DragAndDropCellList> -->
                 <g:TextBox ui:field="tagFilter">tags</g:TextBox>
             </g:VerticalPanel>
         </g:west>

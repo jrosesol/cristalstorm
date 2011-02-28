@@ -7,12 +7,13 @@
 package com.cristal.storm.prototype.client.mvp.presenter;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.client.DispatchAsync;
-import com.gwtplatform.mvp.client.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.UiHandlers;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.NameToken;
@@ -24,11 +25,9 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.client.proxy.RevealRootLayoutContentEvent;
 import com.cristal.storm.prototype.client.mvp.view.AppStartPageUiHandlers;
-import com.cristal.storm.prototype.client.ui.CommandLineBoxPresenter;
-import com.cristal.storm.prototype.shared.action.SendTextToServer;
 import com.cristal.storm.prototype.shared.action.SendTextToServerResult;
+import com.cristal.storm.prototype.shared.action.SendTextToServer;
 
-import com.gwtplatform.dispatch.client.DispatchAsync;
 
 /**
  * AppStartPage Presenter implementation
@@ -47,12 +46,6 @@ public class AppStartPagePresenter extends
     
     private final DispatchAsync dispatcher;
     
-    /**
-     * Use this in leaf presenters, inside their {@link #revealInParent} method.
-     */
-    @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetTabContent = new Type<RevealContentHandler<?>>();
-
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
     ///////////////////////////////////////////////////////////////////////////
@@ -62,7 +55,7 @@ public class AppStartPagePresenter extends
      */
     @ProxyStandard
     @NameToken(nameToken)
-    public interface AppStartPageProxy extends Proxy<AppStartPagePresenter>, Place {
+    public interface AppStartPageProxy extends Proxy<AppStartPagePresenter> {
     }
 
     /**
@@ -75,23 +68,14 @@ public class AppStartPagePresenter extends
         public void addToUriStack(String uriText);
     }
 
-    /*
-     * This interface is the link between the view and the presenter.
-     * The presenter has to implement this interface.
-     * This interface should be declared separately.
-    public interface AppStartPageUiHandlers extends UiHandlers {
-    }
-     */
-
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     @Inject
-    public AppStartPagePresenter(final EventBus eventBus,
+    public AppStartPagePresenter(final SimpleEventBus eventBus,
             final AppStartPageViewInterface view,
             final AppStartPageProxy proxy, final PlaceManager placeManager,
-            final DispatchAsync dispatcher,
-            final CommandLineBoxPresenter commandLine) {
+            final DispatchAsync dispatcher) {
         super(eventBus, view, proxy);
         getView().setUiHandlers(this);
 

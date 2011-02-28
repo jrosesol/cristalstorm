@@ -8,7 +8,7 @@ package com.cristal.storm.prototype.client.event;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
-import com.gwtplatform.mvp.client.HasEventBus;
+import com.google.gwt.event.shared.HasHandlers;
 
 /**
  * TODO: Add comments for AddTextToContainerEvent
@@ -55,7 +55,7 @@ public class AddTextToContainerEvent extends
         return TYPE;
     }
 
-    public static void fire(HasEventBus source) {
+    public static void fire(HasHandlers source) {
         source.fireEvent(new AddTextToContainerEvent());
     }
 

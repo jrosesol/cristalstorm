@@ -49,7 +49,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.cristal.storm.prototype.client.mvp.presenter.AppStartPagePresenter.AppStartPageViewInterface;
-import com.cristal.storm.prototype.client.ui.CommandLineBoxView;
 
 
 /**
@@ -78,8 +77,8 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     @UiField
     public TextBox tagsText;
     
-    @UiField(provided = true)
-    public final DragAndDropCellList<MCE>mceCollectionDraggable;
+    //@UiField(provided = true)
+    //public final DragAndDropCellList<MCE>mceCollectionDraggable;
     
     @UiField
     public AbsolutePanel centerAbsPanel;
@@ -119,7 +118,7 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
         }
 
         @Override
-        public void render(MCE value, Object key, SafeHtmlBuilder sb) {
+        public void render(com.google.gwt.cell.client.Cell.Context context, MCE value, SafeHtmlBuilder sb) {
             // Value can be null, so do a null check..
             if (value == null) {
               return;
@@ -141,9 +140,9 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     @Inject
-    public AppStartPageView(CommandLineBoxView commandLineBox) {
+    public AppStartPageView() {
         MCECell textCell = new MCECell();
-        mceCollectionDraggable = new DragAndDropCellList<MCE>(textCell, DEFAULT_RESOURCES);
+        //mceCollectionDraggable = new DragAndDropCellList<MCE>(textCell, DEFAULT_RESOURCES);
         
         widget = uiBinder.createAndBindUi(this);
         
@@ -162,74 +161,74 @@ public class AppStartPageView extends ViewWithUiHandlers<AppStartPageUiHandlers>
 
 
 
-        mceCollectionDraggable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
-        // Push the data into the widget.
-        mceCollectionDraggable.setRowData(0,MCELIST);
-        
-        
-        // The cell of this CellList are only draggable
-        mceCollectionDraggable.setCellDraggableOnly();
-        
-        // setup the drag operation
-        DraggableOptions options = new DraggableOptions();
-        // use a clone of the original cell as drag helper
-        options.setHelper(HelperType.CLONE);
-        // set the opacity of the drag helper
-        options.setOpacity((float) 0.9);
-        // append the drag helper to the body element
-        options.setAppendTo("body");
-        // configure the drag operations of the cell list with this options
-        mceCollectionDraggable.setDraggableOptions(options);
-        
-        //horzPanel.add(mceCollectionDraggable);
-        
-        /**
-         * Create a droppable CellList
-         */
-        final FlowPanel aGwtPanel = new FlowPanel();
-        aGwtPanel.add(new Label("test"));
-        DroppableWidget<FlowPanel> droppablePanel = new DroppableWidget<FlowPanel>(aGwtPanel);
-        // configure the drop behaviour (see next paragraph)
-        droppablePanel.setTolerance(DroppableTolerance.POINTER);
-        
-        droppablePanel.addDropHandler(new DropEventHandler() {
-
-            public void onDrop(DropEvent event) {
-                // retrieve the droppable widget
-                 DroppableWidget<FlowPanel> droppableLabel =
-                   (DroppableWidget<FlowPanel>)event.getDroppableWidget();
-                 
-                // retrieve the dropped draggable widget (we assume it is a
-                // draggable label)
-                 
-                DraggableWidget<Label> draggableLabel =
-                  (DraggableWidget<Label>)event.getDraggableWidget();
-
-                Label toto = (Label)(droppableLabel.getOriginalWidget().getWidget(0));
-                toto.setText("Let's eat!!!!");
-
-                // remove the draggabeLable
-                // draggableLabel.removeFromParent();
-                //event.getDraggableWidget().removeFromParent();
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-                aGwtPanel.add(new Label("just dragged item"));
-            }
-        });
-        
-        
-        horzPanel.add(droppablePanel);
+//        mceCollectionDraggable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+//        // Push the data into the widget.
+//        mceCollectionDraggable.setRowData(0,MCELIST);
+//        
+//        
+//        // The cell of this CellList are only draggable
+//        mceCollectionDraggable.setCellDraggableOnly();
+//        
+//        // setup the drag operation
+//        DraggableOptions options = new DraggableOptions();
+//        // use a clone of the original cell as drag helper
+//        options.setHelper(HelperType.CLONE);
+//        // set the opacity of the drag helper
+//        options.setOpacity((float) 0.9);
+//        // append the drag helper to the body element
+//        options.setAppendTo("body");
+//        // configure the drag operations of the cell list with this options
+//        mceCollectionDraggable.setDraggableOptions(options);
+//        
+//        //horzPanel.add(mceCollectionDraggable);
+//        
+//        /**
+//         * Create a droppable CellList
+//         */
+//        final FlowPanel aGwtPanel = new FlowPanel();
+//        aGwtPanel.add(new Label("test"));
+//        DroppableWidget<FlowPanel> droppablePanel = new DroppableWidget<FlowPanel>(aGwtPanel);
+//        // configure the drop behaviour (see next paragraph)
+//        droppablePanel.setTolerance(DroppableTolerance.POINTER);
+//        
+//        droppablePanel.addDropHandler(new DropEventHandler() {
+//
+//            public void onDrop(DropEvent event) {
+//                // retrieve the droppable widget
+//                 DroppableWidget<FlowPanel> droppableLabel =
+//                   (DroppableWidget<FlowPanel>)event.getDroppableWidget();
+//                 
+//                // retrieve the dropped draggable widget (we assume it is a
+//                // draggable label)
+//                 
+//                DraggableWidget<Label> draggableLabel =
+//                  (DraggableWidget<Label>)event.getDraggableWidget();
+//
+//                Label toto = (Label)(droppableLabel.getOriginalWidget().getWidget(0));
+//                toto.setText("Let's eat!!!!");
+//
+//                // remove the draggabeLable
+//                // draggableLabel.removeFromParent();
+//                //event.getDraggableWidget().removeFromParent();
+//                aGwtPanel.add(new Label("just dragged item"));
+//                aGwtPanel.add(new Label("just dragged item"));
+//                aGwtPanel.add(new Label("just dragged item"));
+//                aGwtPanel.add(new Label("just dragged item"));
+//                aGwtPanel.add(new Label("just dragged item"));
+//                aGwtPanel.add(new Label("just dragged item"));
+//                aGwtPanel.add(new Label("just dragged item"));
+//                aGwtPanel.add(new Label("just dragged item"));
+//                aGwtPanel.add(new Label("just dragged item"));
+//                aGwtPanel.add(new Label("just dragged item"));
+//                aGwtPanel.add(new Label("just dragged item"));
+//                aGwtPanel.add(new Label("just dragged item"));
+//                aGwtPanel.add(new Label("just dragged item"));
+//                aGwtPanel.add(new Label("just dragged item"));
+//            }
+//        });
+//        
+//        
+//        horzPanel.add(droppablePanel);
         
         centerAbsPanel.add(horzPanel);
 

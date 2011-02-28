@@ -12,14 +12,14 @@
 
     <properties>
         <!-- Convenience property to set the GWT version -->
-        <gwtVersion>2.1.0</gwtVersion>
-        <gwt-mvn-plugin.version>2.1.0</gwt-mvn-plugin.version>
+        <gwtVersion>2.2.0</gwtVersion>
+        <gwt-mvn-plugin.version>2.2.0</gwt-mvn-plugin.version>
         <!-- GWT needs at least java 1.5 -->
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
         <!-- Convenience property to set the GWTP version -->
-        <gwtp-version>0.4</gwtp-version>
+        <gwtp-version>0.6-SNAPSHOT</gwtp-version>
     </properties>
 
     <dependencies>
@@ -39,40 +39,59 @@
         </dependency>
 
         <dependency>
-            <groupId>com.gwtplatform</groupId>
-            <artifactId>gwtp</artifactId>
-            <version>${gwtp-version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-            <version>2.0</version>
+            <version>3.0-rc2</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-assistedinject</artifactId>
+            <version>3.0-rc2</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-servlet</artifactId>
-            <version>2.0</version>
+            <version>3.0-rc2</version>
         </dependency>
 
         <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-gin</artifactId>
-            <version>1.0-r137</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.code.gwt-dnd</groupId>
-            <artifactId>gwt-dnd</artifactId>
-            <version>3.0.0</version>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+            <version>1.0-r170</version>
         </dependency>
 
         <dependency>
             <groupId>com.googlecode.gwtquery.bundles</groupId>
             <artifactId>gquery-dnd-bundle</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.3</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- GWTP and Remove Spring dependency from GWT-Platform -->
+        <dependency>
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp-all</artifactId>
+            <version>${gwtp-version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-beans</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-web</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- GXT <dependency> <groupId>com.extjs</groupId> <artifactId>gxt</artifactId> 
@@ -157,51 +176,37 @@
     </build>
 
     <repositories>
-        <!-- until gwt 2.1.0 gets final and deployed on central <repository> 
-            <id>gwt-repo</id> <url>http://google-web-toolkit.googlecode.com/svn/2.1.0.M3/gwt/maven 
-            </url> <name>Google Web Toolkit Repository</name> </repository> -->
 
+        <!-- GWTP Snapshot repos -->
+        <repository>
+            <id>gwtplatform.snapshot.repo</id>
+            <name>Gwtplatform snapshot repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <layout>default</layout>
+        </repository>
+        <!-- GWTP repos -->
         <repository>
             <id>gwtp</id>
             <name>gwt-platform</name>
             <url>http://maven.gwt-platform.googlecode.com/hg/</url>
-            <releases>
-            </releases>
-            <snapshots>
-            </snapshots>
-        </repository>
-
-        <repository>
-            <id>guice</id>
-            <url>http://guice-maven.googlecode.com/svn/trunk/</url>
-        </repository>
-
-        <repository>
-            <id>guice-servlet</id>
-            <url>http://guice-maven.googlecode.com/svn/trunk/</url>
-        </repository>
-
-        <repository>
-            <id>Platform related releases</id>
-            <url>http://nejakyusername-maven.googlecode.com/hg/repository-releases</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-            </releases>
         </repository>
 
         <!-- REMOVE THIS WHEN AVAILABLE IN MAVEN CENTRAL REPO -->
-        <repository>
-            <id>z80-repository.fr</id>
-            <name>z80-repository</name>
-            <url>http://z80-repository.googlecode.com/svn/maven2</url>
-        </repository>
-
+        <!-- GWT-QUERY-DND -->
         <repository>
             <id>plugins</id>
             <url>http://gwtquery-plugins.googlecode.com/svn/mavenrepo</url>
         </repository>
 
     </repositories>
+    
+    <!-- Temporary GWT Maven plugin -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>gwtplatform.plugin</id>
+            <name>Gwtplatform custom plugin epository</name>
+            <url>http://maven.gwt-platform.googlecode.com/hg/</url>
+            <layout>default</layout>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
