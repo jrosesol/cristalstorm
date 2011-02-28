@@ -1,6 +1,6 @@
 package com.cristal.storm.prototype.client.gin;
 
-import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 import com.google.inject.Provider;
@@ -17,9 +17,9 @@ import com.cristal.storm.prototype.client.mvp.presenter.AppStartPagePresenter;
 @GinModules({ DispatchAsyncModule.class, MyModule.class })
 public interface MyGinjector extends Ginjector {
 
-    SimpleEventBus getEventBus();
-    
     Provider<AppStartPagePresenter> getAppStartPagePresenter();
+
+    EventBus getEventBus();
 
     PlaceManager getPlaceManager();
 

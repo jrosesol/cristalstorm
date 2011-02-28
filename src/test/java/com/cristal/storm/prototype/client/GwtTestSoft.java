@@ -1,6 +1,5 @@
 package com.cristal.storm.prototype.client;
 
-import com.cristal.storm.prototype.shared.FieldVerifier;
 import com.google.gwt.junit.client.GWTTestCase;
 
 /**

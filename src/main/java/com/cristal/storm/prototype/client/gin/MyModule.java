@@ -3,6 +3,8 @@ package com.cristal.storm.prototype.client.gin;
 import com.google.inject.Singleton;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
+//import com.gwtplatform.dispatch.server.guice.request.DefaultRequestProvider;
+//import com.gwtplatform.dispatch.server.RequestProvider;
 import com.gwtplatform.mvp.client.DefaultProxyFailureHandler;
 import com.gwtplatform.mvp.client.RootPresenter;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
@@ -22,10 +24,10 @@ public class MyModule extends AbstractPresenterModule {
         bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
         bind(PlaceManager.class).to(MyPlaceManager.class).in(Singleton.class);
         bind(TokenFormatter.class).to(ParameterTokenFormatter.class).in(
-                Singleton.class);
+            Singleton.class);
         bind(RootPresenter.class).asEagerSingleton();
-        bind(ProxyFailureHandler.class).to(DefaultProxyFailureHandler.class)
-                .in(Singleton.class);
+        bind(ProxyFailureHandler.class).to(DefaultProxyFailureHandler.class).in(
+            Singleton.class);
 
         // Presenters
         bindPresenter(AppStartPagePresenter.class,
