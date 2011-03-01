@@ -24,7 +24,14 @@
     </properties>
 
     <dependencies>
-
+    
+        <dependency>
+            <groupId>com.googlecode.gwtquery.bundles</groupId>
+            <artifactId>gquery-dnd-bundle</artifactId>
+            <version>1.0.3</version>
+            <scope>provided</scope>
+        </dependency>
+        
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
@@ -61,13 +68,6 @@
             <groupId>com.google.gwt.inject</groupId>
             <artifactId>gin</artifactId>
             <version>1.0-r170</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.googlecode.gwtquery.bundles</groupId>
-            <artifactId>gquery-dnd-bundle</artifactId>
-            <version>1.0.3</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- GWTP and Remove Spring dependency from GWT-Platform -->

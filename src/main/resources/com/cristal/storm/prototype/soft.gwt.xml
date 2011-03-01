@@ -16,7 +16,7 @@
     <inherits name='com.gwtplatform.dispatch.Dispatch' />
 
     <!-- GWT-query-pluggins -->
-    <!-- <inherits name='gwtquery.plugins.droppable.Droppable' /> -->
+    <inherits name='gwtquery.plugins.droppable.Droppable' />
 
     <!-- EXT-GWT -->
     <!-- <inherits name="com.extjs.gxt.ui.GXT"/> -->
