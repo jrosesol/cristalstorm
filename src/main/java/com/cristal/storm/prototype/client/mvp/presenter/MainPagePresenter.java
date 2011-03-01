@@ -16,29 +16,27 @@
 
 package com.cristal.storm.prototype.client.mvp.presenter;
 
-import com.cristal.storm.prototype.client.ResponsePresenter;
-import com.cristal.storm.prototype.shared.FieldVerifier;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.cristal.storm.prototype.client.mvp.presenter.AppStartPagePresenter.AppStartPageViewInterface;
+import com.cristal.storm.prototype.client.mvp.view.AppStartPageUiHandlers;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.ui.Button;
 import com.google.inject.Inject;
 
 import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Place;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
 /**
  * @author Philippe Beaudoin
  */
+
+
 public class MainPagePresenter extends
-    Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> {
+    Presenter<MainPagePresenter.MainView, MainPagePresenter.MyProxy> implements
+    AppStartPageUiHandlers {
   /**
    * {@link MainPagePresenter}'s proxy.
    */
@@ -50,66 +48,41 @@ public class MainPagePresenter extends
   /**
    * {@link MainPagePresenter}'s view.
    */
-  public interface MyView extends View {
-    String getName();
+  public interface MainView extends AppStartPageViewInterface {
+    String getUriText();
 
-    Button getSendButton();
+    public String getTagsText();
 
-    void resetAndFocus();
+    void addToMCECollection(String uriText, String tagsText);
 
-    void setError(String errorText);
-  }
-
-  public static final String nameToken = "main";
-
-  private final PlaceManager placeManager;
-
-  @Inject
-  public MainPagePresenter(EventBus eventBus, MyView view, MyProxy proxy,
-      PlaceManager placeManager) {
-    super(eventBus, view, proxy);
-    this.placeManager = placeManager;
+    void tagCollectionFilter(String filter);
   }
 
   @Override
   protected void onBind() {
     super.onBind();
-    registerHandler(getView().getSendButton().addClickHandler(
-        new ClickHandler() {
-          @Override
-          public void onClick(ClickEvent event) {
-            sendNameToServer();
-          }
-        }));
   }
 
-  @Override
-  protected void onReset() {
-    super.onReset();
-    getView().resetAndFocus();
-  }
+  
+  public static final String nameToken = "main";
 
+  private final PlaceManager placeManager;
+
+  @Inject
+  public MainPagePresenter(EventBus eventBus, MainView view, MyProxy proxy,
+      PlaceManager placeManager) {
+    super(eventBus, view, proxy);
+    this.placeManager = placeManager;
+  }
+  
   @Override
   protected void revealInParent() {
     RevealRootContentEvent.fire(this, this);
   }
-
-  /**
-   * Send the name from the nameField to the server and wait for a response.
-   */
-  private void sendNameToServer() {
-    // First, we validate the input.
-    getView().setError("");
-    String textToServer = getView().getName();
-    if (!FieldVerifier.isValidName(textToServer)) {
-      getView().setError("Please enter at least four characters");
-      return;
-    }
-
-    // Then, we transmit it to the ResponsePresenter, which will do the server
-    // call
-    placeManager.revealPlace(new PlaceRequest(ResponsePresenter.nameToken).with(
-        ResponsePresenter.textToServerParam, textToServer));
+  
+  @Override
+  public void onStormit() {
+      getView().addToMCECollection(getView().getUriText(),getView().getTagsText());
   }
 
 }

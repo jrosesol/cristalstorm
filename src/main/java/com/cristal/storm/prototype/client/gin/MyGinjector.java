@@ -44,5 +44,5 @@ public interface MyGinjector extends Ginjector {
 
   ProxyFailureHandler getProxyFailureHandler();
 
-  AsyncProvider<ResponsePresenter> getResponsePresenter();
+ AsyncProvider<ResponsePresenter> getResponsePresenter();
 }

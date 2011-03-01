@@ -16,8 +16,6 @@
 
 package com.cristal.storm.prototype.client.gin;
 
-import com.cristal.storm.prototype.client.ResponsePresenter;
-import com.cristal.storm.prototype.client.ResponseView;
 import com.cristal.storm.prototype.client.controller.MyPlaceManager;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
 import com.cristal.storm.prototype.client.mvp.view.MainPageView;
@@ -25,12 +23,10 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Singleton;
 
-import com.gwtplatform.mvp.client.DefaultProxyFailureHandler;
 import com.gwtplatform.mvp.client.RootPresenter;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.proxy.ParameterTokenFormatter;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.ProxyFailureHandler;
 import com.gwtplatform.mvp.client.proxy.TokenFormatter;
 
 /**
@@ -45,14 +41,10 @@ public class MyModule extends AbstractPresenterModule {
     bind(TokenFormatter.class).to(ParameterTokenFormatter.class).in(
         Singleton.class);
     bind(RootPresenter.class).asEagerSingleton();
-    bind(ProxyFailureHandler.class).to(DefaultProxyFailureHandler.class).in(
-        Singleton.class);
 
     // Presenters
-    bindPresenter(MainPagePresenter.class, MainPagePresenter.MyView.class,
+    bindPresenter(MainPagePresenter.class, MainPagePresenter.MainView.class,
         MainPageView.class, MainPagePresenter.MyProxy.class);
 
-    bindPresenter(ResponsePresenter.class, ResponsePresenter.MyView.class,
-        ResponseView.class, ResponsePresenter.MyProxy.class);
   }
 }

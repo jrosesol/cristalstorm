@@ -6,11 +6,10 @@
  */
 package com.cristal.storm.prototype.client.mvp.presenter;
 
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.client.DispatchAsync;
-import com.gwtplatform.mvp.client.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
@@ -19,16 +18,10 @@ import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Place;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.client.proxy.RevealRootLayoutContentEvent;
 import com.cristal.storm.prototype.client.mvp.view.AppStartPageUiHandlers;
-import com.cristal.storm.prototype.client.ui.CommandLineBoxPresenter;
-import com.cristal.storm.prototype.shared.action.SendTextToServer;
-import com.cristal.storm.prototype.shared.action.SendTextToServerResult;
-
-import com.gwtplatform.dispatch.client.DispatchAsync;
 
 /**
  * AppStartPage Presenter implementation
@@ -76,14 +69,6 @@ public class AppStartPagePresenter extends
 		void tagCollectionFilter(String filter);
     }
 
-    /*
-     * This interface is the link between the view and the presenter.
-     * The presenter has to implement this interface.
-     * This interface should be declared separately.
-    public interface AppStartPageUiHandlers extends UiHandlers {
-    }
-     */
-
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
@@ -91,8 +76,7 @@ public class AppStartPagePresenter extends
     public AppStartPagePresenter(final EventBus eventBus,
             final AppStartPageViewInterface view,
             final AppStartPageProxy proxy, final PlaceManager placeManager,
-            final DispatchAsync dispatcher,
-            final CommandLineBoxPresenter commandLine) {
+            final DispatchAsync dispatcher) {
         super(eventBus, view, proxy);
         getView().setUiHandlers(this);
 
@@ -112,26 +96,6 @@ public class AppStartPagePresenter extends
     protected void revealInParent() {
         RevealRootLayoutContentEvent.fire(this, this);
     }
-	
-//	@Override
-//    public void onRetrieveDocumentSet() {
-//        dispatcher.execute(new SendTextToServer(getView().getDocUID(),
-//                getView().getRepoUID(), getView().getRepoURI()),
-//                new AsyncCallback<SendTextToServerResult>() {
-//                    @Override
-//                    public void onFailure(Throwable caught) {
-//                        getView().setServerResponse(
-//                                "An error occured: " + caught.getMessage());
-//                        getView().showServerResponseMessage();
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(SendTextToServerResult result) {
-//                        getView().setServerResponse(result.getResponse());
-//                        getView().showServerResponseMessage();
-//                    }
-//                });
-//    }
 
     @Override
     public void onStormit() {

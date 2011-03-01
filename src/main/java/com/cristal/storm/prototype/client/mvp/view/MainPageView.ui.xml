@@ -1,0 +1,72 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:drag="urn:import:gwtquery.plugins.droppable.client.gwt">
+
+	<ui:style>
+		/* Add CSS here. See the GWT docs on UI Binder for more details */
+        .important {
+        	vertical-align: middle;
+        	text-align: left;
+        	height: 1000px;
+       	    border: 1px solid #BBBBBB;
+            padding: 3px;
+        }
+		
+        .west {
+            vertical-align: middle;
+            text-align: center;
+            background-color: yellow;
+            height: 400px;
+        }
+		
+		.mceScrollable {
+			border: 1px solid #ccc;
+			text-align: left;
+		}
+		
+		.mceFormCell {
+			padding-left: 20px;
+		}
+	</ui:style>
+
+	<g:DockLayoutPanel unit="PX" width="1000" height="1000"
+		addStyleNames="{style.important}">
+
+		<g:north size="100">
+			<g:VerticalPanel>
+				<g:Label>Doe, John</g:Label>
+				<g:FlowPanel>
+					<g:TextBox ui:field="uriText"></g:TextBox>
+					<g:TextBox ui:field="tagsText"></g:TextBox>
+					<g:Button ui:field="stormitButton">Storm it!</g:Button>
+				</g:FlowPanel>
+			</g:VerticalPanel>
+		</g:north>
+
+		<g:east size="100">
+<!-- 		<g:FlowPanel> -->
+			<g:Label>east</g:Label>
+<!-- 		</g:FlowPanel> -->
+		</g:east>
+
+		<g:west size="300" addStyleNames="{style.mceScrollable}">
+			<g:VerticalPanel>
+				<g:Label>Collection</g:Label>
+				<drag:DragAndDropCellList ui:field="mceCollectionDraggable"></drag:DragAndDropCellList>
+				<g:TextBox ui:field="tagFilter">tags</g:TextBox>
+			</g:VerticalPanel>
+		</g:west>
+
+		<g:south size="100">
+			<g:Label>Cristal Storm TM. Copyright 2011, all rights reserved.</g:Label>
+		</g:south>
+
+		<g:center>
+			<g:AbsolutePanel ui:field="centerAbsPanel">
+			</g:AbsolutePanel>
+		</g:center>
+	</g:DockLayoutPanel>
+
+
+</ui:UiBinder>
