@@ -16,73 +16,110 @@
 
 package com.cristal.storm.prototype.client.mvp.presenter;
 
-import com.cristal.storm.prototype.client.mvp.presenter.AppStartPagePresenter.AppStartPageViewInterface;
-import com.cristal.storm.prototype.client.mvp.view.AppStartPageUiHandlers;
+import com.cristal.storm.prototype.client.mvp.view.MainPageUiHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 
+import com.gwtplatform.dispatch.client.DispatchAsync;
+import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Place;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
-import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
+import com.gwtplatform.mvp.client.proxy.RevealRootLayoutContentEvent;
 
 /**
- * @author Philippe Beaudoin
+ * @author José Rose
  */
 
+public class MainPagePresenter
+		extends
+		Presenter<MainPagePresenter.MainPageViewInterface, MainPagePresenter.MainPageProxy>
+		implements MainPageUiHandlers {
 
-public class MainPagePresenter extends
-    Presenter<MainPagePresenter.MainView, MainPagePresenter.MyProxy> implements
-    AppStartPageUiHandlers {
-  /**
-   * {@link MainPagePresenter}'s proxy.
-   */
-  @ProxyStandard
-  @NameToken(nameToken)
-  public interface MyProxy extends Proxy<MainPagePresenter>, Place {
-  }
+	// /////////////////////////////////////////////////////////////////////////
+	// Members
+	// /////////////////////////////////////////////////////////////////////////
+	public static final String nameToken = "main";
 
-  /**
-   * {@link MainPagePresenter}'s view.
-   */
-  public interface MainView extends AppStartPageViewInterface {
-    String getUriText();
+	private final PlaceManager placeManager;
 
-    public String getTagsText();
+	private final DispatchAsync dispatcher;
 
-    void addToMCECollection(String uriText, String tagsText);
+	// /////////////////////////////////////////////////////////////////////////
+	// Interfaces
+	// /////////////////////////////////////////////////////////////////////////
 
-    void tagCollectionFilter(String filter);
-  }
+	/**
+	 * {@link MainPagePresenter}'s proxy.
+	 */
+	@ProxyStandard
+	@NameToken(nameToken)
+	public interface MainPageProxy extends Proxy<MainPagePresenter>, Place {
+	}
 
-  @Override
-  protected void onBind() {
-    super.onBind();
-  }
+	/**
+	 * {@link MainPagePresenter}'s view. Here it extends HasUiHandlers to be
+	 * able to call setUiHandlers.
+	 */
+	public interface MainPageViewInterface extends View,
+			HasUiHandlers<MainPageUiHandlers> {
+		public String getUriText();
 
-  
-  public static final String nameToken = "main";
+		public String getTagsText();
 
-  private final PlaceManager placeManager;
+		public void addToMCECollection(String uriText, String tagsText);
 
-  @Inject
-  public MainPagePresenter(EventBus eventBus, MainView view, MyProxy proxy,
-      PlaceManager placeManager) {
-    super(eventBus, view, proxy);
-    this.placeManager = placeManager;
-  }
-  
-  @Override
-  protected void revealInParent() {
-    RevealRootContentEvent.fire(this, this);
-  }
-  
-  @Override
-  public void onStormit() {
-      getView().addToMCECollection(getView().getUriText(),getView().getTagsText());
-  }
+		public void tagCollectionFilter(String filter);
+	}
+	
+    ///////////////////////////////////////////////////////////////////////////
+    // Constructors
+    ///////////////////////////////////////////////////////////////////////////
+    @Inject
+    public MainPagePresenter(final EventBus eventBus,
+            final MainPageViewInterface view,
+            final MainPageProxy proxy, final PlaceManager placeManager,
+            final DispatchAsync dispatcher) {
+        super(eventBus, view, proxy);
+        getView().setUiHandlers(this);
+
+        this.placeManager = placeManager;
+        this.dispatcher = dispatcher;
+        
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // Handlers
+    ///////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Overrides
+    ///////////////////////////////////////////////////////////////////////////
+	@Override
+	protected void onBind() {
+		super.onBind();
+	}
+
+    @Override
+    protected void revealInParent() {
+        RevealRootLayoutContentEvent.fire(this, this);
+    }
+
+    @Override
+    public void onStormit() {
+        getView().addToMCECollection(getView().getUriText(),getView().getTagsText());
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Functions
+    ///////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Getters / Setters
+    ///////////////////////////////////////////////////////////////////////////
 
 }

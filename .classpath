@@ -9,15 +9,5 @@
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="C:/Users/PUMA/Program/springsource-tool-suite-2.5.2.SR1-e3.6.2-win32/springsource/sts-2.5.2.SR1/plugins/com.google.gwt.eclipse.sdkbundle.2.2.0_2.2.0.v201102111811/gwt-2.2.0/gwt-user.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/Users/PUMA/Program/springsource-tool-suite-2.5.2.SR1-e3.6.2-win32/springsource/sts-2.5.2.SR1/plugins/com.google.gwt.eclipse.sdkbundle.2.2.0_2.2.0.v201102111811/gwt-2.2.0/doc/javadoc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PUMA/Program/springsource-tool-suite-2.5.2.SR1-e3.6.2-win32/springsource/sts-2.5.2.SR1/plugins/com.google.gwt.eclipse.sdkbundle.2.2.0_2.2.0.v201102111811/gwt-2.2.0/gwt-dev.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/Users/PUMA/Program/springsource-tool-suite-2.5.2.SR1-e3.6.2-win32/springsource/sts-2.5.2.SR1/plugins/com.google.gwt.eclipse.sdkbundle.2.2.0_2.2.0.v201102111811/gwt-2.2.0/doc/javadoc/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="output" path="target/prototype-0.0.1-SNAPSHOT/WEB-INF/classes"/>
 </classpath>

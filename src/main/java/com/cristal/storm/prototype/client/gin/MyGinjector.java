@@ -32,17 +32,17 @@ import com.cristal.storm.prototype.client.gin.MyModule;
 
 /**
  * TODO: Add comments for MyGinjector
- *
+ * 
  */
-@GinModules({DispatchAsyncModule.class, MyModule.class})
+@GinModules({ DispatchAsyncModule.class, MyModule.class })
 public interface MyGinjector extends Ginjector {
-  EventBus getEventBus();
+	EventBus getEventBus();
 
-  Provider<MainPagePresenter> getMainPagePresenter();
+	Provider<MainPagePresenter> getMainPagePresenter();
 
-  PlaceManager getPlaceManager();
+	PlaceManager getPlaceManager();
 
-  ProxyFailureHandler getProxyFailureHandler();
+	ProxyFailureHandler getProxyFailureHandler();
 
- AsyncProvider<ResponsePresenter> getResponsePresenter();
+	AsyncProvider<ResponsePresenter> getResponsePresenter();
 }
