@@ -30,6 +30,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.regexp.shared.RegExp;
@@ -58,210 +60,249 @@ import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
  * @author Philippe Beaudoin
  */
 public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
-		implements MainPagePresenter.MainPageViewInterface {
+        implements MainPagePresenter.MainPageViewInterface {
 
-	private static MainPageViewUiBinder uiBinder = GWT
-			.create(MainPageViewUiBinder.class);
+    private static MainPageViewUiBinder uiBinder = GWT
+            .create(MainPageViewUiBinder.class);
 
-	/*
-	 * @UiField annotated vars. can be used here from your ui.xml template
-	 */
+    /*
+     * @UiField annotated vars. can be used here from your ui.xml template
+     */
 
-	@UiField
-	public Button stormitButton;
+    @UiField
+    public Button stormitButton;
 
-	@UiField
-	public TextBox uriText;
+    @UiField
+    public TextBox uriText;
 
-	@UiField
-	public TextBox tagsText;
+    @UiField
+    public TextBox tagsText;
 
-	@UiField(provided = true)
-	public DragAndDropCellList<MCE> mceCollectionDraggable;
+    @UiField(provided = true)
+    public DragAndDropCellList<MCE> mceCollectionDraggable;
 
-	@UiField
-	public AbsolutePanel centerAbsPanel;
+    @UiField
+    public AbsolutePanel centerAbsPanel;
 
-	private Widget widget;
+    private Widget widget;
 
-	private List<MCE> mceListVisible;
+    private List<MCE> mceListVisible;
 
-	private SelectionModel<MCE> mceSelectionModel;
+    private SelectionModel<MCE> mceSelectionModel;
 
-	private static Resources DEFAULT_RESOURCES = GWT.create(Resources.class);
+    private static Resources DEFAULT_RESOURCES = GWT.create(Resources.class);
 
-	interface MainPageViewUiBinder extends UiBinder<Widget, MainPageView> {
-		Widget createAndBindUi(MainPageView mainPageView);
-	}
+    interface MainPageViewUiBinder extends UiBinder<Widget, MainPageView> {
+        Widget createAndBindUi(MainPageView mainPageView);
+    }
 
-	@Inject
-	public MainPageView() {
-		MCECell.Images images = GWT.create(MCECell.Images.class);
+    // ////////// TEST - GWT CANVAS ////////////////////
+    Canvas canvas;
+    Canvas backBuffer;
+    
+    // canvas size, in px
+    static final int height = 400;
+    static final int width = 400;
+    
+    Context2d context;
+    
+    static final String holderId = "canvasholder";
+    // /////////////////////////////////////////////////
 
-		MCECell textCell = new MCECell(images.icon());
+    @Inject
+    public MainPageView() {
+        MCECell.Images images = GWT.create(MCECell.Images.class);
 
-		ProvidesKey<MCE> keyProvider = new ProvidesKey<MCE>() {
-			public Object getKey(MCE item) {
-				// Always do a null check.
-				return (item == null) ? null : item.getURI();
-			}
-		};
+        MCECell textCell = new MCECell(images.icon());
 
-		mceCollectionDraggable = new DragAndDropCellList<MCE>(textCell,
-				DEFAULT_RESOURCES, keyProvider);
+        ProvidesKey<MCE> keyProvider = new ProvidesKey<MCE>() {
+            public Object getKey(MCE item) {
+                // Always do a null check.
+                return (item == null) ? null : item.getURI();
+            }
+        };
 
-		mceSelectionModel = new SingleSelectionModel<MCE>(keyProvider);
-		mceCollectionDraggable.setSelectionModel(mceSelectionModel);
+        mceCollectionDraggable = new DragAndDropCellList<MCE>(textCell,
+                DEFAULT_RESOURCES, keyProvider);
 
-		// mceCollectionDraggable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+        mceSelectionModel = new SingleSelectionModel<MCE>(keyProvider);
+        mceCollectionDraggable.setSelectionModel(mceSelectionModel);
 
-		widget = uiBinder.createAndBindUi(this);
+        // mceCollectionDraggable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
-		HorizontalPanel horzPanel = new HorizontalPanel();
+        widget = uiBinder.createAndBindUi(this);
+        
+        
+        // ////////// TEST - GWT CANVAS ////////////////////
+        canvas = Canvas.createIfSupported();
+        
+        // init the canvases
+        canvas.setWidth(width + "px");
+        canvas.setHeight(height + "px");
+        canvas.setCoordinateSpaceWidth(width);
+        canvas.setCoordinateSpaceHeight(height);
+        context = canvas.getContext2d();
+        
+        context.setFillStyle("#ed9d33");
+        context.beginPath();
+        context.arc(202.0, 78.0, 10.0, 0.0, Math.PI * 2.0, true);
+        context.closePath();
+        context.fill();
+        
+        // /////////////////////////////////////////////////
+        
 
-		// Push the data into the widget.
+        HorizontalPanel horzPanel = new HorizontalPanel();
 
-		// TODO Remove this hardcoded definition of tags
-		Set<String> mcetags1 = new TreeSet<String>();
-		mcetags1.add("search");
-		mcetags1.add("mail");
-		mcetags1.add("travel");
+        // Push the data into the widget.
 
-		// TODO Remove this hardcoded definition of MCE
-		MCE mce = new MCE("kayak.com", mcetags1);
-		// MCE mce3 = new MCE("kayak.com", mcetags2);
-		mceListVisible = new Vector<MCE>();
-		mceListVisible.add(mce);
-		mceCollectionDraggable.setRowData(0, mceListVisible);
-		mceSelectionModel.setSelected(mce, true);
+        // TODO Remove this hardcoded definition of tags
+        Set<String> mcetags1 = new TreeSet<String>();
+        mcetags1.add("search");
+        mcetags1.add("mail");
+        mcetags1.add("travel");
 
-		// The cell of this CellList are only draggable
-		mceCollectionDraggable.setCellDraggableOnly();
+        // TODO Remove this hardcoded definition of MCE
+        MCE mce = new MCE("kayak.com", mcetags1);
+        // MCE mce3 = new MCE("kayak.com", mcetags2);
+        mceListVisible = new Vector<MCE>();
+        mceListVisible.add(mce);
+        mceCollectionDraggable.setRowData(0, mceListVisible);
+        mceSelectionModel.setSelected(mce, true);
 
-		// setup the drag operation
-		DraggableOptions options = new DraggableOptions();
-		// use a clone of the original cell as drag helper
-		options.setHelper(HelperType.CLONE);
-		// set the opacity of the drag helper
-		options.setOpacity((float) 0.9);
-		// append the drag helper to the body element
-		options.setAppendTo("body");
-		// configure the drag operations of the cell list with this options
-		mceCollectionDraggable.setDraggableOptions(options);
+        // The cell of this CellList are only draggable
+        mceCollectionDraggable.setCellDraggableOnly();
 
-		/**
-		 * Create a droppable CellList
-		 */
-		final FlowPanel aGwtPanel = new FlowPanel();
-		aGwtPanel.add(new Label("test"));
-		DroppableWidget<FlowPanel> droppablePanel = new DroppableWidget<FlowPanel>(
-				aGwtPanel);
-		// configure the drop behaviour (see next paragraph)
-		droppablePanel.setTolerance(DroppableTolerance.POINTER);
+        // setup the drag operation
+        DraggableOptions options = new DraggableOptions();
+        // use a clone of the original cell as drag helper
+        options.setHelper(HelperType.CLONE);
+        // set the opacity of the drag helper
+        options.setOpacity((float) 0.9);
+        // append the drag helper to the body element
+        options.setAppendTo("body");
+        // configure the drag operations of the cell list with this options
+        mceCollectionDraggable.setDraggableOptions(options);
 
-		droppablePanel.getOriginalWidget();
+        /**
+         * Create a droppable CellList
+         */
+        DroppableWidget<Canvas> droppablePanel = new DroppableWidget<Canvas>(canvas);
+        // configure the drop behaviour (see next paragraph)
+        droppablePanel.setTolerance(DroppableTolerance.POINTER);
 
-		droppablePanel.addDropHandler(new DropEventHandler() {
+        droppablePanel.getOriginalWidget();
 
-			public void onDrop(DropEvent event) {
-				// retrieve the droppable widget
-				DroppableWidget<FlowPanel> droppableLabel = (DroppableWidget<FlowPanel>) event
-						.getDroppableWidget();
+        droppablePanel.addDropHandler(new DropEventHandler() {
 
-				// retrieve the dropped draggable widget (we assume it is a
-				// draggable label)
-				DraggableWidget<Label> draggableLabel = (DraggableWidget<Label>) event
-						.getDraggableWidget();
+            private double startX = 202.0 - 10.0;
+            public void onDrop(DropEvent event) {
+/*                // retrieve the droppable widget
+                DroppableWidget<FlowPanel> droppableLabel = (DroppableWidget<FlowPanel>) event
+                        .getDroppableWidget();
 
-				Label toto = (Label) (droppableLabel.getOriginalWidget()
-						.getWidget(0));
-				Label toto2 = (Label) (droppableLabel.getOriginalWidget()
-						.getWidget(0));
-				aGwtPanel.add(toto2);
-				// toto.setText("Let's eat!!!!");
+                // retrieve the dropped draggable widget (we assume it is a
+                // draggable label)
+                DraggableWidget<Label> draggableLabel = (DraggableWidget<Label>) event
+                        .getDraggableWidget();
 
-				// remove the draggabeLable
-				// draggableLabel.removeFromParent();
-				// aGwtPanel.add( new
-				// Label(event.getDraggableWidget().toString()));
-				// event.getDraggableWidget().removeFromParent();
+                Label toto = (Label) (droppableLabel.getOriginalWidget()
+                        .getWidget(0));
+                Label toto2 = (Label) (droppableLabel.getOriginalWidget()
+                        .getWidget(0));
+                aGwtPanel.add(toto2);
+                // toto.setText("Let's eat!!!!");
 
-				aGwtPanel.add(new Label("just dragged item1"));
-				aGwtPanel.add(new Label("just dragged item2"));
-			}
-		});
+                // remove the draggabeLable
+                // draggableLabel.removeFromParent();
+                // aGwtPanel.add( new
+                // Label(event.getDraggableWidget().toString()));
+                // event.getDraggableWidget().removeFromParent();
 
-		horzPanel.add(droppablePanel);
+                aGwtPanel.add(new Label("just dragged item1"));
+                aGwtPanel.add(new Label("just dragged item2"));*/
+                
+                context.setFillStyle("#ed9d33");
+                context.beginPath();
+                context.arc(startX, 78.0, 10.0, 0.0, Math.PI * 2.0, true);
+                context.closePath();
+                context.fill();
+                
+                startX -= 10.0;
+            }
+        });
 
-		centerAbsPanel.add(horzPanel);
+        horzPanel.add(droppablePanel);
 
-	}
+        centerAbsPanel.add(horzPanel);
 
-	@Override
-	public Widget asWidget() {
-		return widget;
-	}
+    }
 
-	@UiHandler("stormitButton")
-	void onStormitButtonClicked(ClickEvent event) {
-		if (getUiHandlers() != null) {
-			getUiHandlers().onStormit();
-		}
-	}
+    @Override
+    public Widget asWidget() {
+        return widget;
+    }
 
-	@Override
-	public String getUriText() {
-		return uriText.getText();
-	}
+    @UiHandler("stormitButton")
+    void onStormitButtonClicked(ClickEvent event) {
+        if (getUiHandlers() != null) {
+            getUiHandlers().onStormit();
+        }
+    }
 
-	@Override
-	public String getTagsText() {
-		return tagsText.getText();
-	}
+    @Override
+    public String getUriText() {
+        return uriText.getText();
+    }
 
-	/**
-	 * The function adds an MCE to the MCE Collection. Tags are tokenized: we
-	 * assume a tag is succession of alphanum chars, a dash or an underscore
-	 * 
-	 * @param uriText
-	 * @param tagsText
-	 */
-	@Override
-	public void addToMCECollection(String uriText, String tagsText) {
-		RegExp regExp = RegExp.compile("([A-Za-z0-9_\\-]+)");
-		SplitResult split = regExp.split(tagsText.toLowerCase());
-		Set<String> tags = new TreeSet<String>();
-		for (int i = 0; i < split.length(); i++) {
-			if (!split.get(i).isEmpty()) {
-				tags.add(split.get(i));
-			}
-		}
+    @Override
+    public String getTagsText() {
+        return tagsText.getText();
+    }
 
-		MCE mce = new MCE(uriText, tags);
-		int mceIndex = ((Vector<MCE>) mceListVisible).indexOf(mce);
+    /**
+     * The function adds an MCE to the MCE Collection. Tags are tokenized: we
+     * assume a tag is succession of alphanum chars, a dash or an underscore
+     * 
+     * @param uriText
+     * @param tagsText
+     */
+    @Override
+    public void addToMCECollection(String uriText, String tagsText) {
+        RegExp regExp = RegExp.compile("([A-Za-z0-9_\\-]+)");
+        SplitResult split = regExp.split(tagsText.toLowerCase());
+        Set<String> tags = new TreeSet<String>();
+        for (int i = 0; i < split.length(); i++) {
+            if (!split.get(i).isEmpty()) {
+                tags.add(split.get(i));
+            }
+        }
 
-		// On verifie si le MCE (identifie par son URI) est deja present
-		if (mceIndex >= 0) {
-			MCE existingMCE = mceListVisible.get(mceIndex);
-			if (!existingMCE.getTags().equals(mce.getTags())) {
-				existingMCE.setTags(tags);
-			}
-		} else {
-			mceListVisible.add(mce);
-		}
-		mceCollectionDraggable.setRowData(mceListVisible);
-		mceSelectionModel.setSelected(mce, true);
-	}
+        MCE mce = new MCE(uriText, tags);
+        int mceIndex = ((Vector<MCE>) mceListVisible).indexOf(mce);
 
-	@Override
-	public void tagCollectionFilter(final String filter) {
-		// TODO Algorithm to filter the MCE
-		// Tokenize tags
-		RegExp regExp = RegExp.compile(filter);
-		for (MCE mce : mceListVisible) {
-			if (regExp.test(mce.getTags())) {
-			}
-		}
-		mceCollectionDraggable.setRowData(mceListVisible);
-	}
+        // On verifie si le MCE (identifie par son URI) est deja present
+        if (mceIndex >= 0) {
+            MCE existingMCE = mceListVisible.get(mceIndex);
+            if (!existingMCE.getTags().equals(mce.getTags())) {
+                existingMCE.setTags(tags);
+            }
+        } else {
+            mceListVisible.add(mce);
+        }
+        mceCollectionDraggable.setRowData(mceListVisible);
+        mceSelectionModel.setSelected(mce, true);
+    }
+
+    @Override
+    public void tagCollectionFilter(final String filter) {
+        // TODO Algorithm to filter the MCE
+        // Tokenize tags
+        RegExp regExp = RegExp.compile(filter);
+        for (MCE mce : mceListVisible) {
+            if (regExp.test(mce.getTags())) {
+            }
+        }
+        mceCollectionDraggable.setRowData(mceListVisible);
+    }
 }
