@@ -6,7 +6,7 @@
             <property name="datanucleus.ConnectionDriverName" value="org.hsqldb.jdbcDriver"/>
             <property name="datanucleus.autoCreateSchema" value="false"/>
             <property name="datanucleus.storeManagerType" value="rdbms"/>
-            <property name="datanucleus.ConnectionURL" value="jdbc:hsqldb:mem:cristalstorm.withroogwt"/>
+            <property name="datanucleus.ConnectionURL" value="jdbc:hsqldb:mem:prototype"/>
             <property name="datanucleus.ConnectionUserName" value="sa"/>
             <property name="datanucleus.ConnectionPassword" value=""/>
             <property name="datanucleus.autoCreateTables" value="true"/>

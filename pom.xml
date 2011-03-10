@@ -5,8 +5,8 @@
 	<groupId>com.cristal.storm.prototype</groupId>
 	<artifactId>prototype</artifactId>
 	<packaging>war</packaging>
-        <version>0.0.1-SNAPSHOT</version>
-	<name>cristalstorm.withroogwt</name>
+	<version>0.1.0.BUILD-SNAPSHOT</version>
+	<name>prototype</name>
 	<properties>
 		<roo.version>1.1.2.RELEASE</roo.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
@@ -26,8 +26,6 @@
 		<groupId>com.gwtplatform</groupId>
 	</properties>
 	<repositories>
-
-
 		<!-- GWTP Snapshot repos -->
 		<repository>
 			<id>gwtplatform.snapshot.repo</id>
@@ -48,8 +46,6 @@
 			<id>plugins</id>
 			<url>http://gwtquery-plugins.googlecode.com/svn/mavenrepo</url>
 		</repository>
-
-
 
 		<repository>
 			<id>spring-maven-release</id>
@@ -120,13 +116,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>${gwtVersion}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 			<version>3.0-rc2</version>
@@ -189,8 +178,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-
 
 		<!-- General dependencies for standard applications -->
 		<dependency>
@@ -497,18 +484,20 @@
 			<artifactId>xalan</artifactId>
 			<version>2.7.1</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwtVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		
 	</dependencies>
-	<profiles>
-		<profile>
-			<!-- Activate only when within eclipse -->
-			<id>m2eclipse</id>
-			<activation>
-				<property>
-					<name>!m2e.version</name>
-				</property>
-			</activation>
-		</profile>
-	</profiles>
 	<build>
 		<plugins>
 			<plugin>
@@ -662,7 +651,7 @@
 				<version>7.2.2.v20101205</version>
 				<configuration>
 					<webAppConfig>
-						<contextPath>/${project.name}</contextPath>
+						<contextPath>/target/${project.build.finalName}</contextPath>
 					</webAppConfig>
 				</configuration>
 			</plugin>
@@ -715,18 +704,36 @@
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>${gwt-mvn-plugin.version}</version>
 				<configuration>
-					<runTarget>soft.html</runTarget>
+					<logLevel>INFO</logLevel>
+					<style>PRETTY</style>
+					<runTarget>/soft.html</runTarget>
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
+					<modules>
+						<module>${project.groupId}.soft</module>
+					</modules>					
+					<copyWebapp>true</copyWebapp>
 				</configuration>
 				<executions>
 					<execution>
+						<id>gwtcompile</id>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>compile</goal>
-							<goal>test</goal>
-							<goal>generateAsync</goal>
 						</goals>
 					</execution>
 				</executions>
+               	<dependencies>
+                    <dependency>
+                        <groupId>com.google.gwt</groupId>
+                        <artifactId>gwt-dev</artifactId>
+                        <version>2.2.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.google.gwt</groupId>
+                        <artifactId>gwt-user</artifactId>
+                        <version>2.2.0</version>
+                    </dependency>
+                </dependencies>
 			</plugin>
 		</plugins>
 		<!-- <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory> -->
