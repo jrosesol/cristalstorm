@@ -5,5 +5,6 @@
 /src/main/webapp/WEB-INF/classes
 toto*
 caca*
+*.aj
 *.jar
 deploy
