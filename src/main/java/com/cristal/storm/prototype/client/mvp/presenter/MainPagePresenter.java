@@ -17,7 +17,13 @@
 package com.cristal.storm.prototype.client.mvp.presenter;
 
 import com.cristal.storm.prototype.client.mvp.view.MainPageUiHandlers;
+import com.cristal.storm.prototype.shared.SendMceToServer;
+import com.cristal.storm.prototype.shared.SendMceToServerResult;
+import com.cristal.storm.prototype.shared.SendTextToServer;
+import com.cristal.storm.prototype.shared.SendTextToServerResult;
+import com.cristal.storm.prototype.shared.domain.MCEDto;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 
 import com.gwtplatform.dispatch.client.DispatchAsync;
@@ -112,6 +118,18 @@ public class MainPagePresenter
     @Override
     public void onStormit() {
         getView().addToMCECollection(getView().getUriText(),getView().getTagsText());
+        
+        MCEDto aMce = new MCEDto();
+        dispatcher.execute(new SendMceToServer(aMce),
+                new AsyncCallback<SendMceToServerResult>() {
+                  @Override
+                  public void onFailure(Throwable caught) {
+                  }
+
+                  @Override
+                  public void onSuccess(SendMceToServerResult result) {
+                  }
+                });
     }
 
     ///////////////////////////////////////////////////////////////////////////
