@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.cristal.storm.prototype</groupId>
 	<artifactId>prototype</artifactId>
@@ -78,6 +77,8 @@
 			<name>SpringSource Maven Repository - External Releases</name>
 		</repository>
 	</repositories>
+
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>spring-maven-release</id>
@@ -97,12 +98,6 @@
 		<pluginRepository>
 			<id>DataNucleus_2</id>
 			<url>http://www.datanucleus.org/downloads/maven2/</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>gwtplatform.plugin</id>
-			<name>Gwtplatform custom plugin epository</name>
-			<url>http://maven.gwt-platform.googlecode.com/hg/</url>
-			<layout>default</layout>
 		</pluginRepository>
 	</pluginRepositories>
 	<dependencies>
@@ -159,24 +154,13 @@
 			<groupId>${groupId}</groupId>
 			<artifactId>gwtp-dispatch-server</artifactId>
 			<version>${gwtp-version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-context</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-beans</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-web</artifactId>
-				</exclusion>
-			</exclusions>
+		</dependency>
+		
+		dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwtVersion}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- General dependencies for standard applications -->
@@ -234,6 +218,7 @@
 			<version>${roo.version}</version>
 			<scope>provided</scope>
 		</dependency>
+        <!-- Spring dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -303,11 +288,6 @@
 			<groupId>org.datanucleus</groupId>
 			<artifactId>datanucleus-jpa</artifactId>
 			<version>1.1.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.datanucleus</groupId>
-			<artifactId>datanucleus-rdbms</artifactId>
-			<version>${datanucleus.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.datanucleus</groupId>
@@ -480,23 +460,22 @@
 			<version>20090211</version>
 		</dependency>
 		<dependency>
+            <groupId>com.googlecode.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+            <version>1.5</version>
+        </dependency>
+        <dependency>
 			<groupId>xalan</groupId>
 			<artifactId>xalan</artifactId>
 			<version>2.7.1</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>${gwtVersion}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-servlet</artifactId>
-			<version>2.2.0</version>
-		</dependency>
-		
+
+    <dependency>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>datanucleus-rdbms</artifactId>
+            <version>${datanucleus.version}</version>
+        </dependency>		
 	</dependencies>
 	<build>
 		<plugins>
@@ -505,17 +484,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.1-beta-1</version>
 				<!-- <configuration> <webXml>target/web.xml</webXml> </configuration> -->
-				<executions>
-					<execution>
-						<phase>compile</phase>
-						<goals>
-							<goal>exploded</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<webappDirectory>${webappDirectory}</webappDirectory>
-				</configuration>
+				-->
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -606,30 +575,54 @@
 				<version>2.7</version>
 				<!-- Note 2.8 does not work with AspectJ aspect path -->
 				<configuration>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>false</downloadJavadocs>
-					<wtpversion>2.0</wtpversion>
-					<additionalBuildcommands>
-						<buildCommand>
-							<name>org.eclipse.ajdt.core.ajbuilder</name>
-							<arguments>
-								<aspectPath>org.springframework.aspects</aspectPath>
-							</arguments>
-						</buildCommand>
-						<buildCommand>
-							<name>org.springframework.ide.eclipse.core.springbuilder</name>
-						</buildCommand>
-						<buildCommand>
-							<name>com.google.gwt.eclipse.core.gwtProjectValidator</name>
-						</buildCommand>
-					</additionalBuildcommands>
-					<additionalProjectnatures>
-						<projectnature>org.eclipse.ajdt.ui.ajnature</projectnature>
-						<projectnature>com.springsource.sts.roo.core.nature</projectnature>
-						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-						<projectnature>com.google.gwt.eclipse.core.gwtNature</projectnature>
-					</additionalProjectnatures>
-				</configuration>
+                    <useProjectReferences>false</useProjectReferences>
+                    <classpathContainers>
+                        <classpathContainer>com.google.appengine.eclipse.core.GAE_CONTAINER</classpathContainer>
+                        <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
+                        <classpathContainer>com.google.gwt.eclipse.core.GWT_CONTAINER</classpathContainer>
+                    </classpathContainers>
+                    <additionalBuildcommands>
+                        <buildcommand>com.google.gwt.eclipse.core.gwtProjectValidator</buildcommand>
+                        <buildcommand>net.sf.eclipsecs.core.CheckstyleBuilder</buildcommand>
+                        <buildCommand>
+                            <name>org.eclipse.ajdt.core.ajbuilder</name>
+                            <arguments>
+                                <aspectPath>org.springframework.aspects</aspectPath>
+                            </arguments>
+                        </buildCommand>
+                        <buildCommand>
+                            <name>org.springframework.ide.eclipse.core.springbuilder</name>
+                        </buildCommand>
+                    </additionalBuildcommands>
+                    <additionalProjectnatures>
+                        <projectnature>com.google.appengine.eclipse.core.gaeNature</projectnature>
+                        <projectnature>com.google.gwt.eclipse.core.gwtNature</projectnature>
+                        <projectnature>net.sf.eclipsecs.core.CheckstyleNature</projectnature>
+                        <projectnature>org.eclipse.ajdt.ui.ajnature</projectnature>
+                        <projectnature>com.springsource.sts.roo.core.nature</projectnature>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalConfig>
+                        <file>
+                            <name>.settings/com.google.gwt.eclipse.core.prefs</name>
+                            <content><![CDATA[
+                                    eclipse.preferences.version=1
+                                    entryPointModules=com.cristal.storm.prototype.soft
+                            ]]></content>
+                        </file>
+                        <file>
+                            <name>.checkstyle</name>
+                            <location>/gwtp-eclipse-checkstyle.xml</location>
+                        </file>
+                    </additionalConfig>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.gwtplatform</groupId>
+                        <artifactId>gwtp-build-tools</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -638,21 +631,6 @@
 				<configuration>
 					<downloadSources>true</downloadSources>
 					<dependenciesAsLibraries>true</dependenciesAsLibraries>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>tomcat-maven-plugin</artifactId>
-				<version>1.1</version>
-			</plugin>
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>7.2.2.v20101205</version>
-				<configuration>
-					<webAppConfig>
-						<contextPath>/target/${project.build.finalName}</contextPath>
-					</webAppConfig>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -702,38 +680,13 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>${gwt-mvn-plugin.version}</version>
-				<configuration>
-					<logLevel>INFO</logLevel>
-					<style>PRETTY</style>
-					<runTarget>/soft.html</runTarget>
-					<hostedWebapp>${webappDirectory}</hostedWebapp>
-					<modules>
-						<module>${project.groupId}.soft</module>
-					</modules>					
-					<copyWebapp>true</copyWebapp>
-				</configuration>
-				<executions>
-					<execution>
-						<id>gwtcompile</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-					</execution>
-				</executions>
-               	<dependencies>
-                    <dependency>
-                        <groupId>com.google.gwt</groupId>
-                        <artifactId>gwt-dev</artifactId>
-                        <version>2.2.0</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.google.gwt</groupId>
-                        <artifactId>gwt-user</artifactId>
-                        <version>2.2.0</version>
-                    </dependency>
-                </dependencies>
+                <configuration>
+                    <server>com.google.appengine.tools.development.gwt.AppEngineLauncher</server>
+                    <hostedWebapp>${webappDirectory}</hostedWebapp>
+                    <copyWebapp>true</copyWebapp>
+                    <runTarget>soft.html</runTarget>
+                    <module>com.cristal.storm.prototype.soft</module>
+                </configuration>
 			</plugin>
 		</plugins>
 		<!-- <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory> -->
