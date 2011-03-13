@@ -11,7 +11,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @author Admin
  *
  */
-public class MCEDto implements IsSerializable {
+public class MceDto implements IsSerializable {
     public String uri;
 
     public String tag;

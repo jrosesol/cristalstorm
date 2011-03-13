@@ -18,6 +18,7 @@ package com.cristal.storm.prototype.client.gin;
 
 import com.cristal.storm.prototype.client.ResponsePresenter;
 import com.cristal.storm.prototype.client.ResponseView;
+import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.controller.MyPlaceManager;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
 import com.cristal.storm.prototype.client.mvp.view.MainPageView;
@@ -47,6 +48,9 @@ public class MyModule extends AbstractPresenterModule {
     bind(RootPresenter.class).asEagerSingleton();
     bind(ProxyFailureHandler.class).to(DefaultProxyFailureHandler.class).in(
         Singleton.class);
+    
+    // User bindings
+    bind(DataStoreProxy.class).asEagerSingleton();
 
     // Presenters
     bindPresenter(MainPagePresenter.class, MainPagePresenter.MainPageViewInterface.class,

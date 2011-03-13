@@ -16,12 +16,13 @@
 
 package com.cristal.storm.prototype.client.mvp.presenter;
 
+import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.mvp.view.MainPageUiHandlers;
-import com.cristal.storm.prototype.shared.SendMceToServer;
-import com.cristal.storm.prototype.shared.SendMceToServerResult;
-import com.cristal.storm.prototype.shared.SendTextToServer;
-import com.cristal.storm.prototype.shared.SendTextToServerResult;
-import com.cristal.storm.prototype.shared.domain.MCEDto;
+import com.cristal.storm.prototype.shared.action.SendMceToServer;
+import com.cristal.storm.prototype.shared.action.SendMceToServerResult;
+import com.cristal.storm.prototype.shared.action.SendTextToServer;
+import com.cristal.storm.prototype.shared.action.SendTextToServerResult;
+import com.cristal.storm.prototype.shared.domain.MceDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
@@ -54,6 +55,8 @@ public class MainPagePresenter
 	private final PlaceManager placeManager;
 
 	private final DispatchAsync dispatcher;
+	
+	private final DataStoreProxy dataProxy;
 
 	// /////////////////////////////////////////////////////////////////////////
 	// Interfaces
@@ -89,12 +92,14 @@ public class MainPagePresenter
     public MainPagePresenter(final EventBus eventBus,
             final MainPageViewInterface view,
             final MainPageProxy proxy, final PlaceManager placeManager,
-            final DispatchAsync dispatcher) {
+            final DispatchAsync dispatcher,
+            final DataStoreProxy dataProxy) {
         super(eventBus, view, proxy);
         getView().setUiHandlers(this);
 
         this.placeManager = placeManager;
         this.dispatcher = dispatcher;
+        this.dataProxy = dataProxy;
         
     }
     
@@ -119,17 +124,9 @@ public class MainPagePresenter
     public void onStormit() {
         getView().addToMCECollection(getView().getUriText(),getView().getTagsText());
         
-        MCEDto aMce = new MCEDto();
-        dispatcher.execute(new SendMceToServer(aMce),
-                new AsyncCallback<SendMceToServerResult>() {
-                  @Override
-                  public void onFailure(Throwable caught) {
-                  }
-
-                  @Override
-                  public void onSuccess(SendMceToServerResult result) {
-                  }
-                });
+        MceDto aMce = new MceDto();
+        dataProxy.storeMce(aMce);
+        dataProxy.getMceList(0, 100);
     }
 
     ///////////////////////////////////////////////////////////////////////////

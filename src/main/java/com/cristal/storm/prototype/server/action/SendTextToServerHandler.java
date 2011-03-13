@@ -14,11 +14,11 @@
  * the License.
  */
 
-package com.cristal.storm.prototype.server.guice;
+package com.cristal.storm.prototype.server.action;
 
 import com.cristal.storm.prototype.shared.FieldVerifier;
-import com.cristal.storm.prototype.shared.SendTextToServer;
-import com.cristal.storm.prototype.shared.SendTextToServerResult;
+import com.cristal.storm.prototype.shared.action.SendTextToServer;
+import com.cristal.storm.prototype.shared.action.SendTextToServerResult;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 

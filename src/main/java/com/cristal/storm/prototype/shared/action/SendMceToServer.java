@@ -1,9 +1,9 @@
 /**
  * 
  */
-package com.cristal.storm.prototype.shared;
+package com.cristal.storm.prototype.shared.action;
 
-import com.cristal.storm.prototype.shared.domain.MCEDto;
+import com.cristal.storm.prototype.shared.domain.MceDto;
 import com.gwtplatform.dispatch.shared.UnsecuredActionImpl;
 
 /**
@@ -15,9 +15,9 @@ public class SendMceToServer extends
 
     private static final long serialVersionUID = 4621412923270714515L;
 
-    private MCEDto mce;
+    private MceDto mce;
 
-    public SendMceToServer(final MCEDto mce) {
+    public SendMceToServer(final MceDto mce) {
         this.mce = mce;
     }
 
@@ -28,7 +28,7 @@ public class SendMceToServer extends
     private SendMceToServer() {
     }
 
-    public MCEDto getMceToServer() {
+    public MceDto getMceToServer() {
         return mce;
     }
 }

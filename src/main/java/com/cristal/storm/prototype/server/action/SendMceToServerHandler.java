@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cristal.storm.prototype.server.guice;
+package com.cristal.storm.prototype.server.action;
 
 import java.util.Date;
 
@@ -13,11 +13,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cristal.storm.prototype.server.domain.MCE;
 import com.cristal.storm.prototype.shared.FieldVerifier;
-import com.cristal.storm.prototype.shared.SendMceToServer;
-import com.cristal.storm.prototype.shared.SendMceToServerResult;
-import com.cristal.storm.prototype.shared.SendTextToServer;
-import com.cristal.storm.prototype.shared.SendTextToServerResult;
-import com.cristal.storm.prototype.shared.domain.MCEDto;
+import com.cristal.storm.prototype.shared.action.SendMceToServer;
+import com.cristal.storm.prototype.shared.action.SendMceToServerResult;
+import com.cristal.storm.prototype.shared.action.SendTextToServer;
+import com.cristal.storm.prototype.shared.action.SendTextToServerResult;
+import com.cristal.storm.prototype.shared.domain.MceDto;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.dispatch.server.ExecutionContext;
@@ -33,8 +33,6 @@ public class SendMceToServerHandler implements
 
     private Provider<HttpServletRequest> requestProvider;
     private ServletContext servletContext;
-    
-    private static ApplicationContext appContext = new ClassPathXmlApplicationContext("classpath*:META-INF/spring/applicationContext*.xml");
 
     @Inject
     SendMceToServerHandler(ServletContext servletContext,
@@ -63,7 +61,7 @@ public class SendMceToServerHandler implements
         }
         
         
-        return new SendMceToServerResult(new MCEDto());
+        return new SendMceToServerResult(new MceDto());
     }
 
     @Override

@@ -17,8 +17,8 @@
 package com.cristal.storm.prototype.client;
 
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
-import com.cristal.storm.prototype.shared.SendTextToServer;
-import com.cristal.storm.prototype.shared.SendTextToServerResult;
+import com.cristal.storm.prototype.shared.action.SendTextToServer;
+import com.cristal.storm.prototype.shared.action.SendTextToServerResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
