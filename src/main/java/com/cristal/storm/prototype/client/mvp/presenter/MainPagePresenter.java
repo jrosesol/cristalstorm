@@ -80,9 +80,9 @@ public class MainPagePresenter
 
 		public String getTagsText();
 
-		public void addToMCECollection(String uriText, String tagsText);
-
-		public void tagCollectionFilter(String filter);
+//		public void addToMCECollection(String uriText, String tagsText);
+//
+//		public void tagCollectionFilter(String filter);
 	}
 	
     ///////////////////////////////////////////////////////////////////////////
@@ -93,10 +93,11 @@ public class MainPagePresenter
             final MainPageViewInterface view,
             final MainPageProxy proxy, final PlaceManager placeManager,
             final DispatchAsync dispatcher,
-            final DataStoreProxy dataProxy) {
+            final DataStoreProxy dataProxy,
+            MceCollectionWidgetPresenter collectionWidget) {
         super(eventBus, view, proxy);
         getView().setUiHandlers(this);
-
+        
         this.placeManager = placeManager;
         this.dispatcher = dispatcher;
         this.dataProxy = dataProxy;
@@ -122,7 +123,7 @@ public class MainPagePresenter
 
     @Override
     public void onStormit() {
-        getView().addToMCECollection(getView().getUriText(),getView().getTagsText());
+        //getView().addToMCECollection(getView().getUriText(),getView().getTagsText());
         
         MceDto aMce = new MceDto();
         dataProxy.storeMce(aMce);

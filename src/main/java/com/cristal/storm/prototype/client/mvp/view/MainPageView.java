@@ -76,19 +76,13 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 	@UiField
 	public TextBox tagsText;
 
-	@UiField(provided = true)
-	public DragAndDropCellList<MCE> mceCollectionDraggable;
+	@UiField
+	public MceCollectionWidgetView mceCollection;
 
 	@UiField
 	public AbsolutePanel centerAbsPanel;
 
 	private Widget widget;
-
-	private List<MCE> mceListVisible;
-
-	private SelectionModel<MCE> mceSelectionModel;
-
-	private static Resources DEFAULT_RESOURCES = GWT.create(Resources.class);
 
 	interface MainPageViewUiBinder extends UiBinder<Widget, MainPageView> {
 		Widget createAndBindUi(MainPageView mainPageView);
@@ -96,58 +90,10 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 
 	@Inject
 	public MainPageView() {
-		MCECell.Images images = GWT.create(MCECell.Images.class);
-
-		MCECell textCell = new MCECell(images.icon());
-
-		ProvidesKey<MCE> keyProvider = new ProvidesKey<MCE>() {
-			public Object getKey(MCE item) {
-				// Always do a null check.
-				return (item == null) ? null : item.getURI();
-			}
-		};
-
-		mceCollectionDraggable = new DragAndDropCellList<MCE>(textCell,
-				DEFAULT_RESOURCES, keyProvider);
-
-		mceSelectionModel = new SingleSelectionModel<MCE>(keyProvider);
-		mceCollectionDraggable.setSelectionModel(mceSelectionModel);
-
-		// mceCollectionDraggable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+	    
+	    mceCollection = new MceCollectionWidgetView();
 
 		widget = uiBinder.createAndBindUi(this);
-
-		HorizontalPanel horzPanel = new HorizontalPanel();
-
-		// Push the data into the widget.
-
-		// TODO Remove this hardcoded definition of tags
-		Set<String> mcetags1 = new TreeSet<String>();
-		mcetags1.add("search");
-		mcetags1.add("mail");
-		mcetags1.add("travel");
-
-		// TODO Remove this hardcoded definition of MCE
-		MCE mce = new MCE("kayak.com", mcetags1);
-		// MCE mce3 = new MCE("kayak.com", mcetags2);
-		mceListVisible = new Vector<MCE>();
-		mceListVisible.add(mce);
-		mceCollectionDraggable.setRowData(0, mceListVisible);
-		mceSelectionModel.setSelected(mce, true);
-
-		// The cell of this CellList are only draggable
-		mceCollectionDraggable.setCellDraggableOnly();
-
-		// setup the drag operation
-		DraggableOptions options = new DraggableOptions();
-		// use a clone of the original cell as drag helper
-		options.setHelper(HelperType.CLONE);
-		// set the opacity of the drag helper
-		options.setOpacity((float) 0.9);
-		// append the drag helper to the body element
-		options.setAppendTo("body");
-		// configure the drag operations of the cell list with this options
-		mceCollectionDraggable.setDraggableOptions(options);
 
 		/**
 		 * Create a droppable CellList
@@ -191,10 +137,7 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 			}
 		});
 
-		horzPanel.add(droppablePanel);
-
-		centerAbsPanel.add(horzPanel);
-
+		centerAbsPanel.add(droppablePanel);
 	}
 
 	@Override
@@ -219,49 +162,49 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 		return tagsText.getText();
 	}
 
-	/**
-	 * The function adds an MCE to the MCE Collection. Tags are tokenized: we
-	 * assume a tag is succession of alphanum chars, a dash or an underscore
-	 * 
-	 * @param uriText
-	 * @param tagsText
-	 */
-	@Override
-	public void addToMCECollection(String uriText, String tagsText) {
-		RegExp regExp = RegExp.compile("([A-Za-z0-9_\\-]+)");
-		SplitResult split = regExp.split(tagsText.toLowerCase());
-		Set<String> tags = new TreeSet<String>();
-		for (int i = 0; i < split.length(); i++) {
-			if (!split.get(i).isEmpty()) {
-				tags.add(split.get(i));
-			}
-		}
-
-		MCE mce = new MCE(uriText, tags);
-		int mceIndex = ((Vector<MCE>) mceListVisible).indexOf(mce);
-
-		// On verifie si le MCE (identifie par son URI) est deja present
-		if (mceIndex >= 0) {
-			MCE existingMCE = mceListVisible.get(mceIndex);
-			if (!existingMCE.getTags().equals(mce.getTags())) {
-				existingMCE.setTags(tags);
-			}
-		} else {
-			mceListVisible.add(mce);
-		}
-		mceCollectionDraggable.setRowData(mceListVisible);
-		mceSelectionModel.setSelected(mce, true);
-	}
-
-	@Override
-	public void tagCollectionFilter(final String filter) {
-		// TODO Algorithm to filter the MCE
-		// Tokenize tags
-		RegExp regExp = RegExp.compile(filter);
-		for (MCE mce : mceListVisible) {
-			if (regExp.test(mce.getTags())) {
-			}
-		}
-		mceCollectionDraggable.setRowData(mceListVisible);
-	}
+//	/**
+//	 * The function adds an MCE to the MCE Collection. Tags are tokenized: we
+//	 * assume a tag is succession of alphanum chars, a dash or an underscore
+//	 * 
+//	 * @param uriText
+//	 * @param tagsText
+//	 */
+//	@Override
+//	public void addToMCECollection(String uriText, String tagsText) {
+//		RegExp regExp = RegExp.compile("([A-Za-z0-9_\\-]+)");
+//		SplitResult split = regExp.split(tagsText.toLowerCase());
+//		Set<String> tags = new TreeSet<String>();
+//		for (int i = 0; i < split.length(); i++) {
+//			if (!split.get(i).isEmpty()) {
+//				tags.add(split.get(i));
+//			}
+//		}
+//
+//		MCE mce = new MCE(uriText, tags);
+//		int mceIndex = ((Vector<MCE>) mceListVisible).indexOf(mce);
+//
+//		// On verifie si le MCE (identifie par son URI) est deja present
+//		if (mceIndex >= 0) {
+//			MCE existingMCE = mceListVisible.get(mceIndex);
+//			if (!existingMCE.getTags().equals(mce.getTags())) {
+//				existingMCE.setTags(tags);
+//			}
+//		} else {
+//			mceListVisible.add(mce);
+//		}
+//		mceCollectionDraggable.setRowData(mceListVisible);
+//		mceSelectionModel.setSelected(mce, true);
+//	}
+//
+//	@Override
+//	public void tagCollectionFilter(final String filter) {
+//		// TODO Algorithm to filter the MCE
+//		// Tokenize tags
+//		RegExp regExp = RegExp.compile(filter);
+//		for (MCE mce : mceListVisible) {
+//			if (regExp.test(mce.getTags())) {
+//			}
+//		}
+//		mceCollectionDraggable.setRowData(mceListVisible);
+//	}
 }

@@ -21,7 +21,9 @@ import com.cristal.storm.prototype.client.ResponseView;
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.controller.MyPlaceManager;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.MceCollectionWidgetPresenter;
 import com.cristal.storm.prototype.client.mvp.view.MainPageView;
+import com.cristal.storm.prototype.client.mvp.view.MceCollectionWidgetView;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Singleton;
@@ -58,5 +60,11 @@ public class MyModule extends AbstractPresenterModule {
 
     bindPresenter(ResponsePresenter.class, ResponsePresenter.MyView.class,
         ResponseView.class, ResponsePresenter.MyProxy.class);
+    
+    // Presenter widgets
+    bindSingletonPresenterWidget(
+            MceCollectionWidgetPresenter.class,
+            MceCollectionWidgetPresenter.MceCollectionWidgetViewInterface.class,
+            MceCollectionWidgetView.class);
   }
 }

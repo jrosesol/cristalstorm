@@ -7,7 +7,6 @@ import com.google.inject.servlet.ServletModule;
 import com.gwtplatform.dispatch.server.guice.DispatchServiceImpl;
 import com.gwtplatform.dispatch.shared.ActionImpl;
 
-
 /**
  * For more details see: <a href="http://code.google.com/p/google-guice/wiki/Servlets">Guice Servlet</a>
  * 
