@@ -60,8 +60,8 @@ public class SendMceToServerHandler implements
             System.out.print(e.getMessage());
         }
         
-        
-        return new SendMceToServerResult(new MceDto());
+    	//TODO: please handle real stuff
+        return new SendMceToServerResult(new MceDto("youhou","youhou"));
     }
 
     @Override

@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:d="urn:import:gwtquery.plugins.droppable.client.gwt">
-	
-	<d:DragAndDropCellList ui:field="mceCollectionDraggable"></d:DragAndDropCellList>
-	
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:gwtquery.plugins.droppable.client.gwt"
+	xmlns:v="urn:import:com.cristal.storm.prototype.client.mvp.view">
+  <ui:style>
+    .scrollable {
+      height: 400px;
+      width: 250px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+  </ui:style>
+
+	<g:VerticalPanel>
+		<d:DragAndDropCellList ui:field="mceCollectionDraggable"></d:DragAndDropCellList>
+		<v:ShowMorePagerPanel ui:field="pagerPanel"
+			addStyleNames='{style.scrollable}'></v:ShowMorePagerPanel>
+		<v:RangeLabelPager ui:field="rangeLabelPager"></v:RangeLabelPager>
+	</g:VerticalPanel>
 </ui:UiBinder>

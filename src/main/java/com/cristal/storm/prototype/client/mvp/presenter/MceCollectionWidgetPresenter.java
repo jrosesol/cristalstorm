@@ -45,7 +45,7 @@ public class MceCollectionWidgetPresenter extends
      */
     public interface MceCollectionWidgetViewInterface extends View,
             HasUiHandlers<MceCollectionWidgetUiHandlers> {
-        public void addMceToCollection();
+        public void addMceToCollection(String uriText, String tagsText);
     }
 
     ///////////////////////////////////////////////////////////////////////////

@@ -61,7 +61,8 @@ public class GetMceListHandler implements
         List<MCE> mceList = MCE.findMCEEntries(action.getStartIndex(), action.getMaxResults());
         
         for (MCE mce : mceList) {
-            mceDtoList.add(new MceDto());
+        	//TODO: please handle real stuff
+            mceDtoList.add(new MceDto("youhou","youhou"));
         }
         return new GetMceListResult(mceDtoList);
     }

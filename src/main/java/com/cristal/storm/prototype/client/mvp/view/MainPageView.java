@@ -53,6 +53,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
+import com.cristal.storm.prototype.shared.domain.MceDto;
 
 /**
  * @author Philippe Beaudoin
@@ -90,8 +91,8 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 
 	@Inject
 	public MainPageView() {
-	    
-	    mceCollection = new MceCollectionWidgetView();
+
+		mceCollection = new MceCollectionWidgetView();
 
 		widget = uiBinder.createAndBindUi(this);
 
@@ -161,50 +162,4 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 	public String getTagsText() {
 		return tagsText.getText();
 	}
-
-//	/**
-//	 * The function adds an MCE to the MCE Collection. Tags are tokenized: we
-//	 * assume a tag is succession of alphanum chars, a dash or an underscore
-//	 * 
-//	 * @param uriText
-//	 * @param tagsText
-//	 */
-//	@Override
-//	public void addToMCECollection(String uriText, String tagsText) {
-//		RegExp regExp = RegExp.compile("([A-Za-z0-9_\\-]+)");
-//		SplitResult split = regExp.split(tagsText.toLowerCase());
-//		Set<String> tags = new TreeSet<String>();
-//		for (int i = 0; i < split.length(); i++) {
-//			if (!split.get(i).isEmpty()) {
-//				tags.add(split.get(i));
-//			}
-//		}
-//
-//		MCE mce = new MCE(uriText, tags);
-//		int mceIndex = ((Vector<MCE>) mceListVisible).indexOf(mce);
-//
-//		// On verifie si le MCE (identifie par son URI) est deja present
-//		if (mceIndex >= 0) {
-//			MCE existingMCE = mceListVisible.get(mceIndex);
-//			if (!existingMCE.getTags().equals(mce.getTags())) {
-//				existingMCE.setTags(tags);
-//			}
-//		} else {
-//			mceListVisible.add(mce);
-//		}
-//		mceCollectionDraggable.setRowData(mceListVisible);
-//		mceSelectionModel.setSelected(mce, true);
-//	}
-//
-//	@Override
-//	public void tagCollectionFilter(final String filter) {
-//		// TODO Algorithm to filter the MCE
-//		// Tokenize tags
-//		RegExp regExp = RegExp.compile(filter);
-//		for (MCE mce : mceListVisible) {
-//			if (regExp.test(mce.getTags())) {
-//			}
-//		}
-//		mceCollectionDraggable.setRowData(mceListVisible);
-//	}
 }
