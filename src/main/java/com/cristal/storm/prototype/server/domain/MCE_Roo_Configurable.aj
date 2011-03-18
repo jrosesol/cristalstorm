@@ -7,6 +7,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 
 privileged aspect MCE_Roo_Configurable {
     
-    declare @type: MCE: @Configurable;
+    declare @type: MceDto: @Configurable;
     
 }

@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 privileged aspect MCE_Roo_Entity {
     
-    declare @type: MCE: @Entity;
+    declare @type: MceDto: @Entity;
     
     @PersistenceContext
     transient EntityManager MCE.entityManager;

@@ -3,8 +3,6 @@
  */
 package com.cristal.storm.prototype.client.controller;
 
-import java.util.List;
-
 import com.cristal.storm.prototype.shared.action.GetMceListAction;
 import com.cristal.storm.prototype.shared.action.GetMceListResult;
 import com.cristal.storm.prototype.shared.action.SendMceToServer;

@@ -1,5 +1,6 @@
 package com.cristal.storm.prototype.client.mvp.view;
 
+import com.cristal.storm.prototype.shared.domain.MceDto;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
@@ -7,11 +8,11 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 /**
- * The Cell used to render a {@link MCE}.
+ * The Cell used to render a {@link MceDto}.
  */
-public class MCECell extends AbstractCell<MCE> {
+public class MceCell extends AbstractCell<MceDto> {
 
-  public MCE mce;
+  public MceDto mce;
 
   /**
    * The images used for this example.
@@ -25,12 +26,12 @@ public class MCECell extends AbstractCell<MCE> {
    */
   private final String imageHtml;
 
-  public MCECell(ImageResource image) {
+  public MceCell(ImageResource image) {
     this.imageHtml = AbstractImagePrototype.create(image).getHTML();
   }
 
   @Override
-  public void render(Context context, MCE value, SafeHtmlBuilder sb) {
+  public void render(Context context, MceDto value, SafeHtmlBuilder sb) {
     // Value can be null, so do a null check..
     if (value == null) {
       return;
