@@ -57,7 +57,7 @@ public class MainPagePresenter
 	private final DispatchAsync dispatcher;
 	
 	private final DataStoreProxy dataProxy;
-
+	
 	// /////////////////////////////////////////////////////////////////////////
 	// Interfaces
 	// /////////////////////////////////////////////////////////////////////////
@@ -124,8 +124,9 @@ public class MainPagePresenter
     @Override
     public void onStormit() {
         //getView().addToMCECollection(getView().getUriText(),getView().getTagsText());
-        
-        MceDto aMce = new MceDto();
+
+    	//TODO: please handle real stuff
+        MceDto aMce = new MceDto("youhou","youhou");
         dataProxy.storeMce(aMce);
         dataProxy.getMceList(0, 100);
     }

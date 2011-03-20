@@ -22,7 +22,12 @@ import gwtquery.plugins.droppable.client.gwt.DragAndDropCellList;
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
 import com.cristal.storm.prototype.client.mvp.presenter.MceCollectionWidgetPresenter.MceCollectionWidgetViewInterface;
+import com.cristal.storm.prototype.shared.domain.MceDto;
+import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.regexp.shared.SplitResult;
 import com.google.gwt.user.cellview.client.CellList.Resources;
+import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -58,15 +63,25 @@ public class MceCollectionWidgetView extends Composite implements
      * @UiField annotaded vars. can be used here from your ui.xml template
      */
     @UiField(provided = true)
-    DragAndDropCellList<MCE> mceCollectionDraggable;
+    DragAndDropCellList<MceDto> mceCollectionDraggable;
+    
+    @UiField
+    ShowMorePagerPanel pagerPanel;
+    
+    /**
+     * The pager used to display the current range.
+     */
+    @UiField
+    RangeLabelPager rangeLabelPager;
 
     private final Widget widget;
     
     private static Resources DEFAULT_RESOURCES = GWT.create(Resources.class);
     
-    private List<MCE> mceListVisible;
+    private List<MceDto> mceListVisible;
 
-    private SelectionModel<MCE> mceSelectionModel;
+    private SelectionModel<MceDto> mceSelectionModel;
+    
 
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -81,45 +96,48 @@ public class MceCollectionWidgetView extends Composite implements
     ///////////////////////////////////////////////////////////////////////////
     @Inject
     public MceCollectionWidgetView() {
-        MCECell.Images images = GWT.create(MCECell.Images.class);
-        MCECell textCell = new MCECell(images.icon());
+        MceCell.Images images = GWT.create(MceCell.Images.class);
+        MceCell textCell = new MceCell(images.icon());
         
-        ProvidesKey<MCE> keyProvider = new ProvidesKey<MCE>() {
-            public Object getKey(MCE item) {
+        ProvidesKey<MceDto> keyProvider = new ProvidesKey<MceDto>() {
+            public Object getKey(MceDto item) {
                 // Always do a null check.
                 return (item == null) ? null : item.getURI();
             }
         };
         
-        mceCollectionDraggable = new DragAndDropCellList<MCE>(textCell, DEFAULT_RESOURCES, keyProvider);
-        mceSelectionModel = new SingleSelectionModel<MCE>(keyProvider);
+        mceCollectionDraggable = new DragAndDropCellList<MceDto>(textCell, DEFAULT_RESOURCES, keyProvider);
+        mceSelectionModel = new SingleSelectionModel<MceDto>(keyProvider);
         
         widget = uiBinder.createAndBindUi(this);
         initWidget(widget);
         
         setupWidget();
+        
     }
     
     private void setupWidget() {
-
-        
         mceCollectionDraggable.setSelectionModel(mceSelectionModel);
-
+        mceCollectionDraggable.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
+        mceCollectionDraggable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
+        mceCollectionDraggable.setSelectionModel(mceSelectionModel);
         // mceCollectionDraggable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
-
+        //create a pager using the mceCollectionDraggable
 
         // TODO Remove this hardcoded definition of tags
-        Set<String> mcetags1 = new TreeSet<String>();
-        mcetags1.add("search");
-        mcetags1.add("mail");
-        mcetags1.add("travel");
+        String mcetags1 = "search mail travel";
 
         // TODO Remove this hardcoded definition of MCE
-        MCE mce = new MCE("kayak.com", mcetags1);
-        // MCE mce3 = new MCE("kayak.com", mcetags2);
-        mceListVisible = new Vector<MCE>();
+        MceDto mce = new MceDto("kayak.com", mcetags1);
+        
+        mceListVisible = new Vector<MceDto>();
         mceListVisible.add(mce);
-        mceCollectionDraggable.setRowData(0, mceListVisible);
+
+        for (int i = 0; i < 15; i++) {
+        	MceDto mceDuplicate = new MceDto("perdu.com"+i, mcetags1);
+			mceListVisible.add(mceDuplicate);
+		}
+		mceCollectionDraggable.setRowData(0, mceListVisible);
         mceSelectionModel.setSelected(mce, true);
 
         // The cell of this CellList are only draggable
@@ -135,6 +153,11 @@ public class MceCollectionWidgetView extends Composite implements
         options.setAppendTo("body");
         // configure the drag operations of the cell list with this options
         mceCollectionDraggable.setDraggableOptions(options);
+        
+        //Setup a scroll
+        mceCollectionDraggable.setPageSize(30);
+        pagerPanel.setDisplay(mceCollectionDraggable);
+        rangeLabelPager.setDisplay(mceCollectionDraggable);
 
     }
 
@@ -146,15 +169,34 @@ public class MceCollectionWidgetView extends Composite implements
         return widget;
     }
 
-    @Override
-    public void addMceToCollection() {
-        // TODO Auto-generated method stub
-        
-    }
+    
+    /**
+	 * The function adds an MCE to the MCE Collection. Tags are tokenized: we
+	 * assume a tag is succession of alphanum chars, a dash or an underscore
+	 * 
+	 * @param uriText
+	 * @param tagsText
+	 */
+	@Override
+	public void addMceToCollection(String uriText, String tagsText) {
+		RegExp regExp = RegExp.compile("([A-Za-z0-9_\\-]+)");
+		SplitResult split = regExp.split(tagsText.toLowerCase());
+		StringBuffer tags = new StringBuffer();
+		for (int i = 0; i < split.length(); i++) {
+			if (!split.get(i).isEmpty()) {
+				tags.append(split.get(i));
+			}
+		}
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Functions
-    ///////////////////////////////////////////////////////////////////////////
+		MceDto mce = new MceDto(uriText, tags.toString());
+		mceListVisible.add(mce);
+		mceCollectionDraggable.setRowData(mceListVisible);
+		mceSelectionModel.setSelected(mce, true);
+	}
+
+	// /////////////////////////////////////////////////////////////////////////
+	// Functions
+	// /////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////
     // Get / Set
