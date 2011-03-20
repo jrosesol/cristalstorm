@@ -126,9 +126,9 @@ public class MainPagePresenter
         //getView().addToMCECollection(getView().getUriText(),getView().getTagsText());
 
     	//TODO: please handle real stuff
-        MceDto aMce = new MceDto("youhou","youhou");
+        MceDto aMce = new MceDto();
         dataProxy.storeMce(aMce);
-        dataProxy.getMceList(0, 100);
+        //dataProxy.getMceList(0, 100);
     }
 
     ///////////////////////////////////////////////////////////////////////////

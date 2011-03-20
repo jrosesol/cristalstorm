@@ -15,10 +15,6 @@ import com.gwtplatform.dispatch.shared.ActionImpl;
  */
 public class DispatchServletModule extends ServletModule {
 
-    // Add spring context to initialize the Entity persistence framework
-    private static ApplicationContext appContext = new ClassPathXmlApplicationContext(
-    "classpath*:META-INF/spring/applicationContext*.xml");
-
     @Override
     public void configureServlets() {
         serve("/" + ActionImpl.DEFAULT_SERVICE_NAME)

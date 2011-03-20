@@ -4,6 +4,8 @@
 package com.cristal.storm.prototype.server.action;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cristal.storm.prototype.server.domain.MCE;
+import com.cristal.storm.prototype.server.domain.Tag;
 import com.cristal.storm.prototype.shared.FieldVerifier;
 import com.cristal.storm.prototype.shared.action.SendMceToServer;
 import com.cristal.storm.prototype.shared.action.SendMceToServerResult;
@@ -33,7 +36,7 @@ public class SendMceToServerHandler implements
 
     private Provider<HttpServletRequest> requestProvider;
     private ServletContext servletContext;
-
+    
     @Inject
     SendMceToServerHandler(ServletContext servletContext,
             Provider<HttpServletRequest> requestProvider) {
@@ -47,12 +50,18 @@ public class SendMceToServerHandler implements
         
         Date timeStamp = new Date();
         MCE aNewMce = new MCE();
-        aNewMce.setId((long) 1);
-        aNewMce.setTag("tag");
-        aNewMce.setUri("uri");
-        aNewMce.setCreated(timeStamp);
+        
+        Tag newTag = new Tag();
+        newTag.setTag("tag");
+        
+        Set<Tag> newTagSet = new HashSet<Tag>();
+        newTagSet.add(newTag);
         
         try {
+            aNewMce.setId((long) 1);
+            aNewMce.setTag(newTagSet);
+            aNewMce.setUri("uri");
+            aNewMce.setCreated(timeStamp);
             aNewMce.persist();
             System.out.print("MCE Persisted!!!");
         }
@@ -61,7 +70,7 @@ public class SendMceToServerHandler implements
         }
         
     	//TODO: please handle real stuff
-        return new SendMceToServerResult(new MceDto("youhou","youhou"));
+        return new SendMceToServerResult(new MceDto());
     }
 
     @Override

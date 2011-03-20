@@ -3,7 +3,7 @@
 
 package com.cristal.storm.prototype.server.domain;
 
-import com.cristal.storm.prototype.server.domain.MCE;
+import com.cristal.storm.prototype.server.domain.Tag;
 import java.lang.Integer;
 import java.lang.Long;
 import java.lang.SuppressWarnings;
@@ -18,98 +18,98 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import org.springframework.transaction.annotation.Transactional;
 
-privileged aspect MCE_Roo_Entity {
+privileged aspect Tag_Roo_Entity {
     
-    declare @type: MCE: @Entity;
+    declare @type: Tag: @Entity;
     
     @PersistenceContext
-    transient EntityManager MCE.entityManager;
+    transient EntityManager Tag.entityManager;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long MCE.id;
+    private Long Tag.id;
     
     @Version
     @Column(name = "version")
-    private Integer MCE.version;
+    private Integer Tag.version;
     
-    public Long MCE.getId() {
+    public Long Tag.getId() {
         return this.id;
     }
     
-    public void MCE.setId(Long id) {
+    public void Tag.setId(Long id) {
         this.id = id;
     }
     
-    public Integer MCE.getVersion() {
+    public Integer Tag.getVersion() {
         return this.version;
     }
     
-    public void MCE.setVersion(Integer version) {
+    public void Tag.setVersion(Integer version) {
         this.version = version;
     }
     
     @Transactional
-    public void MCE.persist() {
+    public void Tag.persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
     }
     
     @Transactional
-    public void MCE.remove() {
+    public void Tag.remove() {
         if (this.entityManager == null) this.entityManager = entityManager();
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            MCE attached = MCE.findMCE(this.id);
+            Tag attached = Tag.findTag(this.id);
             this.entityManager.remove(attached);
         }
     }
     
     @Transactional
-    public void MCE.flush() {
+    public void Tag.flush() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.flush();
     }
     
     @Transactional
-    public void MCE.clear() {
+    public void Tag.clear() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.clear();
     }
     
     @Transactional
-    public MCE MCE.merge() {
+    public Tag Tag.merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
-        MCE merged = this.entityManager.merge(this);
+        Tag merged = this.entityManager.merge(this);
         this.entityManager.flush();
         return merged;
     }
     
-    public static final EntityManager MCE.entityManager() {
-        EntityManager em = new MCE().entityManager;
+    public static final EntityManager Tag.entityManager() {
+        EntityManager em = new Tag().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
     
-    public static long MCE.countMCES() {
-        return ((Number) entityManager().createQuery("select count(o) from MCE o").getSingleResult()).longValue();
+    public static long Tag.countTags() {
+        return ((Number) entityManager().createQuery("select count(o) from Tag o").getSingleResult()).longValue();
     }
     
     @SuppressWarnings("unchecked")
-    public static List<MCE> MCE.findAllMCES() {
-        return entityManager().createQuery("select o from MCE o").getResultList();
+    public static List<Tag> Tag.findAllTags() {
+        return entityManager().createQuery("select o from Tag o").getResultList();
     }
     
-    public static MCE MCE.findMCE(Long id) {
+    public static Tag Tag.findTag(Long id) {
         if (id == null) return null;
-        return entityManager().find(MCE.class, id);
+        return entityManager().find(Tag.class, id);
     }
     
     @SuppressWarnings("unchecked")
-    public static List<MCE> MCE.findMCEEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("select o from MCE o").setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+    public static List<Tag> Tag.findTagEntries(int firstResult, int maxResults) {
+        return entityManager().createQuery("select o from Tag o").setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
     
 }

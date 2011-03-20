@@ -3,10 +3,16 @@
 
 package com.cristal.storm.prototype.server.domain;
 
-import org.springframework.beans.factory.annotation.Configurable;
+import java.lang.String;
 
-privileged aspect MCE_Roo_Configurable {
+privileged aspect Tag_Roo_JavaBean {
     
-    declare @type: MCE: @Configurable;
+    public String Tag.getTag() {
+        return this.tag;
+    }
+    
+    public void Tag.setTag(String tag) {
+        this.tag = tag;
+    }
     
 }

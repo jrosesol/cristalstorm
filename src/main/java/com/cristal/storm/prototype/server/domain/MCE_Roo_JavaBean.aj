@@ -3,8 +3,10 @@
 
 package com.cristal.storm.prototype.server.domain;
 
+import com.cristal.storm.prototype.server.domain.Tag;
 import java.lang.String;
 import java.util.Date;
+import java.util.Set;
 
 privileged aspect MCE_Roo_JavaBean {
     
@@ -16,11 +18,11 @@ privileged aspect MCE_Roo_JavaBean {
         this.uri = uri;
     }
     
-    public String MCE.getTag() {
+    public Set<Tag> MCE.getTag() {
         return this.tag;
     }
     
-    public void MCE.setTag(String tag) {
+    public void MCE.setTag(Set<Tag> tag) {
         this.tag = tag;
     }
     

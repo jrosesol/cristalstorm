@@ -102,7 +102,7 @@ public class MceCollectionWidgetView extends Composite implements
         ProvidesKey<MceDto> keyProvider = new ProvidesKey<MceDto>() {
             public Object getKey(MceDto item) {
                 // Always do a null check.
-                return (item == null) ? null : item.getURI();
+                return (item == null) ? null : item.uri;
             }
         };
         
@@ -128,13 +128,17 @@ public class MceCollectionWidgetView extends Composite implements
         String mcetags1 = "search mail travel";
 
         // TODO Remove this hardcoded definition of MCE
-        MceDto mce = new MceDto("kayak.com", mcetags1);
+        MceDto mce = new MceDto();
+        mce.uri = "kayak.com";
+        mce.tag = mcetags1;
         
         mceListVisible = new Vector<MceDto>();
         mceListVisible.add(mce);
 
         for (int i = 0; i < 15; i++) {
-        	MceDto mceDuplicate = new MceDto("perdu.com"+i, mcetags1);
+        	MceDto mceDuplicate = new MceDto();
+            mce.uri = "perdu.com"+i;
+            mce.tag = mcetags1;
 			mceListVisible.add(mceDuplicate);
 		}
 		mceCollectionDraggable.setRowData(0, mceListVisible);
@@ -188,7 +192,9 @@ public class MceCollectionWidgetView extends Composite implements
 			}
 		}
 
-		MceDto mce = new MceDto(uriText, tags.toString());
+		MceDto mce = new MceDto();
+        mce.uri = uriText;
+        mce.tag = tags.toString();
 		mceListVisible.add(mce);
 		mceCollectionDraggable.setRowData(mceListVisible);
 		mceSelectionModel.setSelected(mce, true);

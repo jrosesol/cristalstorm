@@ -62,7 +62,7 @@ public class GetMceListHandler implements
         
         for (MCE mce : mceList) {
         	//TODO: please handle real stuff
-            mceDtoList.add(new MceDto("youhou","youhou"));
+            mceDtoList.add(new MceDto());
         }
         return new GetMceListResult(mceDtoList);
     }

@@ -5,13 +5,11 @@ package com.cristal.storm.prototype.server.domain;
 
 import java.lang.String;
 
-privileged aspect MCE_Roo_ToString {
+privileged aspect Tag_Roo_ToString {
     
-    public String MCE.toString() {
+    public String Tag.toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Uri: ").append(getUri()).append(", ");
-        sb.append("Tag: ").append(getTag() == null ? "null" : getTag().size()).append(", ");
-        sb.append("Created: ").append(getCreated());
+        sb.append("Tag: ").append(getTag());
         return sb.toString();
     }
     
