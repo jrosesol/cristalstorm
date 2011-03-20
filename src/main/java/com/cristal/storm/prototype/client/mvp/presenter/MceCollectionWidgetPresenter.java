@@ -52,8 +52,9 @@ public class MceCollectionWidgetPresenter extends
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     @Inject
-    public MceCollectionWidgetPresenter(EventBus eventBus, MceCollectionWidgetViewInterface view,
-            PlaceManager placeManager, DispatchAsync dispatcher) {
+    public MceCollectionWidgetPresenter(EventBus eventBus,
+            MceCollectionWidgetViewInterface view, PlaceManager placeManager,
+            DispatchAsync dispatcher) {
         super(eventBus, view);
         getView().setUiHandlers(this);
     }

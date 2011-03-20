@@ -5,11 +5,15 @@ package com.cristal.storm.prototype.client.controller;
 
 import java.util.List;
 
+import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.shared.action.GetMceListAction;
 import com.cristal.storm.prototype.shared.action.GetMceListResult;
 import com.cristal.storm.prototype.shared.action.SendMceToServer;
 import com.cristal.storm.prototype.shared.action.SendMceToServerResult;
 import com.cristal.storm.prototype.shared.domain.MceDto;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.client.DispatchAsync;
@@ -18,11 +22,13 @@ import com.gwtplatform.dispatch.client.DispatchAsync;
  * @author Admin
  * 
  */
-public class DataStoreProxy {
+public class DataStoreProxy implements HasHandlers {
     // /////////////////////////////////////////////////////////////////////////
     // Members
     // /////////////////////////////////////////////////////////////////////////
-    final DispatchAsync dispatcher;
+    private final DispatchAsync dispatcher;
+    
+    private final EventBus eventBus;
 
     // /////////////////////////////////////////////////////////////////////////
     // Constructors
@@ -31,10 +37,11 @@ public class DataStoreProxy {
      * 
      */
     @Inject
-    public DataStoreProxy(final DispatchAsync dispatcher) {
+    public DataStoreProxy(final DispatchAsync dispatcher, final EventBus eventBus) {
         this.dispatcher = dispatcher;
+        this.eventBus = eventBus;
     }
-
+    
     // /////////////////////////////////////////////////////////////////////////
     // Handlers
     // /////////////////////////////////////////////////////////////////////////
@@ -57,7 +64,7 @@ public class DataStoreProxy {
                     }
                 });
     }
-    
+
     public void getMceList(int firstResult, int maxResults) {
         dispatcher.execute(new GetMceListAction(firstResult, maxResults),
                 new AsyncCallback<GetMceListResult>() {
@@ -71,9 +78,15 @@ public class DataStoreProxy {
                         System.out.print("MCE get list succeeded");
                         if (result.getMceDtoList().size() > 0) {
                             System.out.print("# or results: " + result.getMceDtoList().size());
+                            UpdateDataBindedObjectsEvent.fire(null);
                         }
                     }
                 });   
+    }
+
+    @Override
+    public void fireEvent(GwtEvent<?> event) {
+        eventBus.fireEvent(event);
     }
 
     // /////////////////////////////////////////////////////////////////////////
