@@ -10,9 +10,11 @@ import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.server.domain.MCE;
 import com.cristal.storm.prototype.server.domain.Tag;
 import com.cristal.storm.prototype.shared.FieldVerifier;
@@ -35,7 +37,10 @@ public class SendMceToServerHandler implements
         ActionHandler<SendMceToServer, SendMceToServerResult> {
 
     private Provider<HttpServletRequest> requestProvider;
-    private ServletContext servletContext;
+    private ServletContext servletContext;    
+
+    // Define a static logger variable so that it references the Logger
+    static Logger logger = Logger.getLogger(DataStoreProxy.class);
     
     @Inject
     SendMceToServerHandler(ServletContext servletContext,
@@ -63,7 +68,7 @@ public class SendMceToServerHandler implements
             aNewMce.setUri("uri");
             aNewMce.setCreated(timeStamp);
             aNewMce.persist();
-            System.out.print("MCE Persisted!!!");
+            logger.info("MCE Persisted!!!");
         }
         catch (Exception e) {
             System.out.print(e.getMessage());

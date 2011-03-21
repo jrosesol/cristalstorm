@@ -55,12 +55,13 @@ public class DataStoreProxy implements HasHandlers {
                 new AsyncCallback<SendMceToServerResult>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        System.out.print("MCE stored failed");
+                        System.out.print("MCE stored failed\n");
+                        System.out.print("Cause: " + caught.getMessage() + "\n");
                     }
 
                     @Override
                     public void onSuccess(SendMceToServerResult result) {
-                        System.out.print("MCE store succeeded");
+                        System.out.print("MCE store succeeded\n");
                     }
                 });
     }
@@ -70,7 +71,8 @@ public class DataStoreProxy implements HasHandlers {
                 new AsyncCallback<GetMceListResult>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        System.out.print("MCE get list failed");
+                        System.out.print("MCE get list failed\n");
+                        System.out.print("Cause: " + caught.getMessage() + "\n");
                     }
 
                     @Override
