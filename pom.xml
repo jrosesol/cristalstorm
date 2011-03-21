@@ -604,8 +604,8 @@
 							<content><![CDATA[
                                     eclipse.preferences.version=1
                                     jarsExcludedFromWebInfLib=
-									warSrcDir=src/main/webapp
-									warSrcDirIsOutput=false
+                                    warSrcDir=src/main/webapp
+                                    warSrcDirIsOutput=false
                             ]]></content>
 						</file>
 					</additionalConfig>
