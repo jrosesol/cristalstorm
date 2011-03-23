@@ -3,19 +3,34 @@
  */
 package com.cristal.storm.prototype.shared.domain;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  * @author Admin
  *
  */
-public class MceDto implements IsSerializable {
+public class MceDto implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    public MceDto() {
+    }
+    
+    public MceDto(String uri, String tag) {
+        this.uri = uri;
+        this.tag = new HashSet<String>();
+        this.tag.add(tag);
+    }
+
+    public Long id;
+
     public String uri;
 
-    public String tag;
-
-    public Date created;
+    public Set<String> tag;
 }

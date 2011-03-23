@@ -6,6 +6,7 @@
  */
 package com.cristal.storm.prototype.client.event;
 
+import com.cristal.storm.prototype.shared.domain.MceDto;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
@@ -20,6 +21,8 @@ public class UpdateDataBindedObjectsEvent extends GwtEvent<UpdateDataBindedObjec
     // Members
     ///////////////////////////////////////////////////////////////////////////
     private static final Type<UpdateDataBindedObjectsHandler> TYPE = new Type<UpdateDataBindedObjectsHandler>();
+    
+    private MceDto eventMce; 
 
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -31,7 +34,8 @@ public class UpdateDataBindedObjectsEvent extends GwtEvent<UpdateDataBindedObjec
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
-    public UpdateDataBindedObjectsEvent() {
+    public UpdateDataBindedObjectsEvent(MceDto mceFromEventQueue) {
+        this.eventMce = mceFromEventQueue;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -54,12 +58,15 @@ public class UpdateDataBindedObjectsEvent extends GwtEvent<UpdateDataBindedObjec
         return TYPE;
     }
 
-    public static void fire(HasHandlers source) {
-        source.fireEvent(new UpdateDataBindedObjectsEvent());
+    public static void fire(HasHandlers source, MceDto mceFromEventQueue) {
+        source.fireEvent(new UpdateDataBindedObjectsEvent(mceFromEventQueue));
     }
 
     ///////////////////////////////////////////////////////////////////////////
     // Get / Set
     ///////////////////////////////////////////////////////////////////////////
-
+    
+    public MceDto getMceDto() {
+        return eventMce;
+    }
 }

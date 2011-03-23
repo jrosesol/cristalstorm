@@ -29,6 +29,8 @@ public class DataStoreProxy implements HasHandlers {
     private final DispatchAsync dispatcher;
     
     private final EventBus eventBus;
+    
+    private List<MceDto> currentResults; 
 
     // /////////////////////////////////////////////////////////////////////////
     // Constructors
@@ -56,12 +58,15 @@ public class DataStoreProxy implements HasHandlers {
                     @Override
                     public void onFailure(Throwable caught) {
                         System.out.print("MCE stored failed\n");
-                        System.out.print("Cause: " + caught.getMessage() + "\n");
+                        System.out.print("Cause:\n");
+                        caught.printStackTrace();
                     }
 
                     @Override
                     public void onSuccess(SendMceToServerResult result) {
                         System.out.print("MCE store succeeded\n");
+
+                        UpdateDataBindedObjectsEvent.fire(eventBus, result.getResponse());
                     }
                 });
     }
@@ -80,7 +85,10 @@ public class DataStoreProxy implements HasHandlers {
                         System.out.print("MCE get list succeeded");
                         if (result.getMceDtoList().size() > 0) {
                             System.out.print("# or results: " + result.getMceDtoList().size());
-                            UpdateDataBindedObjectsEvent.fire(null);
+                            
+                            // set the current results
+                            currentResults = result.getMceDtoList();
+                            
                         }
                     }
                 });   
@@ -94,4 +102,8 @@ public class DataStoreProxy implements HasHandlers {
     // /////////////////////////////////////////////////////////////////////////
     // Get / Set
     // /////////////////////////////////////////////////////////////////////////
+    
+    public List<MceDto> getCurrentMceList() {
+        return currentResults;
+    }
 }

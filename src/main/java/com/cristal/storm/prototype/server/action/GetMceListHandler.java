@@ -62,7 +62,8 @@ public class GetMceListHandler implements
         
         for (MCE mce : mceList) {
         	//TODO: please handle real stuff
-            mceDtoList.add(new MceDto());
+            MceDto aMce = new MceDto(mce.getUri(), mce.getTag().toString());
+            mceDtoList.add(aMce);
         }
         return new GetMceListResult(mceDtoList);
     }

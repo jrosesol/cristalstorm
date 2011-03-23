@@ -7,3 +7,15 @@ toto*
 caca*
 *.jar
 deploy
+.classpath
+.project
+.settings
+.settings
+.settings
+.settings
+.settings
+.settings
+.settings
+.settings
+target
+

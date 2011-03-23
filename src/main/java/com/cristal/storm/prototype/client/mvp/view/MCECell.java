@@ -29,7 +29,7 @@ public class MceCell extends AbstractCell<MceDto> {
     public MceCell(ImageResource image) {
         this.imageHtml = AbstractImagePrototype.create(image).getHTML();
 
-        mce = new MceDto();
+        mce = new MceDto("1", "2");
     }
 
     @Override
@@ -56,7 +56,9 @@ public class MceCell extends AbstractCell<MceDto> {
         sb.appendHtmlConstant("<td style='font-size:100%;'>");
         sb.appendEscaped(mce.uri);
         sb.appendHtmlConstant("</td></tr><tr><td style='font-size:75%;'>");
-        sb.appendEscaped(mce.tag);
+        for (String tag : mce.tag) {
+            sb.appendEscaped(tag);
+        }
         sb.appendHtmlConstant("</td></tr></table>");
     }
 

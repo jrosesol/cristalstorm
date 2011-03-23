@@ -16,6 +16,8 @@
 
 package com.cristal.storm.prototype.client.mvp.presenter;
 
+import java.util.Date;
+
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.mvp.view.MainPageUiHandlers;
 import com.cristal.storm.prototype.shared.action.SendMceToServer;
@@ -126,7 +128,7 @@ public class MainPagePresenter
         //getView().addToMCECollection(getView().getUriText(),getView().getTagsText());
 
     	//TODO: please handle real stuff
-        MceDto aMce = new MceDto();
+        MceDto aMce = (MceDto)(new MceDto(getView().getUriText(), getView().getTagsText()));
         dataProxy.storeMce(aMce);
         //dataProxy.getMceList(0, 100);
     }

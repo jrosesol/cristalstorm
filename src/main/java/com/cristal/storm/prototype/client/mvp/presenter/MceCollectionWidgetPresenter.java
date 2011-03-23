@@ -6,7 +6,11 @@
  */
 package com.cristal.storm.prototype.client.mvp.presenter;
 
+import com.cristal.storm.prototype.client.controller.DataStoreProxy;
+import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
+import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler;
 import com.cristal.storm.prototype.client.mvp.view.MceCollectionWidgetUiHandlers;
+import com.cristal.storm.prototype.shared.domain.MceDto;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.client.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -34,6 +38,7 @@ public class MceCollectionWidgetPresenter extends
     // Members
     ///////////////////////////////////////////////////////////////////////////
 
+    private final DataStoreProxy dataProxy;
     
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -54,9 +59,11 @@ public class MceCollectionWidgetPresenter extends
     @Inject
     public MceCollectionWidgetPresenter(EventBus eventBus,
             MceCollectionWidgetViewInterface view, PlaceManager placeManager,
-            DispatchAsync dispatcher) {
+            DispatchAsync dispatcher, DataStoreProxy dataProxy) {
         super(eventBus, view);
         getView().setUiHandlers(this);
+        
+        this.dataProxy = dataProxy;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -66,7 +73,23 @@ public class MceCollectionWidgetPresenter extends
     ///////////////////////////////////////////////////////////////////////////
     // Overrides
     ///////////////////////////////////////////////////////////////////////////
+    @Override
+    public void onBind() {
+      super.onBind();
+      addRegisteredHandler( UpdateDataBindedObjectsEvent.getType(), new UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler() {
 
+            @Override
+            public void onUpdateDataBindedObjects(UpdateDataBindedObjectsEvent event) {
+                System.out.print("Ready to server");
+                
+                for (String tag : event.getMceDto().tag) {
+                    getView().addMceToCollection(event.getMceDto().uri, tag);
+                }
+            }
+          } );
+    }
+    
+    
     ///////////////////////////////////////////////////////////////////////////
     // Functions
     ///////////////////////////////////////////////////////////////////////////

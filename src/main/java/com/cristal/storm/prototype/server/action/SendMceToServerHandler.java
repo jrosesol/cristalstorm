@@ -55,17 +55,18 @@ public class SendMceToServerHandler implements
         
         Date timeStamp = new Date();
         MCE aNewMce = new MCE();
-        
-        Tag newTag = new Tag();
-        newTag.setTag("tag");
-        
-        Set<Tag> newTagSet = new HashSet<Tag>();
-        newTagSet.add(newTag);
+
+        // Copy the tags from the user to the server
+        Set<Tag> newTagSet = new HashSet<Tag>();        
+        for (String tag : action.getMceToServer().tag) {
+            Tag newTag = new Tag();
+            newTag.setTag(tag);
+            newTagSet.add(newTag);
+        }
         
         try {
-            aNewMce.setId((long) 1);
             aNewMce.setTag(newTagSet);
-            aNewMce.setUri("uri");
+            aNewMce.setUri(action.getMceToServer().uri);
             aNewMce.setCreated(timeStamp);
             aNewMce.persist();
             logger.info("MCE Persisted!!!");
@@ -74,8 +75,10 @@ public class SendMceToServerHandler implements
             System.out.print(e.getMessage());
         }
         
-    	//TODO: please handle real stuff
-        return new SendMceToServerResult(new MceDto());
+        // Get the id of the newly added mce
+        action.getMceToServer().id = aNewMce.getId();
+        
+        return new SendMceToServerResult(action.getMceToServer());
     }
 
     @Override
