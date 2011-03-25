@@ -41,7 +41,7 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealRootLayoutContentEvent;
 
 /**
- * @author José Rose
+ * @author Jose Rose
  */
 
 public class MainPagePresenter
