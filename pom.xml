@@ -607,6 +607,11 @@
                                     warSrcDir=src/main/webapp
                                     warSrcDirIsOutput=false
                             ]]></content>
+							<name>.settings/org.eclipse.ajdt.core.prefs</name>
+							<content><![CDATA[
+                                    eclipse.preferences.version=1
+                                    org.aspectj.ajdt.core.compiler.weaver.outxml=true
+                            ]]></content>
 						</file>
 					</additionalConfig>
 				</configuration>
