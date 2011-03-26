@@ -22,8 +22,8 @@
 		<maven.compiler.target>1.6</maven.compiler.target>
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 		<!-- Convenience property to set the GWTP version -->
-		<gwtp-version>0.6-SNAPSHOT</gwtp-version>
-		<groupId>com.gwtplatform</groupId>
+		<gwtp-version>0.5.1</gwtp-version>
+		<gwtp-groupId>com.gwtplatform</gwtp-groupId>
 	</properties>
 	<repositories>
 		<!-- GWTP Snapshot repos -->
@@ -129,22 +129,22 @@
 		</dependency>
 		<!-- GWTP and Remove Spring dependency from GWT-Platform -->
 		<dependency>
-			<groupId>${groupId}</groupId>
+			<groupId>${gwtp-groupId}</groupId>
 			<artifactId>gwtp-mvp-client</artifactId>
 			<version>${gwtp-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>${groupId}</groupId>
+			<groupId>${gwtp-groupId}</groupId>
 			<artifactId>gwtp-dispatch-client</artifactId>
 			<version>${gwtp-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>${groupId}</groupId>
+			<groupId>${gwtp-groupId}</groupId>
 			<artifactId>gwtp-dispatch-shared</artifactId>
 			<version>${gwtp-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>${groupId}</groupId>
+			<groupId>${gwtp-groupId}</groupId>
 			<artifactId>gwtp-dispatch-server</artifactId>
 			<version>${gwtp-version}</version>
 		</dependency>
