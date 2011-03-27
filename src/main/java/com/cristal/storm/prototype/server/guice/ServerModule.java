@@ -21,9 +21,7 @@ import com.gwtplatform.dispatch.server.guice.HandlerModule;
  * @author Jose Rose
  */
 public class ServerModule extends HandlerModule {
-
-    private static ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:META-INF/spring/applicationContext*.xml");
-    
+   
     @Override
     protected void configureHandlers() {
         bindHandler(SendTextToServer.class, SendTextToServerHandler.class);

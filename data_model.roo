@@ -1,9 +1,12 @@
 //persistence setup --provider DATANUCLEUS --database HYPERSONIC_IN_MEMORY
 //--testAutomatically
 entity --class ~.server.domain.Tag
-field string --fieldName tag --notNull
+entity --class ~.server.domain.Mce
 
-entity --class ~.server.domain.MCE 
-field string --fieldName uri --notNull
-field set --fieldName tag --type ~.server.domain.Tag --sizeMin 1 --notNull --cardinality ONE_TO_MANY
+field string --fieldName tag --notNull --class ~.server.domain.Tag
+field reference --fieldName mce --type ~.server.domain.Mce 
+//field string --fieldName sendReminders --notNull --primitive
+
+field string --fieldName uri --notNull --class ~.server.domain.Mce
+field set --fieldName tag --type ~.server.domain.Tag --mappedBy mce --sizeMin 1 --notNull --cardinality ONE_TO_MANY
 field date --fieldName created --type java.util.Date

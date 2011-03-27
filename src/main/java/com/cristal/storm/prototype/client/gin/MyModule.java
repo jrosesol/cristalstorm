@@ -37,7 +37,7 @@ import com.gwtplatform.mvp.client.proxy.ProxyFailureHandler;
 import com.gwtplatform.mvp.client.proxy.TokenFormatter;
 
 /**
- * @author José Rose
+ * @author Jose Rose
  */
 public class MyModule extends AbstractPresenterModule {
 

@@ -82,6 +82,8 @@ public class MceCollectionWidgetPresenter extends
             public void onUpdateDataBindedObjects(UpdateDataBindedObjectsEvent event) {
                 System.out.print("Ready to server");
                 
+                System.out.print("\n" + event.getMceDto().uri + ";\t" + event.getMceDto().tag.toString());
+                
                 for (String tag : event.getMceDto().tag) {
                     getView().addMceToCollection(event.getMceDto().uri, tag);
                 }

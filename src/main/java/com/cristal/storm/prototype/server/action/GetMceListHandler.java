@@ -9,7 +9,6 @@ package com.cristal.storm.prototype.server.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cristal.storm.prototype.server.domain.MCE;
 import com.cristal.storm.prototype.shared.action.GetMceListAction;
 import com.cristal.storm.prototype.shared.action.GetMceListResult;
 import com.cristal.storm.prototype.shared.domain.MceDto;
@@ -58,13 +57,6 @@ public class GetMceListHandler implements
 
         
         List<MceDto> mceDtoList = new ArrayList<MceDto>();
-        List<MCE> mceList = MCE.findMCEEntries(action.getStartIndex(), action.getMaxResults());
-        
-        for (MCE mce : mceList) {
-        	//TODO: please handle real stuff
-            MceDto aMce = new MceDto(mce.getUri(), mce.getTag().toString());
-            mceDtoList.add(aMce);
-        }
         return new GetMceListResult(mceDtoList);
     }
 
