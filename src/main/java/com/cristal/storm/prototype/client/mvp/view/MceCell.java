@@ -1,5 +1,8 @@
 package com.cristal.storm.prototype.client.mvp.view;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.cristal.storm.prototype.shared.domain.MceDto;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.resources.client.ClientBundle;
@@ -29,7 +32,8 @@ public class MceCell extends AbstractCell<MceDto> {
     public MceCell(ImageResource image) {
         this.imageHtml = AbstractImagePrototype.create(image).getHTML();
 
-        mce = new MceDto("1", "2");
+        Set<String> tagSet = new HashSet<String>();
+        mce = new MceDto("1", tagSet);
     }
 
     @Override

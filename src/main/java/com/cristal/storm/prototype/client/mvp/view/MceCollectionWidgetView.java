@@ -6,6 +6,7 @@
  */
 package com.cristal.storm.prototype.client.mvp.view;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -126,15 +127,19 @@ public class MceCollectionWidgetView extends Composite implements
 
         // TODO Remove this hardcoded definition of tags
         String mcetags1 = "search mail travel";
+        Set<String> tagSet = new HashSet<String>();
+        tagSet.add(mcetags1);
 
         // TODO Remove this hardcoded definition of MCE
-        MceDto mce = new MceDto("kayak.com", mcetags1);
+        MceDto mce = new MceDto("kayak.com", tagSet);
         
         mceListVisible = new Vector<MceDto>();
         mceListVisible.add(mce);
 
         for (int i = 0; i < 15; i++) {
-        	MceDto mceDuplicate = new MceDto("perdu.com"+i, mcetags1);
+            Set<String> tagSetloop = new HashSet<String>();
+            tagSet.add(mcetags1);
+        	MceDto mceDuplicate = new MceDto("perdu.com"+i, tagSetloop);
 			mceListVisible.add(mceDuplicate);
 		}
 		mceCollectionDraggable.setRowData(0, mceListVisible);
@@ -188,7 +193,9 @@ public class MceCollectionWidgetView extends Composite implements
 			}
 		}
 
-		MceDto mce = new MceDto(uriText, tags.toString());
+        Set<String> tagSet = new HashSet<String>();
+        tagSet.add(tags.toString());
+		MceDto mce = new MceDto(uriText, tagSet);
 		mceListVisible.add(mce);
 		mceCollectionDraggable.setRowData(mceListVisible);
 		mceSelectionModel.setSelected(mce, true);

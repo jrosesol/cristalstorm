@@ -22,10 +22,9 @@ public class MceDto implements Serializable {
     public MceDto() {
     }
     
-    public MceDto(String uri, String tag) {
+    public MceDto(String uri, Set<String> tag) {
         this.uri = uri;
-        this.tag = new HashSet<String>();
-        this.tag.add(tag);
+        this.tag = tag;
     }
 
     public Long id;
