@@ -43,11 +43,11 @@ public class MceCell extends AbstractCell<MceDto> {
             return;
         } else {
 
-            if (value.uri == null || value.tag == null)
+            if (value.uri == null || value.tags == null)
                 return;
             
             this.mce.uri = value.uri;
-            this.mce.tag = value.tag;
+            this.mce.tags = value.tags;
         }
 
         sb.appendHtmlConstant("<table>");
@@ -60,8 +60,8 @@ public class MceCell extends AbstractCell<MceDto> {
         sb.appendHtmlConstant("<td style='font-size:100%;'>");
         sb.appendEscaped(mce.uri);
         sb.appendHtmlConstant("</td></tr><tr><td style='font-size:75%;'>");
-        for (String tag : mce.tag) {
-            sb.appendEscaped(tag);
+        for (String tag : mce.tags) {
+            sb.appendEscaped(tag).appendEscaped(" ");
         }
         sb.appendHtmlConstant("</td></tr></table>");
     }

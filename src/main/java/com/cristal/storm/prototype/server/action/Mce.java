@@ -10,8 +10,8 @@ public class Mce {
     @Id
     Long id;
 
-    String uri;
-    Set<String> tag;
+    public String uri;
+    public Set<String> tags;
 
     // @Transient String doNotPersist;
 
@@ -19,8 +19,8 @@ public class Mce {
     private Mce() {
     }
 
-    public Mce(String uri, Set<String> tag) {
+    public Mce(String uri, Set<String> tags) {
         this.uri = uri;
-        this.tag = tag;
+        this.tags = tags;
     }
 }

@@ -23,9 +23,7 @@ import java.util.Set;
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.mvp.view.MainPageUiHandlers;
 import com.cristal.storm.prototype.shared.action.SendMceToServer;
-import com.cristal.storm.prototype.shared.action.SendMceToServerResult;
 import com.cristal.storm.prototype.shared.action.SendTextToServer;
-import com.cristal.storm.prototype.shared.action.SendTextToServerResult;
 import com.cristal.storm.prototype.shared.domain.MceDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -84,9 +82,11 @@ public class MainPagePresenter
 
 		public String getTagsText();
 
-//		public void addToMCECollection(String uriText, String tagsText);
+		public void addMceToCollection(String uriText, String tagsText);
 //
 //		public void tagCollectionFilter(String filter);
+
+		public void addMceToCollection(MceDto aMce);
 	}
 	
     ///////////////////////////////////////////////////////////////////////////
@@ -127,13 +127,15 @@ public class MainPagePresenter
 
     @Override
     public void onStormit() {
-        //getView().addToMCECollection(getView().getUriText(),getView().getTagsText());
 
     	//TODO: please handle real stuff
         Set<String> tagSet = new HashSet<String>();
         tagSet.add(getView().getTagsText());
         MceDto aMce = (MceDto)(new MceDto(getView().getUriText(), tagSet));
         dataProxy.storeMce(aMce);
+        
+        //TODO: Delete addMceToCollection from here. This call should be done in MceCollectionWidgetPresenter
+        //getView().addMceToCollection(aMce);
         //dataProxy.getMceList(0, 100);
     }
 

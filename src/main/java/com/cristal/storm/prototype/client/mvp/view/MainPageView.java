@@ -16,38 +16,24 @@
 
 package com.cristal.storm.prototype.client.mvp.view;
 
-import gwtquery.plugins.draggable.client.DraggableOptions;
-import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 import gwtquery.plugins.droppable.client.DroppableOptions.DroppableTolerance;
 import gwtquery.plugins.droppable.client.events.DropEvent;
 import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
-import gwtquery.plugins.droppable.client.gwt.DragAndDropCellList;
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.Vector;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.regexp.shared.RegExp;
-import com.google.gwt.regexp.shared.SplitResult;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.cellview.client.CellList.Resources;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SelectionModel;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -112,11 +98,13 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 
 			public void onDrop(DropEvent event) {
 				// retrieve the droppable widget
+				@SuppressWarnings("unchecked")
 				DroppableWidget<FlowPanel> droppableLabel = (DroppableWidget<FlowPanel>) event
 						.getDroppableWidget();
 
 				// retrieve the dropped draggable widget (we assume it is a
 				// draggable label)
+				@SuppressWarnings("unchecked")
 				DraggableWidget<Label> draggableLabel = (DraggableWidget<Label>) event
 						.getDraggableWidget();
 
@@ -125,7 +113,6 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 				Label toto2 = (Label) (droppableLabel.getOriginalWidget()
 						.getWidget(0));
 				aGwtPanel.add(toto2);
-				// toto.setText("Let's eat!!!!");
 
 				// remove the draggabeLable
 				// draggableLabel.removeFromParent();
@@ -133,8 +120,7 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 				// Label(event.getDraggableWidget().toString()));
 				// event.getDraggableWidget().removeFromParent();
 
-				aGwtPanel.add(new Label("just dragged item1"));
-				aGwtPanel.add(new Label("just dragged item2"));
+				aGwtPanel.add(new Label("just dragged item"));
 			}
 		});
 
@@ -161,5 +147,17 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 	@Override
 	public String getTagsText() {
 		return tagsText.getText();
+	}
+
+	@Override
+	public void addMceToCollection(String uriText, String tagsText) {
+		mceCollection.addMceToCollection(uriText, tagsText);
+		
+	}
+
+	@Override
+	public void addMceToCollection(MceDto aMce) {
+		mceCollection.addMceToCollection(aMce);
+		
 	}
 }

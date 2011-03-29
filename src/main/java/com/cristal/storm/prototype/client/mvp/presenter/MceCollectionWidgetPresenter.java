@@ -6,6 +6,9 @@
  */
 package com.cristal.storm.prototype.client.mvp.presenter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler;
@@ -51,6 +54,7 @@ public class MceCollectionWidgetPresenter extends
     public interface MceCollectionWidgetViewInterface extends View,
             HasUiHandlers<MceCollectionWidgetUiHandlers> {
         public void addMceToCollection(String uriText, String tagsText);
+        public void addMceToCollection(MceDto mceDto);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -73,6 +77,11 @@ public class MceCollectionWidgetPresenter extends
     ///////////////////////////////////////////////////////////////////////////
     // Overrides
     ///////////////////////////////////////////////////////////////////////////
+    /**
+     * This method binds events to the widget. 
+     * For instance, when a Mce is stored successfully, the server returns
+     * a message signaling the store success
+     */
     @Override
     public void onBind() {
       super.onBind();
@@ -82,11 +91,9 @@ public class MceCollectionWidgetPresenter extends
             public void onUpdateDataBindedObjects(UpdateDataBindedObjectsEvent event) {
                 System.out.print("Ready to server");
                 
-                System.out.print("\n" + event.getMceDto().uri + ";\t" + event.getMceDto().tag.toString());
+                System.out.print("\n" + event.getMceDto().uri + ";\t" + event.getMceDto().tags.toString());
                 
-                for (String tag : event.getMceDto().tag) {
-                    getView().addMceToCollection(event.getMceDto().uri, tag);
-                }
+                getView().addMceToCollection(event.getMceDto());
             }
           } );
     }

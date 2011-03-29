@@ -136,7 +136,7 @@ public class MceCollectionWidgetView extends Composite implements
         mceListVisible = new Vector<MceDto>();
         mceListVisible.add(mce);
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 3; i++) {
             Set<String> tagSetloop = new HashSet<String>();
             tagSet.add(mcetags1);
         	MceDto mceDuplicate = new MceDto("perdu.com"+i, tagSetloop);
@@ -184,23 +184,40 @@ public class MceCollectionWidgetView extends Composite implements
 	 */
 	@Override
 	public void addMceToCollection(String uriText, String tagsText) {
-		RegExp regExp = RegExp.compile("([A-Za-z0-9_\\-]+)");
+		
+		//Tokenize the tags
+		RegExp regExp = RegExp.compile("([A-Za-z0-9+*#_\\-]+)");
 		SplitResult split = regExp.split(tagsText.toLowerCase());
-		StringBuffer tags = new StringBuffer();
+
+		Set<String> tagSet = new HashSet<String>();
 		for (int i = 0; i < split.length(); i++) {
 			if (!split.get(i).isEmpty()) {
-				tags.append(split.get(i));
+				tagSet.add(split.get(i));
 			}
 		}
-
-        Set<String> tagSet = new HashSet<String>();
-        tagSet.add(tags.toString());
 		MceDto mce = new MceDto(uriText, tagSet);
-		mceListVisible.add(mce);
-		mceCollectionDraggable.setRowData(mceListVisible);
-		mceSelectionModel.setSelected(mce, true);
+		
+		//The MceDto is prepared and now ready to be added
+		addMceToCollection(mce);
 	}
 
+	@Override
+	public void addMceToCollection(MceDto mceDto) {
+		
+		//Unselect all elements of the visible Mce
+		//to make sure that only one Mce is selected
+		for(MceDto mce: mceListVisible){
+			mceSelectionModel.setSelected(mce, false);
+		}
+		
+		//Add the Mce to the widget
+		mceListVisible.add(mceDto);
+		mceCollectionDraggable.setRowData(mceListVisible);
+		mceSelectionModel.setSelected(mceDto, true);
+	}
+
+	
+	
 	// /////////////////////////////////////////////////////////////////////////
 	// Functions
 	// /////////////////////////////////////////////////////////////////////////
