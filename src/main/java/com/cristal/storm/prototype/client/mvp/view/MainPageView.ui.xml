@@ -1,7 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:drag="urn:import:gwtquery.plugins.droppable.client.gwt"
 	xmlns:c="urn:import:com.cristal.storm.prototype.client.mvp.view">
 
 	<ui:style>
@@ -54,13 +53,12 @@
 		<g:west size="300" addStyleNames="{style.mceScrollable}">
 			<g:VerticalPanel>
 				<g:Label>Collection</g:Label>
-				<c:MceCollectionWidgetView ui:field="mceCollection"></c:MceCollectionWidgetView>
 				<g:TextBox ui:field="tagFilter">tags</g:TextBox>
 			</g:VerticalPanel>
 		</g:west>
 
 		<g:south size="100">
-			<g:Label>Cristal Storm TM. Copyright 2011, all rights reserved.</g:Label>
+			<g:Label>Company. Copyright 2011 Company.</g:Label>
 		</g:south>
 
 		<g:center>
@@ -68,6 +66,4 @@
 			</g:AbsolutePanel>
 		</g:center>
 	</g:DockLayoutPanel>
-
-
 </ui:UiBinder>

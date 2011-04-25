@@ -39,10 +39,9 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
-import com.cristal.storm.prototype.shared.domain.MceDto;
 
 /**
- * @author Philippe Beaudoin
+ * @author Jose Rose
  */
 public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 		implements MainPagePresenter.MainPageViewInterface {
@@ -64,9 +63,6 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 	public TextBox tagsText;
 
 	@UiField
-	public MceCollectionWidgetView mceCollection;
-
-	@UiField
 	public AbsolutePanel centerAbsPanel;
 
 	private Widget widget;
@@ -78,53 +74,7 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 	@Inject
 	public MainPageView() {
 
-		mceCollection = new MceCollectionWidgetView();
-
 		widget = uiBinder.createAndBindUi(this);
-
-		/**
-		 * Create a droppable CellList
-		 */
-		final FlowPanel aGwtPanel = new FlowPanel();
-		aGwtPanel.add(new Label("test"));
-		DroppableWidget<FlowPanel> droppablePanel = new DroppableWidget<FlowPanel>(
-				aGwtPanel);
-		// configure the drop behaviour (see next paragraph)
-		droppablePanel.setTolerance(DroppableTolerance.POINTER);
-
-		droppablePanel.getOriginalWidget();
-
-		droppablePanel.addDropHandler(new DropEventHandler() {
-
-			public void onDrop(DropEvent event) {
-				// retrieve the droppable widget
-				@SuppressWarnings("unchecked")
-				DroppableWidget<FlowPanel> droppableLabel = (DroppableWidget<FlowPanel>) event
-						.getDroppableWidget();
-
-				// retrieve the dropped draggable widget (we assume it is a
-				// draggable label)
-				@SuppressWarnings("unchecked")
-				DraggableWidget<Label> draggableLabel = (DraggableWidget<Label>) event
-						.getDraggableWidget();
-
-				Label toto = (Label) (droppableLabel.getOriginalWidget()
-						.getWidget(0));
-				Label toto2 = (Label) (droppableLabel.getOriginalWidget()
-						.getWidget(0));
-				aGwtPanel.add(toto2);
-
-				// remove the draggabeLable
-				// draggableLabel.removeFromParent();
-				// aGwtPanel.add( new
-				// Label(event.getDraggableWidget().toString()));
-				// event.getDraggableWidget().removeFromParent();
-
-				aGwtPanel.add(new Label("just dragged item"));
-			}
-		});
-
-		centerAbsPanel.add(droppablePanel);
 	}
 
 	@Override
@@ -132,32 +82,4 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 		return widget;
 	}
 
-	@UiHandler("stormitButton")
-	void onStormitButtonClicked(ClickEvent event) {
-		if (getUiHandlers() != null) {
-			getUiHandlers().onStormit();
-		}
-	}
-
-	@Override
-	public String getUriText() {
-		return uriText.getText();
-	}
-
-	@Override
-	public String getTagsText() {
-		return tagsText.getText();
-	}
-
-	@Override
-	public void addMceToCollection(String uriText, String tagsText) {
-		mceCollection.addMceToCollection(uriText, tagsText);
-		
-	}
-
-	@Override
-	public void addMceToCollection(MceDto aMce) {
-		mceCollection.addMceToCollection(aMce);
-		
-	}
 }

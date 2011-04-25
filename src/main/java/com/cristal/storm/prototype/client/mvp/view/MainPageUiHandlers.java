@@ -13,8 +13,5 @@ import com.gwtplatform.mvp.client.UiHandlers;
  *
  */
 public interface MainPageUiHandlers extends UiHandlers{
-    /**
-     * When user clicks stormit.
-     */
-    public void onStormit();
+
 }

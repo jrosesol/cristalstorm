@@ -22,9 +22,7 @@ import java.util.Set;
 
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.mvp.view.MainPageUiHandlers;
-import com.cristal.storm.prototype.shared.action.SendMceToServer;
 import com.cristal.storm.prototype.shared.action.SendTextToServer;
-import com.cristal.storm.prototype.shared.domain.MceDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
@@ -78,15 +76,7 @@ public class MainPagePresenter
 	 */
 	public interface MainPageViewInterface extends View,
 			HasUiHandlers<MainPageUiHandlers> {
-		public String getUriText();
 
-		public String getTagsText();
-
-		public void addMceToCollection(String uriText, String tagsText);
-//
-//		public void tagCollectionFilter(String filter);
-
-		public void addMceToCollection(MceDto aMce);
 	}
 	
     ///////////////////////////////////////////////////////////////////////////
@@ -97,8 +87,7 @@ public class MainPagePresenter
             final MainPageViewInterface view,
             final MainPageProxy proxy, final PlaceManager placeManager,
             final DispatchAsync dispatcher,
-            final DataStoreProxy dataProxy,
-            MceCollectionWidgetPresenter collectionWidget) {
+            final DataStoreProxy dataProxy) {
         super(eventBus, view, proxy);
         getView().setUiHandlers(this);
         
@@ -125,19 +114,6 @@ public class MainPagePresenter
         RevealRootLayoutContentEvent.fire(this, this);
     }
 
-    @Override
-    public void onStormit() {
-
-    	//TODO: please handle real stuff
-        Set<String> tagSet = new HashSet<String>();
-        tagSet.add(getView().getTagsText());
-        MceDto aMce = (MceDto)(new MceDto(getView().getUriText(), tagSet));
-        dataProxy.storeMce(aMce);
-        
-        //TODO: Delete addMceToCollection from here. This call should be done in MceCollectionWidgetPresenter
-        //getView().addMceToCollection(aMce);
-        //dataProxy.getMceList(0, 100);
-    }
 
     ///////////////////////////////////////////////////////////////////////////
     // Functions

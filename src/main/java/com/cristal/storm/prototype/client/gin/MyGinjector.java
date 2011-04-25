@@ -16,7 +16,6 @@
 
 package com.cristal.storm.prototype.client.gin;
 
-import com.cristal.storm.prototype.client.ResponsePresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.inject.client.AsyncProvider;
@@ -43,6 +42,4 @@ public interface MyGinjector extends Ginjector {
 	PlaceManager getPlaceManager();
 
 	ProxyFailureHandler getProxyFailureHandler();
-
-	AsyncProvider<ResponsePresenter> getResponsePresenter();
 }
