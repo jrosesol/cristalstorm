@@ -16,23 +16,10 @@
 
 package com.cristal.storm.prototype.client.mvp.view;
 
-import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
-import gwtquery.plugins.droppable.client.DroppableOptions.DroppableTolerance;
-import gwtquery.plugins.droppable.client.events.DropEvent;
-import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
-import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
-
-
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -52,15 +39,6 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 	/*
 	 * @UiField annotated vars. can be used here from your ui.xml template
 	 */
-
-	@UiField
-	public Button stormitButton;
-
-	@UiField
-	public TextBox uriText;
-
-	@UiField
-	public TextBox tagsText;
 
 	@UiField
 	public AbsolutePanel centerAbsPanel;
