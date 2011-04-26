@@ -18,8 +18,16 @@ package com.cristal.storm.prototype.client.gin;
 
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.controller.MyPlaceManager;
+import com.cristal.storm.prototype.client.mvp.presenter.CompanyPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.ReportsPresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.TasksPresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter;
+import com.cristal.storm.prototype.client.mvp.view.CompanyView;
 import com.cristal.storm.prototype.client.mvp.view.MainPageView;
+import com.cristal.storm.prototype.client.mvp.view.ReportsView;
+import com.cristal.storm.prototype.client.mvp.view.TasksView;
+import com.cristal.storm.prototype.client.mvp.view.TimesheetView;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Singleton;
@@ -37,21 +45,34 @@ import com.gwtplatform.mvp.client.proxy.TokenFormatter;
  */
 public class MyModule extends AbstractPresenterModule {
 
-  @Override
-  protected void configure() {
-    bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
-    bind(PlaceManager.class).to(MyPlaceManager.class).in(Singleton.class);
-    bind(TokenFormatter.class).to(ParameterTokenFormatter.class).in(
-        Singleton.class);
-    bind(RootPresenter.class).asEagerSingleton();
-    bind(ProxyFailureHandler.class).to(DefaultProxyFailureHandler.class).in(
-        Singleton.class);
-    
-    // User bindings
-    bind(DataStoreProxy.class).asEagerSingleton();
+    @Override
+    protected void configure() {
+        bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
+        bind(PlaceManager.class).to(MyPlaceManager.class).in(Singleton.class);
+        bind(TokenFormatter.class).to(ParameterTokenFormatter.class).in(
+                Singleton.class);
+        bind(RootPresenter.class).asEagerSingleton();
+        bind(ProxyFailureHandler.class).to(DefaultProxyFailureHandler.class)
+                .in(Singleton.class);
 
-    // Presenters
-    bindPresenter(MainPagePresenter.class, MainPagePresenter.MainPageViewInterface.class,
-        MainPageView.class, MainPagePresenter.MainPageProxy.class);
-  }
+        // User bindings
+        bind(DataStoreProxy.class).asEagerSingleton();
+
+        // Presenters
+        bindPresenter(MainPagePresenter.class,
+                MainPagePresenter.MainPageViewInterface.class,
+                MainPageView.class, MainPagePresenter.MainPageProxy.class);
+        bindPresenter(TimesheetPresenter.class,
+                TimesheetPresenter.TimesheetViewInterface.class,
+                TimesheetView.class, TimesheetPresenter.TimesheetProxy.class);
+        bindPresenter(ReportsPresenter.class,
+                ReportsPresenter.ReportsViewInterface.class, ReportsView.class,
+                ReportsPresenter.ReportsProxy.class);
+        bindPresenter(TasksPresenter.class,
+                TasksPresenter.TasksViewInterface.class, TasksView.class,
+                TasksPresenter.TasksProxy.class);
+        bindPresenter(CompanyPresenter.class,
+                CompanyPresenter.CompanyViewInterface.class, CompanyView.class,
+                CompanyPresenter.CompanyProxy.class);
+    }
 }

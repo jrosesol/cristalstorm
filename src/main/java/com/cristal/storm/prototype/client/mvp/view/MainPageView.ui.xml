@@ -1,7 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:c="urn:import:com.cristal.storm.prototype.client.mvp.view">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client">
 
 	<ui:style>
 		/* Add CSS here. See the GWT docs on UI Binder for more details */
@@ -42,6 +41,13 @@
         	width: 100%;
         	height: 100%;
        	}
+       	
+       	/*.gwt-DecoratorPanel .middle {*/
+       	.test {
+       		background-color: #d0e400;
+      		margin: auto;
+      		position: relative;
+		}
 		
 		.mceScrollable {
 			border: 1px solid #ccc;
@@ -56,10 +62,12 @@
 	<g:DockLayoutPanel unit="PX">
 
 		<g:north size="100">
-			<g:HorizontalPanel addStyleNames="{style.north}">
-				<g:Label>NEW PROJECT</g:Label>
-				<g:Label>Doe, John</g:Label>
-			</g:HorizontalPanel>
+			<g:DecoratorPanel styleName="{style.test}" width="100%" height="100%">
+				<g:HorizontalPanel width="100%" height="100%" borderWidth="0" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE" spacing="2">
+					<g:Image url="favicon.ico"/>
+					<g:Label text="New Label"/>
+				</g:HorizontalPanel>
+			</g:DecoratorPanel>
 		</g:north>
 
 		<g:east size="100">
@@ -70,20 +78,25 @@
 
 		<g:west size="300" >
 			<g:VerticalPanel addStyleNames="{style.west}">
-				<g:Label>Side bar</g:Label>
-				<g:TextBox ui:field="tagFilter">tags</g:TextBox>
+				<g:VerticalPanel width="100%" height="200px" spacing="2">
+					<g:Hyperlink text="Timesheet" targetHistoryToken="timesheet"/>
+					<g:Hyperlink text="Tasks" targetHistoryToken="tasks"/>
+					<g:Hyperlink text="Reports" targetHistoryToken="reports"/>
+					<g:Hyperlink text="Company" targetHistoryToken="company"/>
+				</g:VerticalPanel>
 			</g:VerticalPanel>
 		</g:west>
 
 		<g:south size="100">
-	 		<g:FlowPanel addStyleNames="{style.south}">
+	 		<g:FlowPanel addStyleNames="{style.south}" >
 			<g:Label>Company. Copyright 2011 Company.</g:Label>
 			</g:FlowPanel>		
 		</g:south>
 
 		<g:center>
-			<g:AbsolutePanel ui:field="centerAbsPanel">
-			</g:AbsolutePanel>
+			<g:VerticalPanel>
+				<g:SimplePanel ui:field="simpleContentHolder" />					
+			</g:VerticalPanel>
 		</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder>

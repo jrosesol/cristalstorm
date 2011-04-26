@@ -2,16 +2,16 @@
  *
  *
  * @author Jose Rose
- * Dec 15, 2010
+ * 2011-04-25
  */
 package com.cristal.storm.prototype.client.mvp.view;
 
 import com.gwtplatform.mvp.client.UiHandlers;
 
 /**
- * TODO: Add comments for AppStartPageUiHandlers
+ * TODO: Add comments for TimesheetUiHandlers
  *
  */
-public interface MainPageUiHandlers extends UiHandlers {
+public interface ReportsUiHandlers extends UiHandlers {
 
 }

@@ -20,44 +20,63 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
+import com.google.gwt.user.cellview.client.CellTable;
 
 /**
  * @author Jose Rose
  */
 public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
-		implements MainPagePresenter.MainPageViewInterface {
+        implements MainPagePresenter.MainPageViewInterface {
 
-	private static MainPageViewUiBinder uiBinder = GWT
-			.create(MainPageViewUiBinder.class);
+    private static MainPageViewUiBinder uiBinder = GWT
+            .create(MainPageViewUiBinder.class);
 
-	/*
-	 * @UiField annotated vars. can be used here from your ui.xml template
-	 */
+    /*
+     * @UiField annotated vars. can be used here from your ui.xml template
+     */
+    
+    @UiField
+    SimplePanel simpleContentHolder;
 
-	@UiField
-	public AbsolutePanel centerAbsPanel;
+    private Widget widget;
 
-	private Widget widget;
+    interface MainPageViewUiBinder extends UiBinder<Widget, MainPageView> {
+        Widget createAndBindUi(MainPageView mainPageView);
+    }
 
-	interface MainPageViewUiBinder extends UiBinder<Widget, MainPageView> {
-		Widget createAndBindUi(MainPageView mainPageView);
-	}
+    @Inject
+    public MainPageView() {
 
-	@Inject
-	public MainPageView() {
+        widget = uiBinder.createAndBindUi(this);
+    }
 
-		widget = uiBinder.createAndBindUi(this);
-	}
+    @Override
+    public void setInSlot(Object slot, Widget content) {
+        if (slot == MainPagePresenter.TYPE_SetMainContent) {
+            setMainContent(content);
+        } else {
+            super.setInSlot(slot, content);
+        }
+    }
 
-	@Override
-	public Widget asWidget() {
-		return widget;
-	}
+    private void setMainContent(Widget content) {
+        simpleContentHolder.clear();
+
+        if (content != null) {
+            simpleContentHolder.add(content);
+        }
+    }
+
+    @Override
+    public Widget asWidget() {
+        return widget;
+    }
 
 }
