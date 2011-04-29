@@ -1,0 +1,70 @@
+/**
+ *
+ *
+ * @author Jose Rose
+ * 2011-04-29
+ */
+package com.cristal.storm.prototype.client.mvp.view;
+
+import com.cristal.storm.prototype.client.mvp.presenter.ActionBarPresenter.ActionBarViewInterface;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+
+/**
+ * ActionBar Presenter's view
+ *
+ */
+public class ActionBarView extends ViewWithUiHandlers<ActionBarUiHandlers> implements
+        ActionBarViewInterface {
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Members
+    ///////////////////////////////////////////////////////////////////////////
+    private static ActionBarViewUiBinder uiBinder = GWT
+            .create(ActionBarViewUiBinder.class);
+
+    /*
+     * @UiField annotaded vars. can be used here from your ui.xml template
+     */
+    //@UiField
+    //SimplePanel simplePanel;
+
+    private final Widget widget;
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Interfaces
+    ///////////////////////////////////////////////////////////////////////////
+
+    interface ActionBarViewUiBinder extends UiBinder<Widget, ActionBarView> {
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Constructors
+    ///////////////////////////////////////////////////////////////////////////
+    @Inject
+    public ActionBarView() {
+        widget = uiBinder.createAndBindUi(this);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Overrides
+    ///////////////////////////////////////////////////////////////////////////
+    @Override
+    public Widget asWidget() {
+        return widget;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Functions
+    ///////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Get / Set
+    ///////////////////////////////////////////////////////////////////////////
+
+}
+
+

@@ -20,6 +20,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -53,8 +54,8 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 
     @Inject
     public MainPageView() {
-
         widget = uiBinder.createAndBindUi(this);
+        
     }
 
     @Override

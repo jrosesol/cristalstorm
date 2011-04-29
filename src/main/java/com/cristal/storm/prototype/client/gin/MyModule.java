@@ -18,11 +18,14 @@ package com.cristal.storm.prototype.client.gin;
 
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.controller.MyPlaceManager;
+import com.cristal.storm.prototype.client.mvp.presenter.ActionBarPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.CompanyPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.MyRootPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.ReportsPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TasksPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter;
+import com.cristal.storm.prototype.client.mvp.view.ActionBarView;
 import com.cristal.storm.prototype.client.mvp.view.CompanyView;
 import com.cristal.storm.prototype.client.mvp.view.MainPageView;
 import com.cristal.storm.prototype.client.mvp.view.ReportsView;
@@ -51,7 +54,8 @@ public class MyModule extends AbstractPresenterModule {
         bind(PlaceManager.class).to(MyPlaceManager.class).in(Singleton.class);
         bind(TokenFormatter.class).to(ParameterTokenFormatter.class).in(
                 Singleton.class);
-        bind(RootPresenter.class).asEagerSingleton();
+        //bind(RootPresenter.class).asEagerSingleton();
+        bind(RootPresenter.class).to(MyRootPresenter.class).asEagerSingleton();
         bind(ProxyFailureHandler.class).to(DefaultProxyFailureHandler.class)
                 .in(Singleton.class);
 
@@ -74,5 +78,8 @@ public class MyModule extends AbstractPresenterModule {
         bindPresenter(CompanyPresenter.class,
                 CompanyPresenter.CompanyViewInterface.class, CompanyView.class,
                 CompanyPresenter.CompanyProxy.class);
+        bindPresenter(ActionBarPresenter.class,
+                ActionBarPresenter.ActionBarViewInterface.class, ActionBarView.class,
+                ActionBarPresenter.ActionBarProxy.class);
     }
 }

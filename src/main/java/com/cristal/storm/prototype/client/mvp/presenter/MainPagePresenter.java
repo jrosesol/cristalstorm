@@ -20,6 +20,7 @@ import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.mvp.view.MainPageUiHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
 
 import com.gwtplatform.dispatch.client.DispatchAsync;
@@ -96,6 +97,7 @@ public class MainPagePresenter
         this.dispatcher = dispatcher;
         this.dataProxy = dataProxy;
 
+        
     }
 
     @Inject
@@ -109,6 +111,9 @@ public class MainPagePresenter
 
     @Inject
     TimesheetPresenter timesheets;
+    
+    @Inject
+    ActionBarPresenter actionBar;
 
     // @Inject
     // public void injectPresenters(final CompanyPresenter companyPresenter,
@@ -132,6 +137,8 @@ public class MainPagePresenter
     @Override
     protected void revealInParent() {
         RevealRootLayoutContentEvent.fire(this, this);
+        
+        RootPanel.get("controlBar").add(actionBar.getWidget());
     }
 
     // /////////////////////////////////////////////////////////////////////////

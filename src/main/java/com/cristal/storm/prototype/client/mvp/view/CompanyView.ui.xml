@@ -3,9 +3,12 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client">
 
 	<ui:style>
+		.color {
+			background-color: aqua;
+		}
 	</ui:style>
 	
-	<g:SimplePanel>
+	<g:SimplePanel addStyleNames="{style.color}">
 		<g:Label>Company</g:Label>
 	</g:SimplePanel>	
 
