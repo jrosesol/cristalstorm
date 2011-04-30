@@ -24,12 +24,15 @@ import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.MyRootPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.ReportsPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TasksPresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.TimesheetCellListPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.TimesheetCellListPresenter.TimesheetCellListViewInterface;
 import com.cristal.storm.prototype.client.mvp.view.ActionBarView;
 import com.cristal.storm.prototype.client.mvp.view.CompanyView;
 import com.cristal.storm.prototype.client.mvp.view.MainPageView;
 import com.cristal.storm.prototype.client.mvp.view.ReportsView;
 import com.cristal.storm.prototype.client.mvp.view.TasksView;
+import com.cristal.storm.prototype.client.mvp.view.TimesheetCellListView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetView;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
@@ -52,34 +55,30 @@ public class MyModule extends AbstractPresenterModule {
     protected void configure() {
         bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
         bind(PlaceManager.class).to(MyPlaceManager.class).in(Singleton.class);
-        bind(TokenFormatter.class).to(ParameterTokenFormatter.class).in(
-                Singleton.class);
-        //bind(RootPresenter.class).asEagerSingleton();
+        bind(TokenFormatter.class).to(ParameterTokenFormatter.class).in(Singleton.class);
+        // bind(RootPresenter.class).asEagerSingleton();
         bind(RootPresenter.class).to(MyRootPresenter.class).asEagerSingleton();
-        bind(ProxyFailureHandler.class).to(DefaultProxyFailureHandler.class)
-                .in(Singleton.class);
+        bind(ProxyFailureHandler.class).to(DefaultProxyFailureHandler.class).in(Singleton.class);
 
         // User bindings
         bind(DataStoreProxy.class).asEagerSingleton();
 
         // Presenters
-        bindPresenter(MainPagePresenter.class,
-                MainPagePresenter.MainPageViewInterface.class,
-                MainPageView.class, MainPagePresenter.MainPageProxy.class);
-        bindPresenter(TimesheetPresenter.class,
-                TimesheetPresenter.TimesheetViewInterface.class,
-                TimesheetView.class, TimesheetPresenter.TimesheetProxy.class);
-        bindPresenter(ReportsPresenter.class,
-                ReportsPresenter.ReportsViewInterface.class, ReportsView.class,
-                ReportsPresenter.ReportsProxy.class);
-        bindPresenter(TasksPresenter.class,
-                TasksPresenter.TasksViewInterface.class, TasksView.class,
-                TasksPresenter.TasksProxy.class);
-        bindPresenter(CompanyPresenter.class,
-                CompanyPresenter.CompanyViewInterface.class, CompanyView.class,
-                CompanyPresenter.CompanyProxy.class);
-        bindPresenter(ActionBarPresenter.class,
-                ActionBarPresenter.ActionBarViewInterface.class, ActionBarView.class,
-                ActionBarPresenter.ActionBarProxy.class);
+        bindPresenter(MainPagePresenter.class, MainPagePresenter.MainPageViewInterface.class, MainPageView.class,
+                      MainPagePresenter.MainPageProxy.class);
+        bindPresenter(TimesheetPresenter.class, TimesheetPresenter.TimesheetViewInterface.class, TimesheetView.class,
+                      TimesheetPresenter.TimesheetProxy.class);
+        bindPresenter(ReportsPresenter.class, ReportsPresenter.ReportsViewInterface.class, ReportsView.class,
+                      ReportsPresenter.ReportsProxy.class);
+        bindPresenter(TasksPresenter.class, TasksPresenter.TasksViewInterface.class, TasksView.class,
+                      TasksPresenter.TasksProxy.class);
+        bindPresenter(CompanyPresenter.class, CompanyPresenter.CompanyViewInterface.class, CompanyView.class,
+                      CompanyPresenter.CompanyProxy.class);
+        bindPresenter(ActionBarPresenter.class, ActionBarPresenter.ActionBarViewInterface.class, ActionBarView.class,
+                      ActionBarPresenter.ActionBarProxy.class);
+
+        // Presenter widgets
+        bindSingletonPresenterWidget(TimesheetCellListPresenter.class, TimesheetCellListViewInterface.class,
+                                     TimesheetCellListView.class);
     }
 }

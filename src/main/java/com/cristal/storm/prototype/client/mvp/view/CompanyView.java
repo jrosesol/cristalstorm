@@ -7,6 +7,7 @@
 package com.cristal.storm.prototype.client.mvp.view;
 
 import com.cristal.storm.prototype.client.mvp.presenter.CompanyPresenter.CompanyViewInterface;
+import com.cristal.storm.prototype.client.util.Resources;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -51,7 +52,11 @@ public class CompanyView extends ViewWithUiHandlers<CompanyUiHandlers>
     @Inject
     public CompanyView() {
         widget = uiBinder.createAndBindUi(this);
-               
+
+        HTMLPanel dynContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
+        dynContent.add(new Label("This content is dynamically generated."), "dynContent");
+        
+        simplePanel.add(dynContent); 
     }
 
     // /////////////////////////////////////////////////////////////////////////

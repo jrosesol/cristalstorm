@@ -52,12 +52,9 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
     ///////////////////////////////////////////////////////////////////////////
     @Inject
     public TimesheetView() {
-        widget = uiBinder.createAndBindUi(this);        
-
-        HTMLPanel dynContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
-        dynContent.add(new Label("This content is dynamically generated."), "dynContent");
+        widget = uiBinder.createAndBindUi(this);
         
-        simplePanel.add(dynContent); 
+        //simplePanel.add(timesheetView.asWidget());
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -66,6 +63,15 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
     @Override
     public Widget asWidget() {
         return widget;
+    }
+
+    @Override
+    public void setInSlot(Object slot, Widget content) {
+        simplePanel.clear();
+
+        if (content != null) {
+            simplePanel.add(content);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////

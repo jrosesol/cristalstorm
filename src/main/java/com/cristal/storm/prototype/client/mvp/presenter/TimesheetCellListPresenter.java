@@ -2,75 +2,55 @@
  *
  *
  * @author Jose Rose
- * 2011-04-25
+ * 2011-04-29
  */
 package com.cristal.storm.prototype.client.mvp.presenter;
 
-import com.cristal.storm.prototype.client.mvp.view.TimesheetUiHandlers;
-import com.cristal.storm.prototype.client.util.Resources;
+import com.cristal.storm.prototype.client.mvp.view.TimesheetCellListUiHandlers;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.client.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.Place;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
-import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
 
 /**
- * Timesheet Presenter implementation
- * This will handle all timesheet actions
+ * TimesheetCellList Presenter implementation
+ * Handles the actions possible on the site
  */
-public class TimesheetPresenter extends
-        Presenter<TimesheetPresenter.TimesheetViewInterface, TimesheetPresenter.TimesheetProxy>
-        implements TimesheetUiHandlers {
+public class TimesheetCellListPresenter extends
+    PresenterWidget<TimesheetCellListPresenter.TimesheetCellListViewInterface>
+        implements TimesheetCellListUiHandlers {
 
     ///////////////////////////////////////////////////////////////////////////
     // Members
     ///////////////////////////////////////////////////////////////////////////
-    public static final String nameToken = "timesheet";
-    
-    /**
-     * Use this in leaf presenters, inside their {@link #revealInParent} method.
-     */
-    @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetMainContent = new Type<RevealContentHandler<?>>();
+    public static final String nameToken = "a";
 
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * {@link TimesheetPresenter}'s proxy.
-     */
-    @ProxyCodeSplit
-    @NameToken(nameToken)
-    public interface TimesheetProxy extends Proxy<TimesheetPresenter>, Place {
-    }
-
-    /**
-     * {@link TimesheetPresenter}'s view.
+     * {@link TimesheetCellListPresenter}'s view.
      * Here it extends HasUiHandlers to be able to call setUiHandlers.
      */
-    public interface TimesheetViewInterface extends View,
-            HasUiHandlers<TimesheetUiHandlers> {
+    public interface TimesheetCellListViewInterface extends View,
+            HasUiHandlers<TimesheetCellListUiHandlers> {
     }
 
     /*
      * This interface is the link between the view and the presenter.
      * The presenter has to implement this interface.
      * This interface should be declared separetly.
-    public interface TimesheetUiHandlers extends UiHandlers {
+    public interface TimesheetCellListUiHandlers extends UiHandlers {
     }
      */
 
@@ -78,14 +58,11 @@ public class TimesheetPresenter extends
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     @Inject
-    public TimesheetPresenter(EventBus eventBus, TimesheetViewInterface view,
-            TimesheetProxy proxy, PlaceManager placeManager, DispatchAsync dispatcher) {
-        super(eventBus, view, proxy);
+    public TimesheetCellListPresenter(EventBus eventBus, TimesheetCellListViewInterface view,
+            PlaceManager placeManager, DispatchAsync dispatcher) {
+        super(eventBus, view);
         getView().setUiHandlers(this);
     }
-    
-    @Inject
-    TimesheetCellListPresenter timesheetCellList;
 
     ///////////////////////////////////////////////////////////////////////////
     // Handlers
@@ -94,16 +71,6 @@ public class TimesheetPresenter extends
     ///////////////////////////////////////////////////////////////////////////
     // Overrides
     ///////////////////////////////////////////////////////////////////////////
-    @Override
-    protected void revealInParent() {
-        RevealContentEvent.fire(this, MainPagePresenter.TYPE_SetMainContent, 
-                this);
-    }
-    
-    @Override
-    protected void onReveal() {
-        this.setInSlot(TYPE_SetMainContent, timesheetCellList);
-    }
 
     ///////////////////////////////////////////////////////////////////////////
     // Functions
