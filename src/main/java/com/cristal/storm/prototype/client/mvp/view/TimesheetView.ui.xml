@@ -8,8 +8,7 @@
 		}
 	</ui:style>
 	
-	<g:SimplePanel addStyleNames="{style.color}">
-		<g:Label>Timesheet</g:Label>
+	<g:SimplePanel ui:field="simplePanel" addStyleNames="{style.color}">
 	</g:SimplePanel>	
 
 </ui:UiBinder>

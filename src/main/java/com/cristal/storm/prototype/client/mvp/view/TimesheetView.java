@@ -7,9 +7,14 @@
 package com.cristal.storm.prototype.client.mvp.view;
 
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter.TimesheetViewInterface;
+import com.cristal.storm.prototype.client.util.Resources;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -30,8 +35,8 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
     /*
      * @UiField annotaded vars. can be used here from your ui.xml template
      */
-    //@UiField
-    //SimplePanel simplePanel;
+    @UiField
+    SimplePanel simplePanel;
 
     private final Widget widget;
 
@@ -47,7 +52,12 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
     ///////////////////////////////////////////////////////////////////////////
     @Inject
     public TimesheetView() {
-        widget = uiBinder.createAndBindUi(this);
+        widget = uiBinder.createAndBindUi(this);        
+
+        HTMLPanel dynContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
+        dynContent.add(new Label("This content is dynamically generated."), "dynContent");
+        
+        simplePanel.add(dynContent); 
     }
 
     ///////////////////////////////////////////////////////////////////////////

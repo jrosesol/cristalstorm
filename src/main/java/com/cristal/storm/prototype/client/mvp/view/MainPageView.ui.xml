@@ -8,7 +8,7 @@
 	</ui:style>
 
 	<g:SimplePanel ui:field="simpleContentHolder">
-
+		<g:Label>Welcome.</g:Label>
 	</g:SimplePanel>
 
 </ui:UiBinder>
