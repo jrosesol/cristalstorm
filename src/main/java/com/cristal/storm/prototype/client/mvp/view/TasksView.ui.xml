@@ -3,13 +3,9 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client">
 
 	<ui:style>
-		.color {
-			background-color: purple;
-		}
 	</ui:style>
 	
-	<g:SimplePanel addStyleNames="{style.color}">
-		<g:Label>Tasks</g:Label>
+	<g:SimplePanel ui:field="simplePanel">
 	</g:SimplePanel>
 
 </ui:UiBinder>

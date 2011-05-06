@@ -54,7 +54,7 @@ public class CompanyView extends ViewWithUiHandlers<CompanyUiHandlers>
         widget = uiBinder.createAndBindUi(this);
 
         HTMLPanel dynContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
-        dynContent.add(new Label("This content is dynamically generated."), "dynContent");
+        dynContent.add(new Label("This content is dynamically generated."), "day_content");
         
         simplePanel.add(dynContent); 
     }

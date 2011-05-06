@@ -33,7 +33,7 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
             .create(TimesheetViewUiBinder.class);
 
     /*
-     * @UiField annotaded vars. can be used here from your ui.xml template
+     * @UiField annotated vars. can be used here from your ui.xml template
      */
     @UiField
     SimplePanel simplePanel;
@@ -71,7 +71,7 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
 
         if (content != null) {
             HTMLPanel dynContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
-            dynContent.add(content, "dynContent");
+            dynContent.add(content, "day_content");
             
             simplePanel.add(dynContent);
         }

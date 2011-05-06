@@ -17,7 +17,7 @@ import com.google.gwt.resources.client.TextResource;
 public interface Resources extends ClientBundle {
     Resources INSTANCE = GWT.create(Resources.class);
 
-    @Source("public/html/timesheet.html")
+    @Source("timesheet.html")
     TextResource synchronous();
 
 }

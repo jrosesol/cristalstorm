@@ -3,12 +3,9 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.cristal.storm.prototype.client.mvp.view">
 
 	<ui:style>
-		.color {
-			background-color: orange;
-		}
 	</ui:style>
 	
-	<g:SimplePanel ui:field="simplePanel" addStyleNames="{style.color}">
+	<g:SimplePanel ui:field="simplePanel">
 	</g:SimplePanel>	
 
 </ui:UiBinder>

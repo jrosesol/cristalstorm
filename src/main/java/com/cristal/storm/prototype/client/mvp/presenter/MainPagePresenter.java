@@ -137,8 +137,6 @@ public class MainPagePresenter
     @Override
     protected void revealInParent() {
         RevealRootLayoutContentEvent.fire(this, this);
-        
-        RootPanel.get("controlBar").add(actionBar.getWidget());
     }
 
     // /////////////////////////////////////////////////////////////////////////
