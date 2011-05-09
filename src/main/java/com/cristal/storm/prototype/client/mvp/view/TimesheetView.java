@@ -70,8 +70,8 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
         simplePanel.clear();
 
         if (content != null) {
-            HTMLPanel dynContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
-            dynContent.add(content, "day_content");
+            HTMLPanel dynContent = new HTMLPanel(Resources.INSTANCE.timelog().getText());
+            dynContent.add(content, "timeSheetEntries");
             
             simplePanel.add(dynContent);
         }

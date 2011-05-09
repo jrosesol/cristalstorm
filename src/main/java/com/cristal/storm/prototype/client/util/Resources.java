@@ -15,9 +15,12 @@ import com.google.gwt.resources.client.TextResource;
  *
  */
 public interface Resources extends ClientBundle {
+    
     Resources INSTANCE = GWT.create(Resources.class);
 
     @Source("timesheet.html")
     TextResource synchronous();
-
+    
+    @Source("timelog.html")
+    TextResource timelog();
 }
