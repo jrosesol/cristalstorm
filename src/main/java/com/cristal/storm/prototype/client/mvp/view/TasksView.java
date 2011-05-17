@@ -55,10 +55,10 @@ public class TasksView extends ViewWithUiHandlers<TasksUiHandlers> implements
     public TasksView() {
         widget = uiBinder.createAndBindUi(this);
         
-        HTMLPanel dynContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
-        dynContent.add(new Label("This content is dynamically generated."), "day_content");
+        //HTMLPanel dynContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
+        //dynContent.add(new Label("This content is dynamically generated."), "day_content");
         
-        simplePanel.add(dynContent); 
+        //simplePanel.add(dynContent); 
     }
 
     ///////////////////////////////////////////////////////////////////////////

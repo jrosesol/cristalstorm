@@ -18,6 +18,7 @@ package com.cristal.storm.prototype.client.mvp.presenter;
 
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.mvp.view.MainPageUiHandlers;
+import com.cristal.storm.prototype.client.util.Resources;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -60,6 +61,10 @@ public class MainPagePresenter
      */
     @ContentSlot
     public static final Type<RevealContentHandler<?>> TYPE_SetMainContent = new Type<RevealContentHandler<?>>();
+    
+    static {
+        Resources.INSTANCE.style().ensureInjected();  
+    }
 
     // /////////////////////////////////////////////////////////////////////////
     // Interfaces

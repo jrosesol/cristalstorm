@@ -36,7 +36,7 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
      * @UiField annotated vars. can be used here from your ui.xml template
      */
     @UiField
-    SimplePanel simplePanel;
+    SimplePanel dayTable;
 
     private final Widget widget;
 
@@ -67,13 +67,10 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
 
     @Override
     public void setInSlot(Object slot, Widget content) {
-        simplePanel.clear();
+        dayTable.clear();
 
-        if (content != null) {
-            HTMLPanel dynContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
-            dynContent.add(content, "day_content");
-            
-            simplePanel.add(dynContent);
+        if (content != null) {            
+            dayTable.add(content);
         }
     }
 

@@ -25,7 +25,7 @@ a:focus, a:hover {
 a img {
 	border:0;
 }
-.clear {
+@external .clear {
 	clear:both;
 }
 body {
@@ -61,7 +61,7 @@ body {
 	padding: 0px 0px 0px 12px;
 	background: url(../images/header_navi_bg.gif) left bottom no-repeat;
 }
-#header ul li.no_bg {
+@external #header ul li.no_bg {
 	background: none;
 }
 #header ul li a {
@@ -114,7 +114,7 @@ select {
 	text-decoration: none;
 	background: url(../images/navigation_btn_bg.gif) repeat-x;
 }
-#navigation ul li.active a {
+@external #navigation ul li.active a {
 	background: url(../images/navigation_btn_bg.gif) repeat-x;
 }
 #content {
@@ -122,19 +122,25 @@ select {
 	float: left;	
 }
 
-#week_content {
-	width: 943px;
-	float: left;
-	padding: 2px 0px 2px 1px;
-}
-#day_content {
+.dayTable {
 	width: 879px;
 	float: left;
 	padding: 5px 18px 0px 17px;
 	margin: 3px 15px 0px 15px;
 	background: url(../images/day_bg.gif) repeat-y;
 }
-.text {
+
+.innerDayTable {
+	width: 100%;
+}
+
+.weekContent {
+	width: 943px;
+	float: left;
+	padding: 2px 0px 2px 1px;
+}
+
+@external .text {
 	font-family: Helvetica, Arial;
 	width: 752px;
 	float: left;
@@ -158,7 +164,7 @@ select {
 	float: right;
 	margin: 0px 0px 0px 20px;
 }
-.text a.continue {
+@external .text a.continue {
 	position: relative;
 	color: #65b8f9;
 	float: left;
@@ -166,18 +172,10 @@ select {
 	font-size: 15px;
 	margin: 30px 0px 0px 0px;
 }
-.alternative {
+@external .alternative {
 	background: #2a2d32;
 	border-top: 1px solid #26292e;
 	border-bottom: 1px solid #26292e;
-}
-.heading {
-	width: 913px;
-	height: 29px;
-	float: left;
-	padding: 12px 14px 0px 14px;
-	margin: 0px 0px 18px 0px;
-	background: url(../images/navigation_btn_bg.gif) repeat-x;
 }
 .subheading {
 	width: 900px;
@@ -185,7 +183,7 @@ select {
 	float: left;
 	background: url(../images/navigation_btn_bg.gif) repeat-x;
 	margin-top: 0px;
-	margin-right: 15px;
+	margin-right: 10px;
 	margin-bottom: 3px;
 	margin-left: 15px;
 	padding-top: 12px;
@@ -198,27 +196,25 @@ select {
 }
 .subheading ul li {
 	float: left;
-	margin: 0px 75px 0px 0px;
-	padding: 0px 0px 0px 12px;	
+	margin: 0px 60px 0px 0px;
+	padding: 0px 0px 0px 12px;
+	color:#fff;
 }
-.subheading ul li.no_bg {
+.subheading ul {
 	background: none;
 }
-.subheading ul li a {
+.subheading a {
 	color:#fff;
 }
 
-.heading h2, .subheading h2 {
+.subheading h2 {
 	font-size: 17px;
 	color: #ffffff;
 	float: left;
 	font-weight: normal;
 	padding: 0px 10px 0px 0px;
 }
-.heading img {
-	float: rightright;
-	margin: 3px 0px 0px 0px;
-}
+
 ul {
 	float: left;
 	margin: 0px 0px 39px 0px;

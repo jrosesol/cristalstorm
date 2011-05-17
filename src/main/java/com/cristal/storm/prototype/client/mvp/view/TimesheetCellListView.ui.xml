@@ -3,10 +3,27 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client">
 
 	<ui:style>
+		.cellTable {
+			border-bottom: 1px solid #ccc;
+			text-align: left;
+			margin-bottom: 4px;
+		}
 	</ui:style>
-	
-	<g:SimplePanel>
-		<p1:CellList ui:field="timesheetCellList"></p1:CellList>
-	</g:SimplePanel>	
+
+	<g:HTMLPanel>
+		<table cellspacing='0' cellpadding='0' style='width:100%;'>
+			<tr>
+				<td valign='top'>
+					<p1:CellTable addStyleNames='{style.cellTable}'
+						pageSize='15' ui:field='timesheetCellList' />
+				</td>
+			</tr>
+			<tr>
+				<td align='center'>
+					<p1:SimplePager ui:field='pager' />
+				</td>
+			</tr>
+		</table>
+	</g:HTMLPanel>
 
 </ui:UiBinder>

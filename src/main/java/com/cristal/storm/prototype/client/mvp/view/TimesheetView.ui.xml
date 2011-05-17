@@ -1,11 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.cristal.storm.prototype.client.mvp.view">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-	<ui:style>
-	</ui:style>
+	<ui:with field="res" type="com.cristal.storm.prototype.client.util.Resources" />
 	
-	<g:SimplePanel ui:field="simplePanel">
-	</g:SimplePanel>	
+	<ui:style>
+		.heading {
+			width: 913px;
+			height: 29px;
+			float: left;
+			padding: 12px 14px 0px 14px;
+			margin: 0px 0px 18px 0px;
+			background: url(../images/navigation_btn_bg.gif) repeat-x;
+		}
+		
+		.heading h2 {
+			font-size: 17px;
+			color: #ffffff;
+			float: left;
+			font-weight: normal;
+			padding: 0px 10px 0px 0px;
+		}
+
+		.heading img {
+			float: rightright;
+			margin: 3px 0px 0px 0px;
+		}
+		
+	</ui:style>
+		
+	<g:HTMLPanel>
+
+		<!-- Main page content start -->
+		<div class="{res.style.weekContent}">
+		    <div class="{style.heading}">
+		        <h2>Periods:</h2>
+		        <div id="period">
+		            <select>
+		                <option>2011-01-01 to 2011-01-07</option>
+		                <option>2011-01-08 to 2011-01-14</option>
+		                <option>2011-01-15 to 2011-01-21</option>
+		                <option>2011-01-22 to 2011-01-28</option>
+		            </select>
+		        </div>
+		    </div>
+		    <div>
+		        <div class="{res.style.subheading}">
+		            <ul>
+		                <li>Date</li>
+		                <li>Day</li>
+		                <li>In Time</li>
+		                <li>Out Time</li>
+		                <li>Away</li>
+		                <li>Total time</li>
+		                <li>All event</li>
+		            </ul>
+		        </div>
+		        <div class="{res.style.dayTable}">
+		            <table class="{res.style.innerDayTable}">
+		                <tr>
+		                    <th>
+		                        <g:SimplePanel ui:field="dayTable"></g:SimplePanel>
+		                    </th>
+		                </tr>
+		            </table>
+		        </div>
+			</div>
+		</div>
+		<!-- Main page content ends -->
+
+	</g:HTMLPanel>	
 
 </ui:UiBinder>
