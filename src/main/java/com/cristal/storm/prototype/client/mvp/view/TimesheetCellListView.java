@@ -24,9 +24,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.i18n.client.Constants;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
@@ -75,6 +77,8 @@ public class TimesheetCellListView extends ViewWithUiHandlers<TimesheetCellListU
     private static final List<String> DAYS = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
                                                            "Friday", "Saturday");
 
+    String[] catNames = {"a", "b"};
+
     // /////////////////////////////////////////////////////////////////////////
     // Interfaces
     // /////////////////////////////////////////////////////////////////////////
@@ -99,11 +103,15 @@ public class TimesheetCellListView extends ViewWithUiHandlers<TimesheetCellListU
         private static int nextId = 0;
 
         private String hours;
+        private Category category;
         private final int id;
 
         public TimeEntry() {
             this.id = nextId;
             nextId++;
+
+            hours = "";
+            category = new Category("");
         }
 
         public int compareTo(TimeEntry o) {
@@ -119,10 +127,14 @@ public class TimesheetCellListView extends ViewWithUiHandlers<TimesheetCellListU
         }
 
         /**
-         * @return the 
+         * @return the
          */
         public String getHours() {
             return hours;
+        }
+
+        public Category getCategory() {
+            return category;
         }
 
         /**
@@ -138,7 +150,7 @@ public class TimesheetCellListView extends ViewWithUiHandlers<TimesheetCellListU
         }
 
         /**
-         * Set the 
+         * Set the
          * 
          * @param hours
          *            the hours
@@ -147,8 +159,13 @@ public class TimesheetCellListView extends ViewWithUiHandlers<TimesheetCellListU
             this.hours = hours;
         }
 
+        public void setCategory(Category category) {
+            assert category != null : "category cannot be null";
+            this.category = category;
+        }
+
     }
-    
+
     /**
      * The provider that holds the list of contacts in the database.
      */
@@ -176,39 +193,45 @@ public class TimesheetCellListView extends ViewWithUiHandlers<TimesheetCellListU
 
         // /// INIT //////
         timesheetCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
-        
-     // Add a selection model so we can select cells.
-//        final SelectionModel<TimeEntry> selectionModel = new MultiSelectionModel<TimeEntry>(
-//                TimeEntry.KEY_PROVIDER);
-//        timesheetCellList.setSelectionModel(selectionModel,
-//            DefaultSelectionEventManager.<TimeEntry> createCheckboxManager());
+
+        // Initialize the categories.
+        categories = new Category[catNames.length];
+        for (int i = 0; i < catNames.length; i++) {
+            categories[i] = new Category(catNames[i]);
+        }
+
+        // Add a selection model so we can select cells.
+        // final SelectionModel<TimeEntry> selectionModel = new
+        // MultiSelectionModel<TimeEntry>(
+        // TimeEntry.KEY_PROVIDER);
+        // timesheetCellList.setSelectionModel(selectionModel,
+        // DefaultSelectionEventManager.<TimeEntry> createCheckboxManager());
 
         // Add a selection model to handle user selection.
         final SingleSelectionModel<TimeEntry> selectionModel = new SingleSelectionModel<TimeEntry>();
         timesheetCellList.setSelectionModel(selectionModel);
         selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             public void onSelectionChange(SelectionChangeEvent event) {
-                //String selected = selectionModel.getSelectedObject();
+                // String selected = selectionModel.getSelectedObject();
             }
         });
-        
-        // Attach a column sort handler to the ListDataProvider to sort the list.
-//        ListHandler<TimeEntry> sortHandler = new ListHandler<TimeEntry>(
-//            ContactDatabase.get().getDataProvider().getList());
-//        cellTable.addColumnSortHandler(sortHandler);
-        
+
+        // Attach a column sort handler to the ListDataProvider to sort the
+        // list.
+        // ListHandler<TimeEntry> sortHandler = new ListHandler<TimeEntry>(
+        // ContactDatabase.get().getDataProvider().getList());
+        // cellTable.addColumnSortHandler(sortHandler);
+
         // Initialize the columns
         initTableColumns(selectionModel);
 
-
-
         // Push the data into the widget.
-        //timesheetCellList.setRowData(0, DAYS);
+        // timesheetCellList.setRowData(0, DAYS);
         List<TimeEntry> aDataList = new ArrayList<TimeEntry>();
         aDataList.add(new TimeEntry());
         aDataList.get(0).setHours("2h");
         dataProvider.setList(aDataList);
-        
+
         // Set the total row count. This isn't strictly necessary, but it
         // affects
         // paging calculations, so its good habit to keep the row count up to
@@ -218,47 +241,104 @@ public class TimesheetCellListView extends ViewWithUiHandlers<TimesheetCellListU
         //
         addDataDisplay(timesheetCellList);
     }
-    
+
     /**
-     * Add a display to the database. The current range of interest of the display
-     * will be populated with data.
-     *
-     * @param display a {@Link HasData}.
+     * Add a display to the database. The current range of interest of the
+     * display will be populated with data.
+     * 
+     * @param display
+     *            a {@Link HasData}.
      */
     public void addDataDisplay(HasData<TimeEntry> display) {
         dataProvider.addDataDisplay(display);
     }
-    
+
+    /**
+     * A contact category.
+     */
+    public static class Category {
+
+        private final String displayName;
+
+        private Category(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
+
+    private final Category[] categories;
+
+    /**
+     * The constants used in this Content Widget.
+     */
+    static interface DatabaseConstants extends Constants {
+        String[] contactDatabaseCategories();
+    }
+
     /**
      * Add the columns to the table.
      */
-    private void initTableColumns(
-        final SelectionModel<TimeEntry> selectionModel/*,
-        ListHandler<TimeEntry> sortHandler*/) {
-        
+    private void initTableColumns(final SelectionModel<TimeEntry> selectionModel/*
+                                                                                 * ,
+                                                                                 * ListHandler
+                                                                                 * <
+                                                                                 * TimeEntry
+                                                                                 * >
+                                                                                 * sortHandler
+                                                                                 */) {
+
         // First name.
-        Column<TimeEntry, String> firstNameColumn = new Column<TimeEntry, String>(
-            new EditTextCell()) {
-          @Override
-          public String getValue(TimeEntry object) {
-            return object.getHours();
-          }
+        Column<TimeEntry, String> firstNameColumn = new Column<TimeEntry, String>(new EditTextCell()) {
+            @Override
+            public String getValue(TimeEntry object) {
+                return object.getHours();
+            }
         };
-//        firstNameColumn.setSortable(true);
-//        sortHandler.setComparator(firstNameColumn, new Comparator<TimeEntry>() {
-//          public int compare(TimeEntry o1, TimeEntry o2) {
-//            return o1.getHours().compareTo(o2.getHours());
-//          }
-//        });
+        // firstNameColumn.setSortable(true);
+        // sortHandler.setComparator(firstNameColumn, new
+        // Comparator<TimeEntry>() {
+        // public int compare(TimeEntry o1, TimeEntry o2) {
+        // return o1.getHours().compareTo(o2.getHours());
+        // }
+        // });
         timesheetCellList.addColumn(firstNameColumn, "Hours");
         firstNameColumn.setFieldUpdater(new FieldUpdater<TimeEntry, String>() {
-          public void update(int index, TimeEntry object, String value) {
-            // Called when the user changes the value.
-            object.setHours(value);
-            dataProvider.refresh();
-          }
+            public void update(int index, TimeEntry object, String value) {
+                // Called when the user changes the value.
+                object.setHours(value);
+                dataProvider.refresh();
+            }
         });
         timesheetCellList.setColumnWidth(firstNameColumn, 20, Unit.PCT);
+
+        // Category.
+        final Category[] categories = this.categories;
+        List<String> categoryNames = new ArrayList<String>();
+        for (Category category : categories) {
+            categoryNames.add(category.getDisplayName());
+        }
+        SelectionCell categoryCell = new SelectionCell(categoryNames);
+        Column<TimeEntry, String> categoryColumn = new Column<TimeEntry, String>(categoryCell) {
+            @Override
+            public String getValue(TimeEntry object) {
+                return object.getCategory().getDisplayName();
+            }
+        };
+        timesheetCellList.addColumn(categoryColumn, "Project");
+        categoryColumn.setFieldUpdater(new FieldUpdater<TimeEntry, String>() {
+            public void update(int index, TimeEntry object, String value) {
+                for (Category category : categories) {
+                    if (category.getDisplayName().equals(value)) {
+                        object.setCategory(category);
+                    }
+                }
+                dataProvider.refresh();
+            }
+        });
+        timesheetCellList.setColumnWidth(categoryColumn, 130, Unit.PX);
     }
 
     // /////////////////////////////////////////////////////////////////////////

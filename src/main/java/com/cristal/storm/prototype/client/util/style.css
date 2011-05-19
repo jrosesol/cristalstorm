@@ -127,7 +127,8 @@ select {
 	float: left;
 	padding: 5px 18px 0px 17px;
 	margin: 3px 15px 0px 15px;
-	background: url(../images/day_bg.gif) repeat-y;
+	/*background: url(../images/day_bg.gif) repeat-y;*/
+	background-color: white;
 }
 
 .innerDayTable {
@@ -226,4 +227,17 @@ ul li {
 }
 ul li span {
 	color: #65b8f9;
+}
+
+.placeHolder{
+	border:1px dashed black;
+	margin-top: 5px;
+	width: 100px;
+}
+
+.sortablePanel{
+	padding-bottom: 100px;
+	width: 100px;
+	float: left;
+	margin-left: 1px;
 }

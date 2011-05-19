@@ -22,6 +22,8 @@ import com.cristal.storm.prototype.client.mvp.presenter.ActionBarPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.CompanyPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.MyRootPresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter.ProjectPopupDetailsViewInterface;
 import com.cristal.storm.prototype.client.mvp.presenter.ReportsPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TasksPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetCellListPresenter;
@@ -30,6 +32,7 @@ import com.cristal.storm.prototype.client.mvp.presenter.TimesheetCellListPresent
 import com.cristal.storm.prototype.client.mvp.view.ActionBarView;
 import com.cristal.storm.prototype.client.mvp.view.CompanyView;
 import com.cristal.storm.prototype.client.mvp.view.MainPageView;
+import com.cristal.storm.prototype.client.mvp.view.ProjectPopupDetailsView;
 import com.cristal.storm.prototype.client.mvp.view.ReportsView;
 import com.cristal.storm.prototype.client.mvp.view.TasksView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetCellListView;
@@ -45,7 +48,6 @@ import com.gwtplatform.mvp.client.proxy.ParameterTokenFormatter;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyFailureHandler;
 import com.gwtplatform.mvp.client.proxy.TokenFormatter;
-
 /**
  * @author Jose Rose
  */
@@ -80,5 +82,8 @@ public class MyModule extends AbstractPresenterModule {
         // Presenter widgets
         bindSingletonPresenterWidget(TimesheetCellListPresenter.class, TimesheetCellListViewInterface.class,
                                      TimesheetCellListView.class);
+        
+        bindSingletonPresenterWidget(ProjectPopupDetailsPresenter.class,
+                                     ProjectPopupDetailsViewInterface.class, ProjectPopupDetailsView.class);
     }
 }

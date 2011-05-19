@@ -7,12 +7,14 @@
 package com.cristal.storm.prototype.client.mvp.view;
 
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter.TimesheetViewInterface;
+import com.cristal.storm.prototype.client.ui.DroppablePanel;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
@@ -35,8 +37,9 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
     /*
      * @UiField annotated vars. can be used here from your ui.xml template
      */
+    
     @UiField
-    SimplePanel dayTable;
+    DroppablePanel mondayDropPanel;
 
     private final Widget widget;
 
@@ -51,10 +54,12 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     @Inject
-    public TimesheetView() {
+    public TimesheetView(final EventBus eventBus) {
         widget = uiBinder.createAndBindUi(this);
         
         //simplePanel.add(timesheetView.asWidget());
+        
+        mondayDropPanel.setHandlers(eventBus);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -63,15 +68,6 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
     @Override
     public Widget asWidget() {
         return widget;
-    }
-
-    @Override
-    public void setInSlot(Object slot, Widget content) {
-        dayTable.clear();
-
-        if (content != null) {            
-            dayTable.add(content);
-        }
     }
 
     ///////////////////////////////////////////////////////////////////////////

@@ -6,6 +6,7 @@
  */
 package com.cristal.storm.prototype.client.mvp.presenter;
 
+import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetUiHandlers;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.google.inject.Inject;
@@ -46,6 +47,12 @@ public class TimesheetPresenter extends
     @ContentSlot
     public static final Type<RevealContentHandler<?>> TYPE_SetMainContent = new Type<RevealContentHandler<?>>();
 
+    @Inject
+    TimesheetCellListPresenter timesheetCellList;
+    
+    /*The project detail popup*/
+    private final ProjectPopupDetailsPresenter projectDetailsPopup;
+
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
     ///////////////////////////////////////////////////////////////////////////
@@ -78,14 +85,13 @@ public class TimesheetPresenter extends
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     @Inject
-    public TimesheetPresenter(EventBus eventBus, TimesheetViewInterface view,
-            TimesheetProxy proxy, PlaceManager placeManager, DispatchAsync dispatcher) {
+    public TimesheetPresenter(EventBus eventBus, TimesheetViewInterface view, TimesheetProxy proxy,
+            PlaceManager placeManager, DispatchAsync dispatcher, final ProjectPopupDetailsPresenter projectPopup) {
         super(eventBus, view, proxy);
         getView().setUiHandlers(this);
+        
+        this.projectDetailsPopup = projectPopup;
     }
-    
-    @Inject
-    TimesheetCellListPresenter timesheetCellList;
 
     ///////////////////////////////////////////////////////////////////////////
     // Handlers
@@ -95,14 +101,23 @@ public class TimesheetPresenter extends
     // Overrides
     ///////////////////////////////////////////////////////////////////////////
     @Override
+    protected void onBind() {
+        //super.bind();
+        
+        addRegisteredHandler( UpdateDataBindedObjectsEvent.getType(), new UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler() {
+
+            @Override
+            public void onUpdateDataBindedObjects(UpdateDataBindedObjectsEvent event) {
+                addToPopupSlot(projectDetailsPopup);
+            }
+            
+        } );
+    };
+    
+    @Override
     protected void revealInParent() {
         RevealContentEvent.fire(this, MainPagePresenter.TYPE_SetMainContent, 
                 this);
-    }
-    
-    @Override
-    protected void onReveal() {
-        this.setInSlot(TYPE_SetMainContent, timesheetCellList);
     }
 
     ///////////////////////////////////////////////////////////////////////////

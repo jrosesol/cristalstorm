@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client">
+
+	<ui:style>
+		.popup {
+			background-color: aqua;
+			border: 3px double black;
+			padding: 0 15px;
+		}
+		
+		.cellTable {
+			border-bottom: 1px solid #ccc;
+			text-align: left;
+			margin-bottom: 4px;
+		}
+	</ui:style>
+
+	<!--  -->
+	<g:PopupPanel modal="true" glassEnabled="true">
+		<g:VerticalPanel>
+		
+			<g:SimplePanel ui:field="dayTable"></g:SimplePanel>
+			<g:HTMLPanel>
+				<g:Button ui:field="okButton">Ok</g:Button>
+			</g:HTMLPanel>
+		</g:VerticalPanel>
+
+	</g:PopupPanel>
+
+</ui:UiBinder>

@@ -22,9 +22,6 @@ public interface Resources extends ClientBundle {
     @Source("timesheet.html")
     TextResource synchronous();
     
-    @Source("timelog.html")
-    TextResource timelog();
-    
     @Source("style.css")
     Style style();
     
@@ -33,5 +30,7 @@ public interface Resources extends ClientBundle {
         String weekContent();
         String innerDayTable();
         String subheading();
+        String placeHolder();
+        String sortablePanel();
     }
 }
