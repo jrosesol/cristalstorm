@@ -8,7 +8,7 @@ package com.cristal.storm.prototype.client.mvp.presenter;
 
 import com.cristal.storm.prototype.client.mvp.view.TasksUiHandlers;
 import com.google.inject.Inject;
-import com.gwtplatform.dispatch.client.DispatchAsync;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;

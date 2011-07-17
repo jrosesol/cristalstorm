@@ -10,7 +10,7 @@ import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetUiHandlers;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.google.inject.Inject;
-import com.gwtplatform.dispatch.client.DispatchAsync;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;

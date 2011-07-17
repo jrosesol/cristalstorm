@@ -11,16 +11,16 @@
 		<slf4j.version>1.5.6</slf4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- Convenience property to set the GWT version -->
-		<gwtVersion>2.2.0</gwtVersion>
-		<gwt-mvn-plugin.version>2.2.0</gwt-mvn-plugin.version>
+		<gwtVersion>2.3.0</gwtVersion>
+		<gwt-mvn-plugin.version>2.3.0</gwt-mvn-plugin.version>
 		<!-- GWT needs at least java 1.5 -->
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 		<!-- Convenience property to set the GWTP version -->
-		<gwtp-version>0.5.1</gwtp-version>
+		<gwtp-version>0.6</gwtp-version>
 		<gwtp-groupId>com.gwtplatform</gwtp-groupId>
-		<gae.version>1.4.2</gae.version>
+		<gae.version>1.5.1</gae.version>
 	</properties>
 	<repositories>
 		<!-- GWTP Snapshot repos -->
@@ -102,7 +102,7 @@
 		<dependency>
 			<groupId>com.googlecode.gwtquery.bundles</groupId>
 			<artifactId>gquery-dnd-bundle</artifactId>
-			<version>1.0.3</version>
+			<version>1.0.4</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -142,7 +142,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${gwtp-groupId}</groupId>
-			<artifactId>gwtp-dispatch-server</artifactId>
+			<artifactId>gwtp-dispatch-server-guice</artifactId>
 			<version>${gwtp-version}</version>
 		</dependency>
 		<dependency>

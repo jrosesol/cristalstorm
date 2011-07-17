@@ -30,7 +30,6 @@ import com.google.inject.Provider;
 
 import com.gwtplatform.dispatch.client.gin.DispatchAsyncModule;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.ProxyFailureHandler;
 
 import com.cristal.storm.prototype.client.gin.MyModule;
 
@@ -45,8 +44,6 @@ public interface MyGinjector extends Ginjector {
 	Provider<MainPagePresenter> getMainPagePresenter();
 
 	PlaceManager getPlaceManager();
-
-	ProxyFailureHandler getProxyFailureHandler();
 	
 	// Asynch providers
 	AsyncProvider<TimesheetPresenter> getTimesheetPresenter();
