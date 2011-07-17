@@ -23,12 +23,23 @@
 			padding: 0.4em;
 			color: #333333;
 		}
+		
+		.portletContentControls {
+			padding-left: 0.2em;
+			margin-top: 5px;
+			background-color: #EEEEEE;
+			border: 1px solid #DDDDDD;
+			width: 90px;
+		}
 	</ui:style>
 
 	<g:FocusPanel ui:field="portletFocus">
 		<g:HTMLPanel addStyleNames="{style.portlet}">
 			<div ui:field="header" class="{style.header}"></div>
 			<div ui:field="content" class="{style.content}"></div>
+			<g:ListBox addStyleNames="{style.portletContentControls}" />
+			<g:ListBox addStyleNames="{style.portletContentControls}"/>
+			<g:TextBox addStyleNames="{style.portletContentControls}"/>
 		</g:HTMLPanel>
 	</g:FocusPanel>
 

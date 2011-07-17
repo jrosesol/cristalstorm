@@ -164,7 +164,7 @@ public class Portlet extends DraggableWidget<Widget> {
 
     private void setup() {
         // opacity of the portlet during the drag
-        setDraggingOpacity(new Float(0.8));
+        //setDraggingOpacity(new Float(0.8));
         // zIndex of the portlet during the drag
         setDraggingZIndex(1000);
         // add position handler

@@ -15,10 +15,13 @@
  */
 package com.cristal.storm.prototype.client.ui;
 
+import static com.google.gwt.query.client.GQuery.$;
+
 import com.cristal.storm.prototype.client.util.Resources;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
@@ -48,9 +51,23 @@ public class DroppablePanel extends DroppableWidget<FlowPanel> {
     // /////////////////////////////////////////////////////////////////////////
     
     public void setHandlers(final EventBus eventBus) {
+        // Add place holders
+        SimplePanel amPlaceHolder = new SimplePanel();
+        amPlaceHolder.addStyleName(Resources.INSTANCE.style().placeHolder());
+        amPlaceHolder.setHeight("50px");
+        amPlaceHolder.setWidth("50px");
+        innerPanel.add(amPlaceHolder);
+        
         Portlet aPortlet = new Portlet("Title", "Content");
         aPortlet.setHandlers(eventBus);
         add(aPortlet);
+        
+        // Add place holders
+        SimplePanel pmPlaceHolder = new SimplePanel();
+        pmPlaceHolder.addStyleName(Resources.INSTANCE.style().placeHolder());
+        pmPlaceHolder.setHeight("50px");
+        pmPlaceHolder.setWidth("50px");
+        innerPanel.add(pmPlaceHolder);
     }
 
     // /////////////////////////////////////////////////////////////////////////
