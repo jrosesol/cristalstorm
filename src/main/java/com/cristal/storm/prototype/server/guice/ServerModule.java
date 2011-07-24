@@ -4,8 +4,6 @@
 
 package com.cristal.storm.prototype.server.guice;
 
-import com.cristal.storm.prototype.server.action.SendTextToServerHandler;
-import com.cristal.storm.prototype.shared.action.SendTextToServer;
 import com.gwtplatform.dispatch.server.guice.HandlerModule;
 
 /**
@@ -17,6 +15,5 @@ public class ServerModule extends HandlerModule {
    
     @Override
     protected void configureHandlers() {
-        bindHandler(SendTextToServer.class, SendTextToServerHandler.class);
     }
 }

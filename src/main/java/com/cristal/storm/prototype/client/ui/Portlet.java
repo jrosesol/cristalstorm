@@ -17,12 +17,19 @@ package com.cristal.storm.prototype.client.ui;
 
 import static com.google.gwt.query.client.GQuery.$;
 
+import java.util.List;
+
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter;
+import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.ActivityListRequestContext;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -32,11 +39,13 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.web.bindery.requestfactory.shared.Receiver;
 
 import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent;
@@ -51,6 +60,9 @@ import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
  * 
  */
 public class Portlet extends DraggableWidget<Widget> {
+    
+    private final TimesheetRequestFactory rf = GWT.create(TimesheetRequestFactory.class);
+
 
     interface PortletUiBinder extends UiBinder<Widget, Portlet> {
     }
@@ -91,6 +103,10 @@ public class Portlet extends DraggableWidget<Widget> {
     DivElement header;
     @UiField
     FocusPanel portletFocus;
+    @UiField
+    Button saveActivity;
+    @UiField
+    Button getActivities;
     
     private EventBus eventBus;
     
@@ -151,7 +167,49 @@ public class Portlet extends DraggableWidget<Widget> {
             public void onBlur(BlurEvent event) {
                 simplePopup.hide();
             }
-        });        
+        });
+        
+        rf.initialize(this.eventBus);        
+        saveActivity.addClickHandler(new ClickHandler() {
+            
+            @Override
+            public void onClick(ClickEvent event) {
+                ActivityListRequestContext reqCtx = rf.activityListRequest();
+                final ActivityProxy newActivity = reqCtx.create(ActivityProxy.class);
+                newActivity.setName("Test");
+
+                reqCtx.save(newActivity).fire(new Receiver<Void>() {
+
+                    @Override
+                    public void onSuccess(Void response) {
+                        System.out.print("RequestFactory seems to be working!\n");
+                    }                    
+                });
+
+            }
+        });
+        
+        getActivities.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                // TODO Auto-generated method stub
+                
+                ActivityListRequestContext reqCtx = rf.activityListRequest();
+                final ActivityProxy newActivity = reqCtx.create(ActivityProxy.class);
+                newActivity.setName("Test");
+                
+                reqCtx.listAll().fire(new Receiver<List<ActivityProxy>>() {
+
+                    @Override
+                    public void onSuccess(List<ActivityProxy> response) {
+                        for (ActivityProxy activity : response) {
+                            System.out.print(activity.getName() + "\n");
+                        }
+                    }
+                });
+            }
+        });
     }
 
     public void setContent(String content) {

@@ -1,0 +1,52 @@
+package com.cristal.storm.prototype.server.domain;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Entity;
+
+@Entity
+public class Account extends DatastoreObject {
+    ///////////////////////////////////////////////////////////////////////////
+    // Members
+    ///////////////////////////////////////////////////////////////////////////
+    
+    private String name;
+    
+    //Keys
+    private List<Key<AppUser>> owners;
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Constructors
+    ///////////////////////////////////////////////////////////////////////////
+    
+    public Account() {
+        owners = new ArrayList();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Functions
+    ///////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Get / Set
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void addOwner(AppUser owner) {
+        this.owners.add(new Key<AppUser>(AppUser.class, owner.getId()));
+    }
+
+    public List<Key<AppUser>> getOwners() {
+        return owners;
+    }
+}

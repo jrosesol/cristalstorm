@@ -53,23 +53,21 @@
 			<url>http://maven.springframework.org/external</url>
 			<name>SpringSource Maven Repository - External Releases</name>
 		</repository>
-		
+
 		<!-- Twig -->
-        <repository>
-	        <id>twig</id>
-	        <url>http://mvn.twig-persist.googlecode.com/hg</url>
-        </repository>
-        
-        <!-- Objectify -->
-   	    <repository>
-	      <id>objectify-appengine</id>
-	      <url>http://objectify-appengine.googlecode.com/svn/maven</url>
-	    </repository>
+		<repository>
+			<id>twig</id>
+			<url>http://mvn.twig-persist.googlecode.com/hg</url>
+		</repository>
+
+		<!-- Objectify -->
+		<repository>
+			<id>objectify-appengine</id>
+			<url>http://objectify-appengine.googlecode.com/svn/maven</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
-
-
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-1.0-sdk</artifactId>
@@ -98,7 +96,7 @@
 			</dependency> <dependency> <groupId>com.google.appengine</groupId> <artifactId>appengine-tools-api</artifactId> 
 			<version>${gae.version}</version> <scope>system</scope> <systemPath>${gae.home}/lib/appengine-tools-api.jar</systemPath> 
 			</dependency> -->
-		
+
 		<dependency>
 			<groupId>com.googlecode.gwtquery.bundles</groupId>
 			<artifactId>gquery-dnd-bundle</artifactId>
@@ -197,12 +195,17 @@
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>2.2.0</version>
+			<version>${gwtVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20090211</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.objectify</groupId>
 			<artifactId>objectify</artifactId>
-			<version>2.2.3</version>
+			<version>3.0</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -221,7 +224,7 @@
 					</execution>
 				</executions>
 
-            </plugin>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -260,8 +263,8 @@
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>2.5</version>
 				<configuration>
-		                    <skip>true</skip>
-		                </configuration>
+					<skip>true</skip>
+				</configuration>
 			</plugin>
 			<!-- IDE -->
 			<plugin>
@@ -354,7 +357,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -370,7 +373,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
