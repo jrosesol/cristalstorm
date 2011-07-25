@@ -117,9 +117,6 @@ public class MainPagePresenter
     @Inject
     TimesheetPresenter timesheets;
     
-    @Inject
-    ActionBarPresenter actionBar;
-
     // @Inject
     // public void injectPresenters(final CompanyPresenter companyPresenter,
     // final ReportsPresenter reports, final TasksPresenter tasks,

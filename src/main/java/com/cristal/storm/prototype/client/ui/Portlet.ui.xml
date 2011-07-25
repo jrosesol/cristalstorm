@@ -40,8 +40,8 @@
 			<g:ListBox addStyleNames="{style.portletContentControls}" />
 			<g:ListBox addStyleNames="{style.portletContentControls}"/>
 			<g:TextBox addStyleNames="{style.portletContentControls}"/>
-			<g:Button ui:field="saveActivity">Save Activity</g:Button>
-			<g:Button ui:field="getActivities">Get Activities</g:Button>
+			<g:Button ui:field="saveActivity">Save Time Entry</g:Button>
+			<g:Button ui:field="getActivities">Get Time Entry</g:Button>
 		</g:HTMLPanel>
 	</g:FocusPanel>
 

@@ -9,6 +9,7 @@ package com.cristal.storm.prototype.client.mvp.view;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter.TimesheetViewInterface;
 import com.cristal.storm.prototype.client.ui.DroppablePanel;
 import com.cristal.storm.prototype.client.util.Resources;
+import com.cristal.storm.prototype.shared.service.CommandWatchDog;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -54,12 +55,12 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     @Inject
-    public TimesheetView(final EventBus eventBus) {
+    public TimesheetView(final EventBus eventBus, final CommandWatchDog commandWatchDog) {
         widget = uiBinder.createAndBindUi(this);
         
         //simplePanel.add(timesheetView.asWidget());
         
-        mondayDropPanel.setHandlers(eventBus);
+        mondayDropPanel.setHandlers(eventBus, commandWatchDog);
     }
 
     ///////////////////////////////////////////////////////////////////////////
