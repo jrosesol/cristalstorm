@@ -14,7 +14,7 @@ import com.googlecode.objectify.Key;
  * Server-side class that provides all login-related operations. Called only
  * from server code.
  * 
- * @author José Rose
+ * @author Jose Rose
  */
 public class LoginService {
     public static final String AUTH_USER = "loggedInUser";
