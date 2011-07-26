@@ -1,5 +1,6 @@
 package com.cristal.storm.prototype.junit;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,6 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.ServerFailure;
-import com.ibm.icu.util.Calendar;
 
 import junit.framework.TestCase;
 import junit.framework.Test;
