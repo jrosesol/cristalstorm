@@ -17,13 +17,21 @@ package com.cristal.storm.prototype.client.ui;
 
 import static com.google.gwt.query.client.GQuery.$;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
+import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_ENVENT_TYPE;
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter;
+import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
+import com.cristal.storm.prototype.shared.service.CommandWatchDog;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.AccountRequestContext;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.ActivityListRequestContext;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.TimeEntryRequestContext;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.BlurEvent;
@@ -46,6 +54,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.web.bindery.requestfactory.shared.Receiver;
+import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
 import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent;
@@ -62,7 +71,6 @@ import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 public class Portlet extends DraggableWidget<Widget> {
     
     private final TimesheetRequestFactory rf = GWT.create(TimesheetRequestFactory.class);
-
 
     interface PortletUiBinder extends UiBinder<Widget, Portlet> {
     }
@@ -117,7 +125,7 @@ public class Portlet extends DraggableWidget<Widget> {
         setContent(content);
     }
     
-    public void setHandlers(final EventBus eventBus) {
+    public void setHandlers(final EventBus eventBus, final CommandWatchDog commandWatchDog) {
         this.eventBus = eventBus;
         
         // Create a basic popup widget
@@ -139,7 +147,7 @@ public class Portlet extends DraggableWidget<Widget> {
                 // Show the popup
                 //simplePopup.show();
                 
-                eventBus.fireEvent(new UpdateDataBindedObjectsEvent());
+                //eventBus.fireEvent(new UpdateDataBindedObjectsEvent());
             }
         });
 
@@ -169,16 +177,52 @@ public class Portlet extends DraggableWidget<Widget> {
             }
         });
         
-        rf.initialize(this.eventBus);        
+
+        rf.initialize(this.eventBus);   
+        
+        // Save a dummy account
+        AccountRequestContext accountCtx = rf.accountRequest();
+        final AccountProxy testAccountProxy  = accountCtx.create(AccountProxy.class);
+        testAccountProxy.setName("Demo Project");
+        accountCtx.saveAccount(testAccountProxy).fire(new Receiver<Void>() {
+
+            @Override
+            public void onSuccess(Void response) {
+                System.out.print("RequestFactory seems to be working!\n");
+            }
+            
+            @Override
+            public void onFailure(ServerFailure error) {
+                System.out.print("fail");
+            }
+        });
+      
+        ActivityListRequestContext activityCtx = rf.activityListRequest();        
+        final ActivityProxy testActivityProxy = activityCtx.create(ActivityProxy.class);
+        testActivityProxy.setName("Demo task");
+        activityCtx.save(testActivityProxy).fire(new Receiver<Void>() {
+
+            @Override
+            public void onSuccess(Void response) {
+                System.out.print("RequestFactory seems to be working!\n");
+            }
+            
+            @Override
+            public void onFailure(ServerFailure error) {
+                System.out.print("fail");
+            }
+        });
+             
         saveActivity.addClickHandler(new ClickHandler() {
             
             @Override
             public void onClick(ClickEvent event) {
-                ActivityListRequestContext reqCtx = rf.activityListRequest();
-                final ActivityProxy newActivity = reqCtx.create(ActivityProxy.class);
-                newActivity.setName("Test");
+                TimeEntryRequestContext reqCtx = rf.timeEntryRequest();
+                final TimeEntryProxy newTimeEntry = reqCtx.create(TimeEntryProxy.class);
+                newTimeEntry.setSpentTime(10.0);
+                newTimeEntry.setTimeEntryTimestamp(new Date(System.currentTimeMillis()));
 
-                reqCtx.save(newActivity).fire(new Receiver<Void>() {
+                reqCtx.saveTimeEntry(newTimeEntry, testAccountProxy, testActivityProxy).fire(new Receiver<Void>() {
 
                     @Override
                     public void onSuccess(Void response) {
@@ -189,25 +233,25 @@ public class Portlet extends DraggableWidget<Widget> {
             }
         });
         
+        final List<TimeEntryProxy> timeEntries = new ArrayList<TimeEntryProxy>();
         getActivities.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                // TODO Auto-generated method stub
-                
-                ActivityListRequestContext reqCtx = rf.activityListRequest();
-                final ActivityProxy newActivity = reqCtx.create(ActivityProxy.class);
-                newActivity.setName("Test");
-                
-                reqCtx.listAll().fire(new Receiver<List<ActivityProxy>>() {
+                commandWatchDog.listAllTimeEntries(timeEntries);
+            }
+        });
+        
+        eventBus.addHandler(UpdateDataBindedObjectsEvent.getType(), new UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler() {
 
-                    @Override
-                    public void onSuccess(List<ActivityProxy> response) {
-                        for (ActivityProxy activity : response) {
-                            System.out.print(activity.getName() + "\n");
-                        }
+            @Override
+            public void onUpdateDataBindedObjects(UpdateDataBindedObjectsEvent updateDataBindedObjectsEvent,
+                    DATA_ENVENT_TYPE eventType) {
+                if (eventType == DATA_ENVENT_TYPE.LIST_ALL_TIME_ENTRIES) {
+                    for (TimeEntryProxy timeEntry : timeEntries) {
+                        System.out.print(timeEntry.getSpentTime() + "\n");
                     }
-                });
+                }
             }
         });
     }

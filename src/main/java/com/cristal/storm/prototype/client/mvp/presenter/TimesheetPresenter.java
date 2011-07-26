@@ -6,7 +6,10 @@
  */
 package com.cristal.storm.prototype.client.mvp.presenter;
 
+import java.util.List;
+
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
+import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_ENVENT_TYPE;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetUiHandlers;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.google.inject.Inject;
@@ -104,13 +107,16 @@ public class TimesheetPresenter extends
     protected void onBind() {
         //super.bind();
         
-        addRegisteredHandler( UpdateDataBindedObjectsEvent.getType(), new UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler() {
+        addRegisteredHandler(UpdateDataBindedObjectsEvent.getType(), new UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler() {
 
             @Override
-            public void onUpdateDataBindedObjects(UpdateDataBindedObjectsEvent event) {
-                addToPopupSlot(projectDetailsPopup);
+            public void onUpdateDataBindedObjects(UpdateDataBindedObjectsEvent updateDataBindedObjectsEvent,
+                    DATA_ENVENT_TYPE eventType) {
+                
+                if (eventType == DATA_ENVENT_TYPE.LIST_ALL_TIME_ENTRIES) {
+                    addToPopupSlot(projectDetailsPopup);
+                }
             }
-            
         } );
     };
     

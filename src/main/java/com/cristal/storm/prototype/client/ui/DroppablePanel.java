@@ -18,6 +18,7 @@ package com.cristal.storm.prototype.client.ui;
 import static com.google.gwt.query.client.GQuery.$;
 
 import com.cristal.storm.prototype.client.util.Resources;
+import com.cristal.storm.prototype.shared.service.CommandWatchDog;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
@@ -50,7 +51,7 @@ public class DroppablePanel extends DroppableWidget<FlowPanel> {
     // Handlers
     // /////////////////////////////////////////////////////////////////////////
     
-    public void setHandlers(final EventBus eventBus) {
+    public void setHandlers(final EventBus eventBus, final CommandWatchDog commandWatchDog) {
         // Add place holders
         SimplePanel amPlaceHolder = new SimplePanel();
         amPlaceHolder.addStyleName(Resources.INSTANCE.style().placeHolder());
@@ -59,15 +60,8 @@ public class DroppablePanel extends DroppableWidget<FlowPanel> {
         innerPanel.add(amPlaceHolder);
         
         Portlet aPortlet = new Portlet("Title", "Content");
-        aPortlet.setHandlers(eventBus);
+        aPortlet.setHandlers(eventBus, commandWatchDog);
         add(aPortlet);
-        
-        // Add place holders
-        SimplePanel pmPlaceHolder = new SimplePanel();
-        pmPlaceHolder.addStyleName(Resources.INSTANCE.style().placeHolder());
-        pmPlaceHolder.setHeight("50px");
-        pmPlaceHolder.setWidth("50px");
-        innerPanel.add(pmPlaceHolder);
     }
 
     // /////////////////////////////////////////////////////////////////////////

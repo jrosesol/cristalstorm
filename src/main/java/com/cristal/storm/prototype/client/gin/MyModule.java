@@ -18,7 +18,6 @@ package com.cristal.storm.prototype.client.gin;
 
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.controller.MyPlaceManager;
-import com.cristal.storm.prototype.client.mvp.presenter.ActionBarPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.CompanyPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.MyRootPresenter;
@@ -29,7 +28,6 @@ import com.cristal.storm.prototype.client.mvp.presenter.TasksPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetCellListPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetCellListPresenter.TimesheetCellListViewInterface;
-import com.cristal.storm.prototype.client.mvp.view.ActionBarView;
 import com.cristal.storm.prototype.client.mvp.view.CompanyView;
 import com.cristal.storm.prototype.client.mvp.view.MainPageView;
 import com.cristal.storm.prototype.client.mvp.view.ProjectPopupDetailsView;
@@ -37,6 +35,7 @@ import com.cristal.storm.prototype.client.mvp.view.ReportsView;
 import com.cristal.storm.prototype.client.mvp.view.TasksView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetCellListView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetView;
+import com.cristal.storm.prototype.shared.service.CommandWatchDog;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Singleton;
@@ -63,6 +62,7 @@ public class MyModule extends AbstractPresenterModule {
 
         // User bindings
         bind(DataStoreProxy.class).asEagerSingleton();
+        bind(CommandWatchDog.class).asEagerSingleton();
 
         // Presenters
         bindPresenter(MainPagePresenter.class, MainPagePresenter.MainPageViewInterface.class, MainPageView.class,
@@ -75,8 +75,6 @@ public class MyModule extends AbstractPresenterModule {
                       TasksPresenter.TasksProxy.class);
         bindPresenter(CompanyPresenter.class, CompanyPresenter.CompanyViewInterface.class, CompanyView.class,
                       CompanyPresenter.CompanyProxy.class);
-        bindPresenter(ActionBarPresenter.class, ActionBarPresenter.ActionBarViewInterface.class, ActionBarView.class,
-                      ActionBarPresenter.ActionBarProxy.class);
 
         // Presenter widgets
         bindSingletonPresenterWidget(TimesheetCellListPresenter.class, TimesheetCellListViewInterface.class,

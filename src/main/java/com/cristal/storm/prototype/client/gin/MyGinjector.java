@@ -16,7 +16,6 @@
 
 package com.cristal.storm.prototype.client.gin;
 
-import com.cristal.storm.prototype.client.mvp.presenter.ActionBarPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.CompanyPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.ReportsPresenter;
@@ -50,5 +49,4 @@ public interface MyGinjector extends Ginjector {
 	AsyncProvider<TasksPresenter> getTasksPresenter();
 	AsyncProvider<ReportsPresenter> getReportsPresenter();
 	AsyncProvider<CompanyPresenter> getCompanyPresenter();
-	AsyncProvider<ActionBarPresenter> getActionBar();
 }
