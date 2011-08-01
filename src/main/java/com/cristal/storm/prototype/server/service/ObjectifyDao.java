@@ -34,6 +34,7 @@ public class ObjectifyDao<T> extends DAOBase {
     static final int BAD_MODIFIERS = Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT;
 
     static {
+        System.out.print("static()");
         ObjectifyService.register(AppUser.class);
         ObjectifyService.register(Activity.class);
         ObjectifyService.register(Account.class);
@@ -199,9 +200,9 @@ public class ObjectifyDao<T> extends DAOBase {
         return listByProperty("owningUser", userKey);
     }
 
-    public List<T> listAllInRangeForUser(Date fromDate, Date thruDate) {
+    public List<T> listAllInRangeForUser(Date fromTime, Date thruTime) {
         Key<AppUser> userKey = new Key<AppUser>(AppUser.class, getCurrentUser().getId());
-        return listByUserAndDateRange("owningUser", userKey, fromDate, thruDate);
+        return listByUserAndDateRange("owningUser", userKey, fromTime, thruTime);
     }
 
     private AppUser getCurrentUser() {

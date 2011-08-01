@@ -28,7 +28,8 @@ public interface TimesheetRequestFactory extends RequestFactory {
     @Service(value = ActivityDao.class, locator = DaoServiceLocator.class)
     interface ActivityListRequestContext extends RequestContext {
         Request<List<ActivityProxy>> listAll();
-        Request<Void> save(ActivityProxy newActivity);
+        Request<Void> save(ActivityProxy newActivity, AccountProxy account);
+        Request<ActivityProxy> saveActivityAndReturn(ActivityProxy newActivity, AccountProxy account);
     }
 
     ActivityListRequestContext activityListRequest();
@@ -44,7 +45,7 @@ public interface TimesheetRequestFactory extends RequestFactory {
     interface TimeEntryRequestContext extends RequestContext {
         Request<List<TimeEntryProxy>> listAll();        
         Request<Void> saveTimeEntry(TimeEntryProxy timeEntry, AccountProxy account, ActivityProxy activity);   
-        Request<List<TimeEntryProxy>> readInRangeTimeEntries(Date fromDate, Date thruDate);
+        Request<List<TimeEntryProxy>> readInRangeTimeEntries(Date fromTime, Date thruTime);
         Request<Void> deleteTimeEntry(TimeEntryProxy timeEntry);
     }
     

@@ -1,6 +1,7 @@
 package com.cristal.storm.prototype.server.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cristal.storm.prototype.server.service.AppUserDao;
 import com.googlecode.objectify.Key;
@@ -67,8 +68,20 @@ public class TimeEntry extends DatastoreObject {
     public void setOwningAccount(Account owningAccount) {
         this.owningAccount = new Key<Account>(Account.class, owningAccount.getId());
     }
-
+    
     public Key<Account> getOwningAccount() {
         return owningAccount;
+    }
+    
+    public long getOwningUserId() {
+        return getOwningUser().getId();
+    }
+    
+    public long getOwningActivityId() {
+        return getOwningActivity().getId();
+    }
+    
+    public long getOwningAccountId() {
+        return getOwningAccount().getId();
     }
 }

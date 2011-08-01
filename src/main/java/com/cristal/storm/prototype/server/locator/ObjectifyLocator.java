@@ -21,6 +21,7 @@ public class ObjectifyLocator extends Locator<DatastoreObject, Long> {
 
     @Override
     public DatastoreObject find(Class<? extends DatastoreObject> clazz, Long id) {
+        System.out.print("find()");
         DAOBase daoBase = new DAOBase();
         return daoBase.ofy().find(clazz, id);
     }

@@ -9,4 +9,5 @@ import com.google.web.bindery.requestfactory.shared.ProxyFor;
 public interface AccountProxy extends EntityProxy {
     public void setName(String name);
     public String getName();
+    public Long getId();
 }

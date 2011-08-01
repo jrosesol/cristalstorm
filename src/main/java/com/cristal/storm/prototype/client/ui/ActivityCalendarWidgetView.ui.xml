@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:generic="urn:import:org.apache.bcel.generic">
+	<ui:style>
+		.dayDock {
+			margin-top: 5px;
+			background-color: #EEEEEE;
+			width: 120px;
+		}
+		
+		.focusStyleColor1 {
+			background-color: #DDDDDD;
+		}
+	</ui:style>
+
+	<g:FocusPanel ui:field="dayFocusPanel">
+		<g:HTMLPanel addStyleNames="{style.dayDock}">
+			<g:VerticalPanel>
+				<g:FlowPanel ui:field="someDay" styleName="{style.focusStyleColor1}"></g:FlowPanel>
+			</g:VerticalPanel>
+		</g:HTMLPanel>
+	</g:FocusPanel>
+
+</ui:UiBinder> 

@@ -1,10 +1,13 @@
 package com.cristal.storm.prototype.shared.service;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
-import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_ENVENT_TYPE;
+import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_EVENT_TYPE;
+import com.cristal.storm.prototype.shared.proxy.AccountProxy;
+import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -18,26 +21,44 @@ public class CommandWatchDog implements HasHandlers {
 
     private final EventBus eventBus;
 
-    private final TimesheetRequestFactory rf = GWT.create(TimesheetRequestFactory.class);
+    private final TimesheetRequestFactory rf;
 
     @Inject
-    public CommandWatchDog(final EventBus eventBus) {
+    public CommandWatchDog(final EventBus eventBus, TimesheetRequestFactory rf) {
         this.eventBus = eventBus;
+        this.rf = rf;
         rf.initialize(this.eventBus);
     }
+    
+    ///////////////////////////////////////////////////////////////////////////
 
     public void deleteTimeEntry(TimeEntryProxy timeEntry) {
-        // final String methodName = getClass().getEnclosingMethod().getName();
-
-        // Delete and get again
         rf.timeEntryRequest().deleteTimeEntry(timeEntry).fire(getVoidReceiver("deleteTimeEntry"));
     }
 
     public void listAllTimeEntries(final List<TimeEntryProxy> dstResult) {
-        rf.timeEntryRequest().listAll().fire(getListReceiver("listAll", dstResult, eventBus));
-     }
+        rf.timeEntryRequest().listAll().fire(getListReceiver("listAll", dstResult, eventBus, DATA_EVENT_TYPE.LIST_ALL_TIME_ENTRIES));
+    }
+    
+    public void listAllTimeEntriesInRange(final List<TimeEntryProxy> dstResult, Date startDate, Date endDate) {
+        rf.timeEntryRequest().readInRangeTimeEntries(startDate, endDate).fire(getListReceiver("listAll", dstResult, eventBus, DATA_EVENT_TYPE.LIST_ALL_TIME_ENTRIES));
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    
+    public void listAllAccounts(final List<AccountProxy> dstResult) {
+        rf.accountRequest().listAll().fire(getListReceiver("listAll", dstResult, eventBus, DATA_EVENT_TYPE.LIST_ALL_ACCOUNTS));
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    
+    public void listAllActivies(final List<ActivityProxy> dstResult) {
+        rf.activityListRequest().listAll().fire(getListReceiver("listAll", dstResult, eventBus, DATA_EVENT_TYPE.LIST_ALL_ACTIVITIES));
+    }
 
-    public static Receiver<Void> getVoidReceiver(final String serviceCallName) {
+    ///////////////////////////////////////////////////////////////////////////
+    
+    private static Receiver<Void> getVoidReceiver(final String serviceCallName) {
         Receiver<Void> voidReceiver = new Receiver<Void>() {
 
             @Override
@@ -60,8 +81,8 @@ public class CommandWatchDog implements HasHandlers {
      * @param type
      * @return
      */
-    public static <T> Receiver<List<T>> getListReceiver(final String serviceCallName, final List<T> dstResult,
-            final EventBus eventBus) {
+    private static <T> Receiver<List<T>> getListReceiver(final String serviceCallName, final List<T> dstResult,
+            final EventBus eventBus, final DATA_EVENT_TYPE eventType) {
         Receiver<List<T>> voidReceiver = new Receiver<List<T>>() {
 
             @Override
@@ -75,7 +96,7 @@ public class CommandWatchDog implements HasHandlers {
                 }
 
                 // Notify the handlers a data event is over successfully
-                UpdateDataBindedObjectsEvent.fire(eventBus, DATA_ENVENT_TYPE.LIST_ALL_TIME_ENTRIES);
+                UpdateDataBindedObjectsEvent.fire(eventBus, eventType);
             }
 
             @Override

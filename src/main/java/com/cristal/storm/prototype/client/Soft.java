@@ -23,5 +23,9 @@ public class Soft implements EntryPoint {
 
         // Go to the default place revealDefaultPlace() token
         ginjector.getPlaceManager().revealCurrentPlace();
+        
+        // FIXCOMMIT //
+        // REMOVE THIS WHEN REAL APP IS DEPLOYED
+        ginjector.getDemoDataLoader().loadDemoData();
     }
 }

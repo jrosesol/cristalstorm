@@ -9,4 +9,5 @@ import com.cristal.storm.prototype.server.locator.ObjectifyLocator;
 public interface ActivityProxy extends EntityProxy {
     public String getName();
     public void setName(String name);
+    public Long getId();
 }

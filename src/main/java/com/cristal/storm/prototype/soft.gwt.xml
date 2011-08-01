@@ -16,6 +16,7 @@
     <inherits name='com.gwtplatform.dispatch.Dispatch' />
     
     <!-- GWT RequestFactory -->
+    <inherits name="com.googlecode.objectify.Objectify" />
     <inherits name='com.google.web.bindery.requestfactory.RequestFactory' />
 
     <!-- GWT-query-pluggins -->

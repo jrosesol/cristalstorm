@@ -23,23 +23,32 @@ public class UpdateDataBindedObjectsEvent extends GwtEvent<UpdateDataBindedObjec
     ///////////////////////////////////////////////////////////////////////////
     private static final Type<UpdateDataBindedObjectsHandler> TYPE = new Type<UpdateDataBindedObjectsHandler>();
     
-    public enum DATA_ENVENT_TYPE {
-        LIST_ALL_TIME_ENTRIES;
+    /**
+     * TODO: Add comments for DATA_EVENT_TYPE
+     *
+     */
+    public enum DATA_EVENT_TYPE {
+        LIST_ALL_TIME_ENTRIES,
+        LIST_ALL_ACCOUNTS,
+        LIST_ALL_ACTIVITIES,
+        REVEAL_PRESENTERS,
+        DATA_IS_AVAILABLE,
+        PREPARE_DATA
     };
     
-    private DATA_ENVENT_TYPE eventType;
+    private DATA_EVENT_TYPE eventType;
     
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
     ///////////////////////////////////////////////////////////////////////////
     public interface UpdateDataBindedObjectsHandler extends EventHandler {
-        public void onUpdateDataBindedObjects(UpdateDataBindedObjectsEvent updateDataBindedObjectsEvent, DATA_ENVENT_TYPE eventType);
+        public void onUpdateDataBindedObjects(UpdateDataBindedObjectsEvent updateDataBindedObjectsEvent, DATA_EVENT_TYPE eventType);
     }
 
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
-    public UpdateDataBindedObjectsEvent(DATA_ENVENT_TYPE eventType) {
+    public UpdateDataBindedObjectsEvent(DATA_EVENT_TYPE eventType) {
         this.eventType = eventType;
     }
 
@@ -63,7 +72,7 @@ public class UpdateDataBindedObjectsEvent extends GwtEvent<UpdateDataBindedObjec
         return TYPE;
     }
 
-    public static void fire(HasHandlers source, DATA_ENVENT_TYPE eventType) {
+    public static void fire(HasHandlers source, DATA_EVENT_TYPE eventType) {
         source.fireEvent(new UpdateDataBindedObjectsEvent(eventType));
     }
 
@@ -71,7 +80,7 @@ public class UpdateDataBindedObjectsEvent extends GwtEvent<UpdateDataBindedObjec
     // Get / Set
     ///////////////////////////////////////////////////////////////////////////
     
-    public DATA_ENVENT_TYPE getEventType() {
+    public DATA_EVENT_TYPE getEventType() {
         return eventType;
     }
 
