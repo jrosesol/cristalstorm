@@ -28,10 +28,24 @@ public class TimeEntry extends DatastoreObject {
     public TimeEntry() {
         
     }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // Overrides
+    ///////////////////////////////////////////////////////////////////////////
+    @Override
+    public String toString() {
+        return "[timeEntryTimestamp : " + getTimeEntryTimestamp() + ", spentTime : " + getSpentTime() + ", id: "
+                + getId() + ", owningUser : " + getOwningUser() + ", owningActivity : " + getOwningActivity()
+                + ", owningAccount : " + getOwningAccount() + "]";
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // Get / Set
     ///////////////////////////////////////////////////////////////////////////
+    
+    public String getString() {
+        return this.toString();
+    }
     
     public void setTimeEntryTimestamp(Date timeEntryTimestamp) {
         this.timeEntryTimestamp = timeEntryTimestamp;

@@ -8,7 +8,10 @@ package com.cristal.storm.prototype.client.ui;
 
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.event.RemovePortletsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
@@ -105,8 +108,8 @@ public class ActivityCalendarWidgetPresenter extends
                             }
                         }
                         else {
-                            System.out.print("Set the widget date");
-                            assert(false);
+                            Log.info("Set the widget date");
+                            throw new IllegalArgumentException();
                         }
                     }
 

@@ -95,9 +95,7 @@ public class ProjectPopupDetailsView extends PopupViewImpl implements
     @Override
     public void setInSlot(Object slot, Widget content) {
         dayTable.clear();
-        
-        System.out.print("Popup slot");
-        
+                
         if (content != null) {            
             dayTable.add(content);
         }

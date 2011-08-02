@@ -7,8 +7,12 @@
 package com.cristal.storm.prototype.client.util;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
@@ -37,14 +41,32 @@ public class DemoDataLoader {
 
         this.rf = rf;
     }
-
+    
     public void loadDemoData() {
         // FIXCOMMIT //
         /*
          * Here we will create dummy accounts and activities for the current
          * dummy user.
          */
+        
+        // Check if we have some data registered for current user
+        AccountRequestContext accountCheckCtx = rf.accountRequest();
+        accountCheckCtx.listAll().fire(new Receiver<List<AccountProxy>>() {
 
+            @Override
+            public void onSuccess(List<AccountProxy> response) {
+                
+                Log.info("DEMO DATA IS ALREADY REGISTERED");
+                
+                if (response.size() > 0)
+                    return;
+                else
+                    loadDataFromDataStore();
+            }
+        });
+    }
+
+    private void loadDataFromDataStore() {
         // Save a dummy account
         AccountRequestContext accountCtx = rf.accountRequest();
         final AccountProxy testAccountProxy1 = accountCtx.create(AccountProxy.class);
@@ -55,6 +77,8 @@ public class DemoDataLoader {
             public void onSuccess(AccountProxy response) {
                 // Save a dummy activity
                 createActivity("Something todo", response);
+                
+                Log.info("Account was created: " + response.getString());
             }
         });
 
@@ -67,6 +91,8 @@ public class DemoDataLoader {
             public void onSuccess(AccountProxy response) {
                 // Save a dummy activity
                 createActivity("Some activity", response);
+                
+                Log.info("Account was created: " + response.getString());
             }
         });
     }
@@ -108,13 +134,12 @@ public class DemoDataLoader {
         Date currentTime = new Date(System.currentTimeMillis());
         CalendarUtil.addDaysToDate(currentTime, dayOffset);
         newTimeEntry.setTimeEntryTimestamp(currentTime);
-        System.out.print(currentTime + "\n");
 
-        reqCtx.saveTimeEntry(newTimeEntry, owningAccount, response).fire(new Receiver<Void>() {
+        reqCtx.saveTimeEntryAndReturn(newTimeEntry, owningAccount, response).fire(new Receiver<TimeEntryProxy>() {
 
             @Override
-            public void onSuccess(Void response) {
-                System.out.print("RequestFactory seems to be working!\n");
+            public void onSuccess(TimeEntryProxy response) {
+                Log.info("Time Entry was created: " + response.getString());
             }
         });
     }

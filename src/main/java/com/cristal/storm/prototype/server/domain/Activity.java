@@ -27,8 +27,13 @@ public class Activity extends DatastoreObject {
     }
 
     // /////////////////////////////////////////////////////////////////////////
-    // Handlers
+    // Overrides
     // /////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public String toString() {
+        return "[name : " + getName() + ", id: " + getId() + ", owningUser : " + getOwner() + ", owningAccount : " + owningAccount + "]";
+    }
 
     // /////////////////////////////////////////////////////////////////////////
     // Functions
@@ -37,6 +42,10 @@ public class Activity extends DatastoreObject {
     // /////////////////////////////////////////////////////////////////////////
     // Get / Set
     // /////////////////////////////////////////////////////////////////////////
+    
+    public String getString() {
+        return this.toString();
+    }
     
     public void setOwner(AppUser owningUser) {
         this.owningUser = new AppUserDao().key(owningUser);

@@ -16,6 +16,8 @@
 
 package com.cristal.storm.prototype.client.gin;
 
+import java.util.logging.Logger;
+
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.controller.MyPlaceManager;
 import com.cristal.storm.prototype.client.mvp.presenter.CompanyPresenter;
@@ -121,4 +123,5 @@ public class MyModule extends AbstractPresenterModule {
     public AccountRequestContext createAccountRequestContext( TimesheetRequestFactory factory ) {
         return factory.accountRequest();
     }
+   
 }

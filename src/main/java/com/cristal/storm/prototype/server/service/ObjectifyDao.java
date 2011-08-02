@@ -33,14 +33,6 @@ import javax.persistence.Transient;
 public class ObjectifyDao<T> extends DAOBase {
     static final int BAD_MODIFIERS = Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT;
 
-    static {
-        System.out.print("static()");
-        ObjectifyService.register(AppUser.class);
-        ObjectifyService.register(Activity.class);
-        ObjectifyService.register(Account.class);
-        ObjectifyService.register(TimeEntry.class);
-    }
-
     protected Class<T> clazz;
 
     public ObjectifyDao() {

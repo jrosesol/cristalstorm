@@ -6,7 +6,7 @@ import com.google.web.bindery.requestfactory.shared.EntityProxy;
 import com.cristal.storm.prototype.server.locator.ObjectifyLocator;
 
 @ProxyFor(value = Activity.class, locator = ObjectifyLocator.class)
-public interface ActivityProxy extends EntityProxy {
+public interface ActivityProxy extends BaseProxy {
     public String getName();
     public void setName(String name);
     public Long getId();

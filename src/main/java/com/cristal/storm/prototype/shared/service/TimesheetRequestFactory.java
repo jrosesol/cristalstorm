@@ -44,7 +44,8 @@ public interface TimesheetRequestFactory extends RequestFactory {
     @Service(value = TimeEntryDao.class, locator = DaoServiceLocator.class)
     interface TimeEntryRequestContext extends RequestContext {
         Request<List<TimeEntryProxy>> listAll();        
-        Request<Void> saveTimeEntry(TimeEntryProxy timeEntry, AccountProxy account, ActivityProxy activity);   
+        Request<Void> saveTimeEntry(TimeEntryProxy timeEntry, AccountProxy account, ActivityProxy activity);
+        Request<TimeEntryProxy> saveTimeEntryAndReturn(TimeEntryProxy timeEntry, AccountProxy account, ActivityProxy activity);
         Request<List<TimeEntryProxy>> readInRangeTimeEntries(Date fromTime, Date thruTime);
         Request<Void> deleteTimeEntry(TimeEntryProxy timeEntry);
     }

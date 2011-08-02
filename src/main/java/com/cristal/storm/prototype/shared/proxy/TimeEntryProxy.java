@@ -9,7 +9,7 @@ import com.google.web.bindery.requestfactory.shared.EntityProxy;
 import com.google.web.bindery.requestfactory.shared.ProxyFor;
 
 @ProxyFor(value = TimeEntry.class, locator = ObjectifyLocator.class)
-public interface TimeEntryProxy extends EntityProxy {
+public interface TimeEntryProxy extends BaseProxy {
     public void setTimeEntryTimestamp(Date timeEntryTimestamp);
     public Date getTimeEntryTimestamp();
     public void setSpentTime(double spentTime);

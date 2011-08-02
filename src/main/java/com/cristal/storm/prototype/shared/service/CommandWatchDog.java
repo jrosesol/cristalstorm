@@ -3,11 +3,15 @@ package com.cristal.storm.prototype.shared.service;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_EVENT_TYPE;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
+import com.cristal.storm.prototype.shared.proxy.BaseProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -64,11 +68,13 @@ public class CommandWatchDog implements HasHandlers {
             @Override
             public void onSuccess(Void response) {
                 System.out.print(serviceCallName);
+                Logger.getLogger("service").log(Level.INFO, "RF Call Success: " + serviceCallName);
             }
 
             @Override
             public void onFailure(ServerFailure error) {
                 System.out.print(serviceCallName);
+                Logger.getLogger("service").log(Level.WARNING, "RF Call Failed: " + serviceCallName);
             }
         };
 
@@ -87,7 +93,14 @@ public class CommandWatchDog implements HasHandlers {
 
             @Override
             public void onSuccess(List<T> response) {
-                System.out.print(serviceCallName);
+                Log.info("RF Call Success: " + serviceCallName);
+                
+                if (Log.isDebugEnabled()) {
+                    for (T t : response) {
+                        BaseProxy obj = (BaseProxy)t;
+                        Log.debug("Returned objects: " + obj.getString());
+                    }
+                }
 
                 // Copy all elements of the collection
                 dstResult.clear();
@@ -101,7 +114,7 @@ public class CommandWatchDog implements HasHandlers {
 
             @Override
             public void onFailure(ServerFailure error) {
-                System.out.print(serviceCallName);
+                Log.warn("RF Call Failed: " + serviceCallName);
             }
         };
 

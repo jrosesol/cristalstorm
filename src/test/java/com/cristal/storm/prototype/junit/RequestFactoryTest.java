@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 
-import com.cristal.storm.prototype.server.domain.Account;
+import com.allen_sauer.gwt.log.client.Log;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
@@ -188,7 +188,7 @@ public class RequestFactoryTest extends TestCase {
             
             @Override
             public void onFailure(ServerFailure error) {
-                System.out.print("listAll failed");
+                Log.warn("RF Call Failed: " + error);
             }
         });
     }
