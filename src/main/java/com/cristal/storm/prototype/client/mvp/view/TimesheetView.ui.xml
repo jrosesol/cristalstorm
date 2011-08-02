@@ -63,7 +63,7 @@
 								<g:HorizontalPanel ui:field="dayColumns" styleName="{style.focusStyleColor1}" />
 							</td>
 						</tr>
-						<tr>						
+						<tr>
 							<td>
 								<g:Button ui:field="saveActivity">Save Time Entry</g:Button>
 							</td>

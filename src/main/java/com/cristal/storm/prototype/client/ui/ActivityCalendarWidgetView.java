@@ -19,6 +19,7 @@ import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.core.client.GWT;
@@ -54,6 +55,9 @@ public class ActivityCalendarWidgetView extends DroppableWidget<FlowPanel> imple
 
     @UiField
     protected FocusPanel dayFocusPanel;
+    
+    @UiField
+    protected Label dateDisplay;
 
     // /////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -156,6 +160,11 @@ public class ActivityCalendarWidgetView extends DroppableWidget<FlowPanel> imple
     @Override
     public void clearPortlets() {
         someDay.clear();        
+    }
+
+    @Override
+    public void setDateDisplay(String dateToSet) {
+        dateDisplay.setText(dateToSet);
     }
 
     // /////////////////////////////////////////////////////////////////////////

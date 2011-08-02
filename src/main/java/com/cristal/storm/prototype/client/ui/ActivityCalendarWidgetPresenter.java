@@ -25,6 +25,7 @@ import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.cristal.storm.prototype.shared.service.CommandWatchDog;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -65,6 +66,7 @@ public class ActivityCalendarWidgetPresenter extends
     public interface ActivityCalendarWidgetViewInterface extends View {
         public void addProtlet(Widget portlet);
         public void clearPortlets();
+        public void setDateDisplay(String dateToSet);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -112,6 +114,10 @@ public class ActivityCalendarWidgetPresenter extends
                             throw new IllegalArgumentException();
                         }
                     }
+
+                    // TODO : Set a global Date formatter
+                    DateTimeFormat dateFormatter = DateTimeFormat.getFormat("E, dd/MM");
+                    getView().setDateDisplay(dateFormatter.format(widgetDate));
 
                     // Add place holders
                     SimplePanel amPlaceHolder = new SimplePanel();
