@@ -17,6 +17,7 @@ package com.cristal.storm.prototype.client.ui;
 
 import static com.google.gwt.query.client.GQuery.$;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -74,8 +75,7 @@ public class SortableDragAndDropHandler implements DropEventHandler, OverDroppab
             reset();
         }
         else {
-            // TODO : FIND OUT WHAT TO DO WITH THIS
-            System.out.print("WHAT IS THIS CASE????\n");
+            Log.warn("WHAT IS THIS CASE????\n");
         }
     }
 

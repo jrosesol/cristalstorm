@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.gwt.event.dom.client.ClickHandler;
+
 import com.allen_sauer.gwt.log.client.Log;
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.event.RemovePortletsEvent;
@@ -20,27 +22,35 @@ import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPrese
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetCellListPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter.ProjectPopupDetailsViewInterface;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter;
+import com.cristal.storm.prototype.client.mvp.view.CompanyUiHandlers;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.cristal.storm.prototype.shared.service.CommandWatchDog;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.TimeEntryRequestContext;
 
 /**
  * ActivityCalendarWidget Presenter implementation
  * Handles the calendar like widget to display time entries for a given week. This is the main interface where we
  */
 public class ActivityCalendarWidgetPresenter extends
-        PresenterWidget<ActivityCalendarWidgetPresenter.ActivityCalendarWidgetViewInterface> {
+        PresenterWidget<ActivityCalendarWidgetPresenter.ActivityCalendarWidgetViewInterface> implements ActivityCalendarWidgetUiHandlers {
 
     ///////////////////////////////////////////////////////////////////////////
     // Members
@@ -50,8 +60,11 @@ public class ActivityCalendarWidgetPresenter extends
     
     @Inject
     DataStoreProxy dataStoreProxy;
+    
     @Inject
     CommandWatchDog commandWatchDog;
+    
+    private final Provider<TimeEntryRequestContext> timeEntryContextProvider;
     
     private Date widgetDate;
 
@@ -63,8 +76,9 @@ public class ActivityCalendarWidgetPresenter extends
      * {@link ActivityCalendarWidgetPresenter}'s view.
      * Here it extends HasUiHandlers to be able to call setUiHandlers.
      */
-    public interface ActivityCalendarWidgetViewInterface extends View {
-        public void addProtlet(Widget portlet);
+    public interface ActivityCalendarWidgetViewInterface extends View, HasUiHandlers<ActivityCalendarWidgetUiHandlers> {
+        public void addPortlet(Portlet p);
+        public void addPlaceholder(PortletPlaceholder placeholder);
         public void clearPortlets();
         public void setDateDisplay(String dateToSet);
     }
@@ -73,15 +87,33 @@ public class ActivityCalendarWidgetPresenter extends
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     @Inject
-    public ActivityCalendarWidgetPresenter(EventBus eventBus, ActivityCalendarWidgetViewInterface view) {
-        super(eventBus, view);        
+    public ActivityCalendarWidgetPresenter(EventBus eventBus, ActivityCalendarWidgetViewInterface view,
+            Provider<TimeEntryRequestContext> timeEntryContextProvider) {
+        super(eventBus, view);
+        getView().setUiHandlers(this);
+        
         this.eventBus = eventBus;
         widgetDate = null;
+        this.timeEntryContextProvider = timeEntryContextProvider;
     }
 
     ///////////////////////////////////////////////////////////////////////////
     // Handlers
     ///////////////////////////////////////////////////////////////////////////
+    
+    private ClickHandler onClickPlaceholder() {
+        return new ClickHandler() {
+            
+            @Override
+            public void onClick(ClickEvent event) {
+                TimeEntryProxy timeEntry = timeEntryContextProvider.get().create(TimeEntryProxy.class);
+                
+                Portlet aPortlet = new Portlet("", "");
+                aPortlet.setHandlers(eventBus, commandWatchDog, dataStoreProxy, timeEntry);
+                getView().addPortlet(aPortlet);                            
+            }
+        };
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // Overrides
@@ -106,7 +138,7 @@ public class ActivityCalendarWidgetPresenter extends
                             if (widgetDate.getDate() == timeEntry.getTimeEntryTimestamp().getDate() &&
                                     widgetDate.getMonth() == timeEntry.getTimeEntryTimestamp().getMonth() &&
                                     widgetDate.getYear() == timeEntry.getTimeEntryTimestamp().getYear()) {
-                                getView().addProtlet(aPortlet);                                
+                                getView().addPortlet(aPortlet);                                
                             }
                         }
                         else {
@@ -119,12 +151,8 @@ public class ActivityCalendarWidgetPresenter extends
                     DateTimeFormat dateFormatter = DateTimeFormat.getFormat("E, dd/MM");
                     getView().setDateDisplay(dateFormatter.format(widgetDate));
 
-                    // Add place holders
-                    SimplePanel amPlaceHolder = new SimplePanel();
-                    amPlaceHolder.addStyleName(Resources.INSTANCE.style().placeHolder());
-                    amPlaceHolder.setHeight("50px");
-                    amPlaceHolder.setWidth("50px");
-                    getView().addProtlet(amPlaceHolder);
+                    // Add placeholders
+                    getView().addPlaceholder(createPlaceholder());
                 }
             }
         }));
@@ -138,7 +166,6 @@ public class ActivityCalendarWidgetPresenter extends
         }));
     }
     
-
     ///////////////////////////////////////////////////////////////////////////
     // Functions
     ///////////////////////////////////////////////////////////////////////////
@@ -167,6 +194,21 @@ public class ActivityCalendarWidgetPresenter extends
      */
     public void setCalendarDate(Date widgetDate) {
         this.widgetDate = widgetDate;
+    }
+
+    @Override
+    public void onClickAddTimeEntry() {
+        
+    }
+    
+    /**
+     * A place holder for the time entries (to tell a user to click somewhere)
+     * @return 
+     */
+    private PortletPlaceholder createPlaceholder() {
+        PortletPlaceholder placeholder = new PortletPlaceholder();
+        placeholder.addClickHandler(onClickPlaceholder());
+        return placeholder;
     }
 
     ///////////////////////////////////////////////////////////////////////////

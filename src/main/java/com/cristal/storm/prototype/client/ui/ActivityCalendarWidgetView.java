@@ -23,11 +23,14 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.UiHandlers;
@@ -70,7 +73,9 @@ public class ActivityCalendarWidgetView extends DroppableWidget<FlowPanel> imple
     // Constructors
     // /////////////////////////////////////////////////////////////////////////
     public ActivityCalendarWidgetView() {
+        
         widget = uiBinder.createAndBindUi(this);
+        
 
         this.initWidget(widget);
         // weekFlowPanel.add(widget);
@@ -108,6 +113,11 @@ public class ActivityCalendarWidgetView extends DroppableWidget<FlowPanel> imple
 
     }
 
+    @Override
+    public void setUiHandlers(ActivityCalendarWidgetUiHandlers uiHandlers) {
+        this.uiHandlers = uiHandlers;
+    }
+
     /**
      * Access the {@link UiHandlers} associated with this {@link View}.
      * <p>
@@ -125,7 +135,7 @@ public class ActivityCalendarWidgetView extends DroppableWidget<FlowPanel> imple
     // /////////////////////////////////////////////////////////////////////////
 
     public void setHandlers(final EventBus eventBus, final CommandWatchDog commandWatchDog) {
-
+        
         dayFocusPanel.addDoubleClickHandler(new DoubleClickHandler() {
             @Override
             public void onDoubleClick(DoubleClickEvent event) {
@@ -137,10 +147,19 @@ public class ActivityCalendarWidgetView extends DroppableWidget<FlowPanel> imple
         });
     }
 
-    public void addProtlet(Widget p) {
-        someDay.setVisible(false);
-        someDay.add(p);
-        someDay.setVisible(true);
+    public void addPortlet(Portlet p) {
+        // Portlets are added before the placeholder
+        int placeHolderIndex = someDay.getWidgetCount() - 1;
+        
+        if (placeHolderIndex < 0) {
+            placeHolderIndex = 0;
+        }
+        
+        someDay.insert(p, placeHolderIndex);
+    }
+    
+    public void addPlaceholder(PortletPlaceholder placeholder) {
+        someDay.add(placeholder);
     }
 
     private void init(final Widget weekdayFlowPanel) {
@@ -165,6 +184,11 @@ public class ActivityCalendarWidgetView extends DroppableWidget<FlowPanel> imple
     @Override
     public void setDateDisplay(String dateToSet) {
         dateDisplay.setText(dateToSet);
+    }
+    
+    @UiHandler("dayFocusPanel")
+    public void onClickAddTimeEntry(ClickEvent event) {
+        getUiHandlers().onClickAddTimeEntry();
     }
 
     // /////////////////////////////////////////////////////////////////////////
