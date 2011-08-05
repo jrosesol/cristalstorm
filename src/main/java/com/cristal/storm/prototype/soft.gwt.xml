@@ -2,6 +2,10 @@
 <module rename-to='Soft'>
     <!-- Inherit the core Web Toolkit stuff. -->
     <inherits name='com.google.gwt.user.User' />
+    <inherits name="com.google.gwt.i18n.I18N"/>
+    
+    
+    
 
     <!-- Inherit the default GWT style sheet. You can change -->
     <!-- the theme of your GWT application by uncommenting -->
@@ -26,6 +30,11 @@
 
     <!-- Specify the app entry point class. -->
     <entry-point class='com.cristal.storm.prototype.client.Soft' />
+    
+    <extend-property name="locale" values="fr"/>
+    <extend-property name="locale" values="en"/>
+    <extend-property name="locale" values="es"/>    
+    
 
     <!-- Specify the paths for translatable code -->
     <source path='client' />

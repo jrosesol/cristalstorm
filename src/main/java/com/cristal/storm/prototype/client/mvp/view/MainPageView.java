@@ -21,6 +21,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -28,6 +29,7 @@ import com.google.inject.Inject;
 
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
+import com.cristal.storm.prototype.client.AppsConstants;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -45,10 +47,23 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
      * @UiField annotated vars. can be used here from your ui.xml template
      */
     
-    @UiField
-    SimplePanel simpleContentHolder;
+//    @UiField
+//    SimplePanel simpleContentHolder;
     
+    @UiField
     HTMLPanel mainContent;
+    
+//    @UiField
+//    Label lblTimesheet;
+    
+    @UiField
+    Label lblTasks;
+    
+    @UiField
+    Label lblReports;
+    
+    @UiField
+    Label lblCompany;
 
     private Widget widget;
 
@@ -60,8 +75,16 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
     public MainPageView() {
         widget = uiBinder.createAndBindUi(this);
         
-        mainContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
-        simpleContentHolder.add(mainContent);
+        AppsConstants lConstants = (AppsConstants) GWT.create(AppsConstants.class);
+        
+//        mainContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
+//        simpleContentHolder.add(mainContent);
+        
+        //lblTimesheet.setText(lConstants.timesheet());
+        lblTasks.setText(lConstants.tasks());
+        lblReports.setText(lConstants.reports());
+        lblCompany.setText(lConstants.company());
+        
     }
 
     @Override
@@ -75,6 +98,7 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 
     private void setMainContent(Widget content) {
         mainContent.clear();
+        
 
         if (content != null) {
             mainContent.add(content, "content");

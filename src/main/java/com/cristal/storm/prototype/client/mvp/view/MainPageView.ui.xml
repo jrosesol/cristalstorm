@@ -6,7 +6,70 @@
 		/* Add CSS here. See the GWT docs on UI Binder for more details */
 	</ui:style>
 
-	<g:SimplePanel ui:field="simpleContentHolder">
-	</g:SimplePanel>
+	<!-- <g:SimplePanel ui:field="simpleContentHolder"> -->
+	<!-- </g:SimplePanel> -->
+
+	<g:HTMLPanel ui:field="mainContent">
+		<body>
+            
+			<div id="wrapper">
+
+				<!-- header start -->
+				<div id="header">
+					<p>
+						<span>Tracking your </span>
+						<strong>time </strong>
+						<span>with...</span>
+					</p>
+					<ul>
+						<li class="no_bg">
+							<a href="#Settings">Settings</a>
+						</li>
+						<li>
+							<a href="#Logout">Log out</a>
+						</li>
+					</ul>
+				</div>
+				<!-- header ends -->
+
+
+
+				<!-- LOGO -->
+				<a href="#" id="logo" title="Timesheet" class="replace">
+					<span>Timesheet</span>
+				</a>
+
+				<!-- Navigation menu start -->
+				<div id="navigation">
+					<ul>
+						<li class="active">
+							<a href="#timesheet"><g:Label>asdasd asd as dasd</g:Label></a>
+						</li>
+						<li>
+							<a href="#tasks"><g:Label ui:field="lblTasks">wer</g:Label></a>
+						</li>
+						<li>
+							<a href="#reports"><g:Label ui:field="lblReports">ewr</g:Label></a>
+						</li>
+						<li>
+							<a href="#company"><g:Label ui:field="lblCompany">fgd</g:Label></a>
+						</li>
+					</ul>
+				</div>
+				<!-- Navigation menu ends -->
+
+
+				<!-- Main page content start -->
+				<div id="content">
+				</div>
+				<!-- Main page content ends -->
+
+			</div>
+			<!-- wrapper ends -->
+
+
+		</body>
+	</g:HTMLPanel>
+
 
 </ui:UiBinder>
