@@ -4,7 +4,7 @@
  * @author Marc-Andre Hebert
  * 2011-08-05
  */
-package com.cristal.storm.prototype.client;
+package com.cristal.storm.prototype.client.i18n;
 
 import com.google.gwt.i18n.client.Constants;
 
@@ -15,13 +15,13 @@ public interface AppsConstants extends Constants {
 	String company();
 	String logout();
 	String periods();
-	String project();
+	String account();
 	String reports();
 	String save();
 	String settings();
 	String slogan();
-	String tasks();
-	String tasktime();
+	String activity();
+	String activityTime();
 	String timesheet();
 	String to();
 

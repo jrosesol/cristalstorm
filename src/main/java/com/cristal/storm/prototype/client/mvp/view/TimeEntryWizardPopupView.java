@@ -21,6 +21,7 @@ import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSe
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -34,6 +35,7 @@ import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.Constants;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -72,6 +74,10 @@ public class TimeEntryWizardPopupView extends PopupViewImpl implements
     
     @UiField
     protected ListBox timeEntryTypes;
+    
+    @UiField
+    protected Button okButton;
+    
 
     // /////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -91,6 +97,7 @@ public class TimeEntryWizardPopupView extends PopupViewImpl implements
         // Has to be at the beginning
         widget = uiBinder.createAndBindUi(this);
         
+        // TODO : Get this from DataStore
         timeEntryTypes.addItem("TIME ENTRY TYPE 1");
         timeEntryTypes.addItem("TIME ENTRY TYPE 2");
         timeEntryTypes.addItem("TIME ENTRY TYPE 3");
@@ -121,6 +128,11 @@ public class TimeEntryWizardPopupView extends PopupViewImpl implements
     @UiHandler("okButton")
     void okButtonClicked(ClickEvent event) {
         widget.hide();
+    }
+
+    @Override
+    public HasClickHandlers onWizardOkButton() {
+        return okButton;
     }
 
     // /////////////////////////////////////////////////////////////////////////

@@ -29,7 +29,7 @@ import com.google.inject.Inject;
 
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
-import com.cristal.storm.prototype.client.AppsConstants;
+import com.cristal.storm.prototype.client.i18n.AppsConstants;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -80,7 +80,7 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
         AppsConstants lConstants = (AppsConstants) GWT.create(AppsConstants.class);
         
         lblTimesheet.setText(lConstants.timesheet());
-        lblApproval.setText(lConstants.tasks());
+        lblApproval.setText(lConstants.approval());
         lblReports.setText(lConstants.reports());
         lblCompany.setText(lConstants.company());
         lblLogout.setText(lConstants.logout());

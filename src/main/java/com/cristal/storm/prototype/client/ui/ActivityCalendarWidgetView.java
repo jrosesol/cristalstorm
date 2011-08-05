@@ -13,6 +13,7 @@ import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.util.Resources;
+import com.cristal.storm.prototype.client.util.UtilFunc;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.service.CommandWatchDog;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory;
@@ -61,7 +62,7 @@ public class ActivityCalendarWidgetView extends DroppableWidget<FlowPanel> imple
     
     @UiField
     protected Label dateDisplay;
-
+    
     // /////////////////////////////////////////////////////////////////////////
     // Interfaces
     // /////////////////////////////////////////////////////////////////////////
@@ -135,16 +136,6 @@ public class ActivityCalendarWidgetView extends DroppableWidget<FlowPanel> imple
     // /////////////////////////////////////////////////////////////////////////
 
     public void setHandlers(final EventBus eventBus, final CommandWatchDog commandWatchDog) {
-        
-        dayFocusPanel.addDoubleClickHandler(new DoubleClickHandler() {
-            @Override
-            public void onDoubleClick(DoubleClickEvent event) {
-                Portlet aPortlet = new Portlet("", "Content");
-                // TODO : FIX THIS CALL
-                aPortlet.setHandlers(eventBus, commandWatchDog, null, null);
-                someDay.add(aPortlet);
-            }
-        });
     }
 
     public void addPortlet(Portlet p) {

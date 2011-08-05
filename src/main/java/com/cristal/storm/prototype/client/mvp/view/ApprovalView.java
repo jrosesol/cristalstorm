@@ -7,7 +7,7 @@
 package com.cristal.storm.prototype.client.mvp.view;
 
 
-import com.cristal.storm.prototype.client.AppsConstants;
+import com.cristal.storm.prototype.client.i18n.AppsConstants;
 import com.cristal.storm.prototype.client.mvp.presenter.ApprovalPresenter.TasksViewInterface;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.google.gwt.user.client.ui.HTMLPanel;

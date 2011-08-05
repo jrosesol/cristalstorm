@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.cristal.storm.prototype.client.AppsConstants;
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_EVENT_TYPE;
+import com.cristal.storm.prototype.client.i18n.AppsConstants;
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
@@ -122,29 +122,27 @@ public class Portlet extends DraggableWidget<Widget> {
     @UiField
     TextBox timeEntryTime;
     
-    @UiField Label lblProject;
-    @UiField Label lblTask;
-    @UiField Label lblTasktime;
+    @UiField Label lblAccount;
+    @UiField Label lblActivity;
+    @UiField Label lblActivityTime;    
+        
+    private final TimeEntryProxy portletTimeEntry;
     
-    
-    private EventBus eventBus;
-    
-    public Portlet(String header, String content) {
+    public Portlet(TimeEntryProxy timeEntry) {
         initWidget(uiBinder.createAndBindUi(this));
         setup();
-        setHeader(header);
+        
+        this.portletTimeEntry = timeEntry;
         
         // Set the correct language
         AppsConstants lConstants = (AppsConstants) GWT.create(AppsConstants.class);
-        lblProject.setText(lConstants.project() + ":");
-        lblTask.setText(lConstants.tasks() + ":");
-        lblTasktime.setText(lConstants.tasktime() + ":");
+        lblAccount.setText(lConstants.account() + ":");
+        lblActivity.setText(lConstants.activity() + ":");
+        lblActivityTime.setText(lConstants.activityTime() + ":");
         
     }
     
-    public void setHandlers(final EventBus eventBus, final CommandWatchDog commandWatchDog, final DataStoreProxy dataStoreProxy, final TimeEntryProxy timeEntryEntity) {
-        this.eventBus = eventBus;
-        
+    public void setHandlers(final CommandWatchDog commandWatchDog, final DataStoreProxy dataStoreProxy) {
         // Populate the time entry boxes
         for (AccountProxy curAccount : dataStoreProxy.getAccountData()) {
             accountBox.addItem(curAccount.getName());
@@ -170,7 +168,7 @@ public class Portlet extends DraggableWidget<Widget> {
         activityBox.setSelectedIndex(0);
         activityBox.setEnabled(true);
         
-        timeEntryTime.setText(Double.toString(timeEntryEntity.getSpentTime()));
+        timeEntryTime.setText(Double.toString(portletTimeEntry.getSpentTime()));
         
         // Create a basic popup widget
         final DecoratedPopupPanel simplePopup = new DecoratedPopupPanel(true);
@@ -221,10 +219,6 @@ public class Portlet extends DraggableWidget<Widget> {
             }
         });
 
-    }
-
-    public void setHeader(String header) {
-        this.header.setInnerText(header);
     }
 
     private void setup() {

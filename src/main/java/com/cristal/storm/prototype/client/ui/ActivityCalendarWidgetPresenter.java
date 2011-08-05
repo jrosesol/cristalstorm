@@ -15,6 +15,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
+import com.cristal.storm.prototype.client.event.CreateTimeEntryEvent;
+import com.cristal.storm.prototype.client.event.CreateTimeEntryEvent.CreateTimeEntryHandler;
 import com.cristal.storm.prototype.client.event.RemovePortletsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_EVENT_TYPE;
@@ -25,6 +27,7 @@ import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPrese
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter;
 import com.cristal.storm.prototype.client.mvp.view.CompanyUiHandlers;
 import com.cristal.storm.prototype.client.util.Resources;
+import com.cristal.storm.prototype.client.util.UtilFunc;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.cristal.storm.prototype.shared.service.CommandWatchDog;
@@ -69,7 +72,10 @@ public class ActivityCalendarWidgetPresenter extends
     
     private final Provider<TimeEntryRequestContext> timeEntryContextProvider;
     
-    private Date widgetDate;
+    private Date widgetDate;    
+
+    /** Uniquely represent the view to distinguish it when serving events. */
+    public final int VIEW_UID = UtilFunc.generateUID(); 
 
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -105,19 +111,37 @@ public class ActivityCalendarWidgetPresenter extends
     // Handlers
     ///////////////////////////////////////////////////////////////////////////
     
+    /**
+     * This is the handler when the user clicks the create time entry.
+     * @return The handler
+     */
     private ClickHandler onClickPlaceholder() {
         return new ClickHandler() {
             
             @Override
             public void onClick(ClickEvent event) {
-                TimeEntryProxy timeEntry = timeEntryContextProvider.get().create(TimeEntryProxy.class);
                 
-                Portlet aPortlet = new Portlet("", "");
-                aPortlet.setHandlers(eventBus, commandWatchDog, dataStoreProxy, timeEntry);
-                getView().addPortlet(aPortlet);
-
+                timeEntryWizPopup.setEventSourceUID(VIEW_UID);
                 timeEntryWizPopup.getView().center();
                 timeEntryWizPopup.getView().show();
+            }
+        };
+    }
+    
+    private CreateTimeEntryHandler onTimeEntryWizardOkButtonClicked() {
+        return new CreateTimeEntryHandler() {
+
+            @Override
+            public void onCreateTimeEntry(CreateTimeEntryEvent event) {
+                
+                // Only if the event is set for us
+                if (event.getVIEW_UID() == VIEW_UID) {
+                    TimeEntryProxy timeEntry = timeEntryContextProvider.get().create(TimeEntryProxy.class);
+                    
+                    Portlet aPortlet = new Portlet(timeEntry);
+                    aPortlet.setHandlers(commandWatchDog, dataStoreProxy);
+                    getView().addPortlet(aPortlet);
+                }
             }
         };
     }
@@ -128,6 +152,11 @@ public class ActivityCalendarWidgetPresenter extends
     
     @Override
     protected void onBind() {
+        
+        // Register a event for the new time entry ok button wizard
+        registerHandler(eventBus.addHandler(CreateTimeEntryEvent.getType(), onTimeEntryWizardOkButtonClicked()));
+        
+        // Register the data available handler
         registerHandler(eventBus.addHandler(UpdateDataBindedObjectsEvent.getType(), new UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler() {
 
             @Override
@@ -138,8 +167,8 @@ public class ActivityCalendarWidgetPresenter extends
                     List<TimeEntryProxy> timeEntryList = dataStoreProxy.getTimeEntryData();
                     
                     for (TimeEntryProxy timeEntry : timeEntryList) {
-                        Portlet aPortlet = new Portlet("", "Content");
-                        aPortlet.setHandlers(eventBus, commandWatchDog, dataStoreProxy, timeEntry);
+                        Portlet aPortlet = new Portlet(timeEntry);
+                        aPortlet.setHandlers(commandWatchDog, dataStoreProxy);
                         
                         if (widgetDate != null) {
                             if (widgetDate.getDate() == timeEntry.getTimeEntryTimestamp().getDate() &&
@@ -159,7 +188,9 @@ public class ActivityCalendarWidgetPresenter extends
                     getView().setDateDisplay(dateFormatter.format(widgetDate));
 
                     // Add placeholders
-                    getView().addPlaceholder(createPlaceholder());
+                    PortletPlaceholder placeholder = createPlaceholder();
+                    registerHandler(placeholder.addClickHandler(onClickPlaceholder()));
+                    getView().addPlaceholder(placeholder);
                 }
             }
         }));
@@ -214,10 +245,6 @@ public class ActivityCalendarWidgetPresenter extends
      */
     private PortletPlaceholder createPlaceholder() {
         PortletPlaceholder placeholder = new PortletPlaceholder();
-        placeholder.addClickHandler(onClickPlaceholder());
-        
-        //addToPopupSlot(timeEntryWizPopup);
-        
         
         return placeholder;
         

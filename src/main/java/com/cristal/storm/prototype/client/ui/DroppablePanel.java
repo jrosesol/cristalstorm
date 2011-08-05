@@ -51,19 +51,6 @@ public class DroppablePanel extends DroppableWidget<FlowPanel> {
     // Handlers
     // /////////////////////////////////////////////////////////////////////////
     
-    public void setHandlers(final EventBus eventBus, final CommandWatchDog commandWatchDog) {
-        // Add place holders
-        SimplePanel amPlaceHolder = new SimplePanel();
-        amPlaceHolder.addStyleName(Resources.INSTANCE.style().placeHolder());
-        amPlaceHolder.setHeight("50px");
-        amPlaceHolder.setWidth("50px");
-        innerPanel.add(amPlaceHolder);
-        
-        Portlet aPortlet = new Portlet("Title", "Content");
-        // TODO : FIX THIS CALL
-        aPortlet.setHandlers(eventBus, commandWatchDog, null, null);
-        add(aPortlet);
-    }
 
     // /////////////////////////////////////////////////////////////////////////
     // Functions
