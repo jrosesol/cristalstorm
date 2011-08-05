@@ -27,6 +27,8 @@ import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPrese
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter.ProjectPopupDetailsViewInterface;
 import com.cristal.storm.prototype.client.mvp.presenter.ReportsPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TasksPresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.TimeEntryWizardPopupPresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.TimeEntryWizardPopupPresenter.TimeEntryWizardPopupViewInterface;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetCellListPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetCellListPresenter.TimesheetCellListViewInterface;
@@ -35,6 +37,7 @@ import com.cristal.storm.prototype.client.mvp.view.MainPageView;
 import com.cristal.storm.prototype.client.mvp.view.ProjectPopupDetailsView;
 import com.cristal.storm.prototype.client.mvp.view.ReportsView;
 import com.cristal.storm.prototype.client.mvp.view.TasksView;
+import com.cristal.storm.prototype.client.mvp.view.TimeEntryWizardPopupView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetCellListView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetView;
 import com.cristal.storm.prototype.client.ui.ActivityCalendarWidgetPresenter;
@@ -90,13 +93,17 @@ public class MyModule extends AbstractPresenterModule {
         bindPresenter(CompanyPresenter.class, CompanyPresenter.CompanyViewInterface.class, CompanyView.class,
                       CompanyPresenter.CompanyProxy.class);
 
-        // Presenter widgets
+        // Singleton presenter widgets
         bindSingletonPresenterWidget(TimesheetCellListPresenter.class, TimesheetCellListViewInterface.class,
                                      TimesheetCellListView.class);
 
         bindSingletonPresenterWidget(ProjectPopupDetailsPresenter.class,
                                      ProjectPopupDetailsViewInterface.class, ProjectPopupDetailsView.class);
 
+        bindSingletonPresenterWidget(TimeEntryWizardPopupPresenter.class,
+                                     TimeEntryWizardPopupViewInterface.class, TimeEntryWizardPopupView.class);
+        
+        // Presenter widgets
         bindPresenterWidget(ActivityCalendarWidgetPresenter.class,
                             ActivityCalendarWidgetViewInterface.class, ActivityCalendarWidgetView.class);
     }

@@ -174,8 +174,6 @@ public class TimesheetPresenter extends
                     DATA_EVENT_TYPE eventType) {
                 
                 if (eventType == DATA_EVENT_TYPE.REVEAL_PRESENTERS) {
-                    //addToPopupSlot(projectDetailsPopup);
-                    
                     getProxy().manualReveal(TimesheetPresenter.this);
                 }
             }

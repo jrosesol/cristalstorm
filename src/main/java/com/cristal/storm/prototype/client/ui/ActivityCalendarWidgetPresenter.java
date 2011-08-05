@@ -19,6 +19,7 @@ import com.cristal.storm.prototype.client.event.RemovePortletsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_EVENT_TYPE;
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.TimeEntryWizardPopupPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetCellListPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter.ProjectPopupDetailsViewInterface;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter;
@@ -64,6 +65,8 @@ public class ActivityCalendarWidgetPresenter extends
     @Inject
     CommandWatchDog commandWatchDog;
     
+    final TimeEntryWizardPopupPresenter timeEntryWizPopup;
+    
     private final Provider<TimeEntryRequestContext> timeEntryContextProvider;
     
     private Date widgetDate;
@@ -88,13 +91,14 @@ public class ActivityCalendarWidgetPresenter extends
     ///////////////////////////////////////////////////////////////////////////
     @Inject
     public ActivityCalendarWidgetPresenter(EventBus eventBus, ActivityCalendarWidgetViewInterface view,
-            Provider<TimeEntryRequestContext> timeEntryContextProvider) {
+            Provider<TimeEntryRequestContext> timeEntryContextProvider, final TimeEntryWizardPopupPresenter timeEntryWizPopup) {
         super(eventBus, view);
         getView().setUiHandlers(this);
         
         this.eventBus = eventBus;
         widgetDate = null;
         this.timeEntryContextProvider = timeEntryContextProvider;
+        this.timeEntryWizPopup = timeEntryWizPopup;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -110,7 +114,10 @@ public class ActivityCalendarWidgetPresenter extends
                 
                 Portlet aPortlet = new Portlet("", "");
                 aPortlet.setHandlers(eventBus, commandWatchDog, dataStoreProxy, timeEntry);
-                getView().addPortlet(aPortlet);                            
+                getView().addPortlet(aPortlet);
+
+                timeEntryWizPopup.getView().center();
+                timeEntryWizPopup.getView().show();
             }
         };
     }
@@ -208,7 +215,12 @@ public class ActivityCalendarWidgetPresenter extends
     private PortletPlaceholder createPlaceholder() {
         PortletPlaceholder placeholder = new PortletPlaceholder();
         placeholder.addClickHandler(onClickPlaceholder());
+        
+        //addToPopupSlot(timeEntryWizPopup);
+        
+        
         return placeholder;
+        
     }
 
     ///////////////////////////////////////////////////////////////////////////
