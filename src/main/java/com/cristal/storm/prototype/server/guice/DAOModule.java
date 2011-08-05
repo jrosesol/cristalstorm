@@ -17,6 +17,6 @@ public class DAOModule extends AbstractModule {
         ObjectifyService.register(Account.class);
         ObjectifyService.register(TimeEntry.class);
         
-        Log.setCurrentLogLevel(Log.LOG_LEVEL_ERROR);
+        Log.setCurrentLogLevel(Log.LOG_LEVEL_INFO);
     }
 }

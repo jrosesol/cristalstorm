@@ -10,7 +10,7 @@ import com.google.gwt.i18n.client.Constants;
 
 public interface AppsConstants extends Constants {
 	
-	String Approval();
+	String approval();
 	String close();
 	String company();
 	String logout();
