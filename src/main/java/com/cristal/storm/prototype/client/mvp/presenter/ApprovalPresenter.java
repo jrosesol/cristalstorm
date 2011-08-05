@@ -6,7 +6,7 @@
  */
 package com.cristal.storm.prototype.client.mvp.presenter;
 
-import com.cristal.storm.prototype.client.mvp.view.TasksUiHandlers;
+import com.cristal.storm.prototype.client.mvp.view.ApprovalUiHandlers;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -26,9 +26,9 @@ import com.google.gwt.event.shared.EventBus;
  * Tasks Presenter implementation
  * Handles the task.
  */
-public class TasksPresenter extends
-        Presenter<TasksPresenter.TasksViewInterface, TasksPresenter.TasksProxy>
-        implements TasksUiHandlers {
+public class ApprovalPresenter extends
+        Presenter<ApprovalPresenter.TasksViewInterface, ApprovalPresenter.TasksProxy>
+        implements ApprovalUiHandlers {
 
     ///////////////////////////////////////////////////////////////////////////
     // Members
@@ -40,19 +40,19 @@ public class TasksPresenter extends
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * {@link TasksPresenter}'s proxy.
+     * {@link ApprovalPresenter}'s proxy.
      */
     @ProxyCodeSplit
     @NameToken(nameToken)
-    public interface TasksProxy extends Proxy<TasksPresenter>, Place {
+    public interface TasksProxy extends Proxy<ApprovalPresenter>, Place {
     }
 
     /**
-     * {@link TasksPresenter}'s view.
+     * {@link ApprovalPresenter}'s view.
      * Here it extends HasUiHandlers to be able to call setUiHandlers.
      */
     public interface TasksViewInterface extends View,
-            HasUiHandlers<TasksUiHandlers> {
+            HasUiHandlers<ApprovalUiHandlers> {
     }
 
     /*
@@ -67,7 +67,7 @@ public class TasksPresenter extends
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     @Inject
-    public TasksPresenter(EventBus eventBus, TasksViewInterface view,
+    public ApprovalPresenter(EventBus eventBus, TasksViewInterface view,
             TasksProxy proxy, PlaceManager placeManager, DispatchAsync dispatcher) {
         super(eventBus, view, proxy);
         getView().setUiHandlers(this);

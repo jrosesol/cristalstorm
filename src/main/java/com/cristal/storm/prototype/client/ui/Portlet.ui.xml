@@ -36,11 +36,11 @@
 	<g:FocusPanel ui:field="portletFocus">
 		<g:HTMLPanel addStyleNames="{style.portlet}">
 			<div ui:field="header" class="{style.header}"></div>
-			<g:Label>Project: </g:Label>
+			<g:Label ui:field="lblProject"></g:Label>
 			<g:ListBox ui:field="accountBox" addStyleNames="{style.portletContentControls}" />
-			<g:Label>Task: </g:Label>
+			<g:Label ui:field="lblTask"></g:Label>
 			<g:ListBox ui:field="activityBox" addStyleNames="{style.portletContentControls}"/>
-			<g:Label>Task Time: </g:Label>
+			<g:Label ui:field="lblTasktime"></g:Label>
 			<g:TextBox ui:field="timeEntryTime" addStyleNames="{style.portletContentControls}"/>
 		</g:HTMLPanel>
 	</g:FocusPanel>

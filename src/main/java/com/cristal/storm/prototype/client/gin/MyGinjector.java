@@ -19,7 +19,7 @@ package com.cristal.storm.prototype.client.gin;
 import com.cristal.storm.prototype.client.mvp.presenter.CompanyPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.ReportsPresenter;
-import com.cristal.storm.prototype.client.mvp.presenter.TasksPresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.ApprovalPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter;
 import com.cristal.storm.prototype.client.util.DemoDataLoader;
 import com.google.gwt.event.shared.EventBus;
@@ -49,7 +49,7 @@ public interface MyGinjector extends Ginjector {
 	
 	// Asynch providers
 	AsyncProvider<TimesheetPresenter> getTimesheetPresenter();
-	AsyncProvider<TasksPresenter> getTasksPresenter();
+	AsyncProvider<ApprovalPresenter> getTasksPresenter();
 	AsyncProvider<ReportsPresenter> getReportsPresenter();
 	AsyncProvider<CompanyPresenter> getCompanyPresenter();
 }

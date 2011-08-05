@@ -120,7 +120,7 @@ public class MainPagePresenter
     ReportsPresenter reports;
 
     @Inject
-    TasksPresenter tasks;
+    ApprovalPresenter tasks;
 
     @Inject
     TimesheetPresenter timesheets;

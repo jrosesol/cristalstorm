@@ -31,9 +31,9 @@
 	<!-- GWT-query-pluggins -->
 	<inherits name='gwtquery.plugins.droppable.Droppable' />
     
-    <extend-property name="locale" values="fr"/>
     <extend-property name="locale" values="en"/>
-    <extend-property name="locale" values="es"/>    
+<!--     <extend-property name="locale" values="fr"/>     -->
+<!--     <extend-property name="locale" values="es"/>     -->
     
 
 	<!-- EXT-GWT -->
@@ -71,5 +71,7 @@
 	<!-- Inspired by Apache log4j PatternLayout:
     	http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html -->
 	<set-configuration-property name="log_pattern" value="(%F:%L) %d [%-5p] %m%n" />
+	<inherits name="com.cristal.storm.prototype.soft"/>
+	<inherits name="com.cristal.storm.prototype.soft"/>
 
 </module>

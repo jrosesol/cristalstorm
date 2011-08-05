@@ -50,20 +50,17 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 //    @UiField
 //    SimplePanel simpleContentHolder;
     
-    @UiField
-    HTMLPanel mainContent;
+    @UiField HTMLPanel mainContent;
     
-//    @UiField
-//    Label lblTimesheet;
+    @UiField Label lblTimesheet;    
+    @UiField Label lblApproval;    
+    @UiField Label lblReports;    
+    @UiField Label lblCompany;
+    @UiField Label lblLogout;
+    @UiField Label lblSettings;
+    @UiField SimplePanel panelSlogan;
     
-    @UiField
-    Label lblTasks;
-    
-    @UiField
-    Label lblReports;
-    
-    @UiField
-    Label lblCompany;
+    HTMLPanel htmlSlogan;
 
     private Widget widget;
 
@@ -75,15 +72,22 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
     public MainPageView() {
         widget = uiBinder.createAndBindUi(this);
         
-        AppsConstants lConstants = (AppsConstants) GWT.create(AppsConstants.class);
+        
         
 //        mainContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
 //        simpleContentHolder.add(mainContent);
         
-        //lblTimesheet.setText(lConstants.timesheet());
-        lblTasks.setText(lConstants.tasks());
+        AppsConstants lConstants = (AppsConstants) GWT.create(AppsConstants.class);
+        
+        lblTimesheet.setText(lConstants.timesheet());
+        lblApproval.setText(lConstants.tasks());
         lblReports.setText(lConstants.reports());
         lblCompany.setText(lConstants.company());
+        lblLogout.setText(lConstants.logout());
+        lblSettings.setText(lConstants.settings());
+        
+        htmlSlogan = new HTMLPanel(lConstants.slogan());
+        panelSlogan.add(htmlSlogan);
         
     }
 
@@ -98,11 +102,13 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 
     private void setMainContent(Widget content) {
         mainContent.clear();
-        
+                
 
         if (content != null) {
             mainContent.add(content, "content");
         }
+        
+
     }
 
     @Override

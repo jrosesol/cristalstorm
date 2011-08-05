@@ -9,6 +9,7 @@ package com.cristal.storm.prototype.client.mvp.view;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.cristal.storm.prototype.client.AppsConstants;
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter.TimesheetViewInterface;
 import com.cristal.storm.prototype.client.ui.ActivityCalendarWidgetPresenter.ActivityCalendarWidgetViewInterface;
@@ -63,6 +64,10 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
     DateBox beginDateBoxPicker;
     @UiField
     DateBox endDateBoxPicker;
+    @UiField
+    Label lblPeriods;
+    @UiField
+    Label lblTo;
 
     private final Widget widget;
 
@@ -77,7 +82,14 @@ public class TimesheetView extends ViewWithUiHandlers<TimesheetUiHandlers> imple
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     public TimesheetView() {
-        widget = uiBinder.createAndBindUi(this);        
+        widget = uiBinder.createAndBindUi(this);   
+        
+        // Set the correct language
+        AppsConstants lConstants = (AppsConstants) GWT.create(AppsConstants.class);
+        lblPeriods.setText(lConstants.periods() + ":");
+        saveActivity.setText(lConstants.save());
+        lblTo.setText(lConstants.to());
+        
 
         // Set the default date format
         beginDateBoxPicker.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("E, dd/MM/yyyy, HH:mm:ss")));

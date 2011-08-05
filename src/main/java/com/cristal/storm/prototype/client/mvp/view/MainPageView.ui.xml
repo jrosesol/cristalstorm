@@ -9,7 +9,7 @@
 	<!-- <g:SimplePanel ui:field="simpleContentHolder"> -->
 	<!-- </g:SimplePanel> -->
 
-	<g:HTMLPanel ui:field="mainContent">
+	<g:HTMLPanel>
 		<body>
             
 			<div id="wrapper">
@@ -17,16 +17,14 @@
 				<!-- header start -->
 				<div id="header">
 					<p>
-						<span>Tracking your </span>
-						<strong>time </strong>
-						<span>with...</span>
+						<g:SimplePanel ui:field="panelSlogan"></g:SimplePanel>			
 					</p>
 					<ul>
 						<li class="no_bg">
-							<a href="#Settings">Settings</a>
+							<a href="#Settings"><g:Label ui:field="lblSettings"></g:Label></a>
 						</li>
 						<li>
-							<a href="#Logout">Log out</a>
+							<a href="#Logout"><g:Label ui:field="lblLogout"></g:Label></a>
 						</li>
 					</ul>
 				</div>
@@ -43,16 +41,16 @@
 				<div id="navigation">
 					<ul>
 						<li class="active">
-							<a href="#timesheet"><g:Label>asdasd asd as dasd</g:Label></a>
+							<a href="#timesheet"><g:Label ui:field="lblTimesheet"></g:Label></a>
 						</li>
 						<li>
-							<a href="#tasks"><g:Label ui:field="lblTasks">wer</g:Label></a>
+							<a href="#approval"><g:Label ui:field="lblApproval"></g:Label></a>
 						</li>
 						<li>
-							<a href="#reports"><g:Label ui:field="lblReports">ewr</g:Label></a>
+							<a href="#reports"><g:Label ui:field="lblReports"></g:Label></a>
 						</li>
 						<li>
-							<a href="#company"><g:Label ui:field="lblCompany">fgd</g:Label></a>
+							<a href="#company"><g:Label ui:field="lblCompany"></g:Label></a>
 						</li>
 					</ul>
 				</div>
@@ -60,8 +58,10 @@
 
 
 				<!-- Main page content start -->
+				<g:HTMLPanel ui:field="mainContent">
 				<div id="content">
 				</div>
+				</g:HTMLPanel>
 				<!-- Main page content ends -->
 
 			</div>

@@ -38,7 +38,7 @@
 		<!-- Main page content start -->
 		<div class="{res.style.weekContent}">
 			<div class="{style.heading}">
-				<h2>Periods:</h2>
+				<h2><g:Label ui:field="lblPeriods"></g:Label></h2>
 				<div id="period">
 					<table>
 						<tr>
@@ -46,7 +46,7 @@
 								<dp:DateBox ui:field="beginDateBoxPicker"></dp:DateBox>
 							</td>
 							<td>
-								<g:Label text=" to "></g:Label>
+								<h2><g:Label ui:field="lblTo"></g:Label></h2>
 							</td>
 							<td>
 								<dp:DateBox ui:field="endDateBoxPicker"></dp:DateBox>
@@ -65,7 +65,7 @@
 						</tr>
 						<tr>
 							<td>
-								<g:Button ui:field="saveActivity">Save Time Entry</g:Button>
+								<g:Button ui:field="saveActivity"></g:Button>
 							</td>
 						</tr>
 					</table>
