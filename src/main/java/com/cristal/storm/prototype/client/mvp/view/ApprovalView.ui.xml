@@ -3,9 +3,14 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client">
 
 	<ui:style>
+		
 	</ui:style>
-	
+
 	<g:SimplePanel ui:field="simplePanel">
+		<g:HorizontalPanel>
+			<g:PushButton ui:field="push1"></g:PushButton>
+			<g:PushButton ui:field="push2"></g:PushButton>
+		</g:HorizontalPanel>
 	</g:SimplePanel>
 
 </ui:UiBinder>

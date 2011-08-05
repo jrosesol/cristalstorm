@@ -40,4 +40,4 @@ TROUBLESHOOTING
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="prototype"/>
 
 # Make sure to point to your current appengine-java-sdk jar (which should be located in your maven loca repo).
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-javaagent:C:\Users\JROSE-HP\.m2\repository\com\google\appengine\appengine-java-sdk\1.4.2\appengine-java-sdk-1.4.2\lib\agent\appengine-agent.jar -Xmx512m"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-javaagent:C:\Users\mahebert\.m2\repository\com\google\appengine\appengine-java-sdk\1.5.1\appengine-java-sdk-1.5.1\lib\agent\appengine-agent.jar -Xmx512m"/>

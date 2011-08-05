@@ -12,6 +12,6 @@ import com.gwtplatform.mvp.client.UiHandlers;
  * TODO: Add comments for TimesheetUiHandlers
  *
  */
-public interface TasksUiHandlers extends UiHandlers {
+public interface ApprovalUiHandlers extends UiHandlers {
 
 }

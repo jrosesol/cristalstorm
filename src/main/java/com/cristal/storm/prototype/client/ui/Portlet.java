@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.cristal.storm.prototype.client.AppsConstants;
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_EVENT_TYPE;
@@ -53,6 +54,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -120,12 +122,24 @@ public class Portlet extends DraggableWidget<Widget> {
     @UiField
     TextBox timeEntryTime;
     
+    @UiField Label lblProject;
+    @UiField Label lblTask;
+    @UiField Label lblTasktime;
+    
+    
     private EventBus eventBus;
     
     public Portlet(String header, String content) {
         initWidget(uiBinder.createAndBindUi(this));
         setup();
         setHeader(header);
+        
+        // Set the correct language
+        AppsConstants lConstants = (AppsConstants) GWT.create(AppsConstants.class);
+        lblProject.setText(lConstants.project() + ":");
+        lblTask.setText(lConstants.tasks() + ":");
+        lblTasktime.setText(lConstants.tasktime() + ":");
+        
     }
     
     public void setHandlers(final EventBus eventBus, final CommandWatchDog commandWatchDog, final DataStoreProxy dataStoreProxy, final TimeEntryProxy timeEntryEntity) {

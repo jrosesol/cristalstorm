@@ -21,6 +21,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -28,6 +29,7 @@ import com.google.inject.Inject;
 
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
+import com.cristal.storm.prototype.client.AppsConstants;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -45,10 +47,20 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
      * @UiField annotated vars. can be used here from your ui.xml template
      */
     
-    @UiField
-    SimplePanel simpleContentHolder;
+//    @UiField
+//    SimplePanel simpleContentHolder;
     
-    HTMLPanel mainContent;
+    @UiField HTMLPanel mainContent;
+    
+    @UiField Label lblTimesheet;    
+    @UiField Label lblApproval;    
+    @UiField Label lblReports;    
+    @UiField Label lblCompany;
+    @UiField Label lblLogout;
+    @UiField Label lblSettings;
+    @UiField SimplePanel panelSlogan;
+    
+    HTMLPanel htmlSlogan;
 
     private Widget widget;
 
@@ -60,8 +72,23 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
     public MainPageView() {
         widget = uiBinder.createAndBindUi(this);
         
-        mainContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
-        simpleContentHolder.add(mainContent);
+        
+        
+//        mainContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
+//        simpleContentHolder.add(mainContent);
+        
+        AppsConstants lConstants = (AppsConstants) GWT.create(AppsConstants.class);
+        
+        lblTimesheet.setText(lConstants.timesheet());
+        lblApproval.setText(lConstants.tasks());
+        lblReports.setText(lConstants.reports());
+        lblCompany.setText(lConstants.company());
+        lblLogout.setText(lConstants.logout());
+        lblSettings.setText(lConstants.settings());
+        
+        htmlSlogan = new HTMLPanel(lConstants.slogan());
+        panelSlogan.add(htmlSlogan);
+        
     }
 
     @Override
@@ -75,10 +102,13 @@ public class MainPageView extends ViewWithUiHandlers<MainPageUiHandlers>
 
     private void setMainContent(Widget content) {
         mainContent.clear();
+                
 
         if (content != null) {
             mainContent.add(content, "content");
         }
+        
+
     }
 
     @Override

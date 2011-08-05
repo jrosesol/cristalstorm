@@ -7,10 +7,12 @@
 package com.cristal.storm.prototype.client.mvp.view;
 
 
-import com.cristal.storm.prototype.client.mvp.presenter.TasksPresenter.TasksViewInterface;
+import com.cristal.storm.prototype.client.AppsConstants;
+import com.cristal.storm.prototype.client.mvp.presenter.ApprovalPresenter.TasksViewInterface;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.core.client.GWT;
@@ -24,20 +26,28 @@ import com.gwtplatform.mvp.client.ViewWithUiHandlers;
  * Tasks Presenter's view
  *
  */
-public class TasksView extends ViewWithUiHandlers<TasksUiHandlers> implements
+public class ApprovalView extends ViewWithUiHandlers<ApprovalUiHandlers> implements
         TasksViewInterface {
 
     ///////////////////////////////////////////////////////////////////////////
     // Members
     ///////////////////////////////////////////////////////////////////////////
-    private static TasksViewUiBinder uiBinder = GWT
-            .create(TasksViewUiBinder.class);
+    private static ApprovalViewUiBinder uiBinder = GWT
+            .create(ApprovalViewUiBinder.class);
 
     /*
      * @UiField annotaded vars. can be used here from your ui.xml template
      */
     @UiField
     SimplePanel simplePanel;
+    
+    @UiField
+    PushButton push1;
+    
+    @UiField
+    PushButton push2;
+    
+    
 
     private final Widget widget;
 
@@ -45,20 +55,27 @@ public class TasksView extends ViewWithUiHandlers<TasksUiHandlers> implements
     // Interfaces
     ///////////////////////////////////////////////////////////////////////////
 
-    interface TasksViewUiBinder extends UiBinder<Widget, TasksView> {
+    interface ApprovalViewUiBinder extends UiBinder<Widget, ApprovalView> {
     }
 
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     @Inject
-    public TasksView() {
+    public ApprovalView() {
         widget = uiBinder.createAndBindUi(this);
         
         //HTMLPanel dynContent = new HTMLPanel(Resources.INSTANCE.synchronous().getText());
         //dynContent.add(new Label("This content is dynamically generated."), "day_content");
         
         //simplePanel.add(dynContent); 
+        
+        AppsConstants lConstants = (AppsConstants) GWT.create(AppsConstants.class);
+        
+        
+        push1.setText(lConstants.save());
+        push2.setText(lConstants.close());
+         
     }
 
     ///////////////////////////////////////////////////////////////////////////

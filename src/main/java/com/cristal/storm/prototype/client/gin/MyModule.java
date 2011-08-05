@@ -26,7 +26,7 @@ import com.cristal.storm.prototype.client.mvp.presenter.MyRootPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter.ProjectPopupDetailsViewInterface;
 import com.cristal.storm.prototype.client.mvp.presenter.ReportsPresenter;
-import com.cristal.storm.prototype.client.mvp.presenter.TasksPresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.ApprovalPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimeEntryWizardPopupPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimeEntryWizardPopupPresenter.TimeEntryWizardPopupViewInterface;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetCellListPresenter;
@@ -36,7 +36,7 @@ import com.cristal.storm.prototype.client.mvp.view.CompanyView;
 import com.cristal.storm.prototype.client.mvp.view.MainPageView;
 import com.cristal.storm.prototype.client.mvp.view.ProjectPopupDetailsView;
 import com.cristal.storm.prototype.client.mvp.view.ReportsView;
-import com.cristal.storm.prototype.client.mvp.view.TasksView;
+import com.cristal.storm.prototype.client.mvp.view.ApprovalView;
 import com.cristal.storm.prototype.client.mvp.view.TimeEntryWizardPopupView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetCellListView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetView;
@@ -88,8 +88,8 @@ public class MyModule extends AbstractPresenterModule {
                       TimesheetPresenter.TimesheetProxy.class);
         bindPresenter(ReportsPresenter.class, ReportsPresenter.ReportsViewInterface.class, ReportsView.class,
                       ReportsPresenter.ReportsProxy.class);
-        bindPresenter(TasksPresenter.class, TasksPresenter.TasksViewInterface.class, TasksView.class,
-                      TasksPresenter.TasksProxy.class);
+        bindPresenter(ApprovalPresenter.class, ApprovalPresenter.TasksViewInterface.class, ApprovalView.class,
+                      ApprovalPresenter.TasksProxy.class);
         bindPresenter(CompanyPresenter.class, CompanyPresenter.CompanyViewInterface.class, CompanyView.class,
                       CompanyPresenter.CompanyProxy.class);
 
