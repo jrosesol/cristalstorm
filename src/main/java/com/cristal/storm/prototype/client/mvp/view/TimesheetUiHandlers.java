@@ -13,5 +13,12 @@ import com.gwtplatform.mvp.client.UiHandlers;
  *
  */
 public interface TimesheetUiHandlers extends UiHandlers {
-
+    /**
+     * Handler method to save all the time entries currently
+     * displayed in the Time Entry panel.
+     */
+    public void saveTimeEntries();
+    
+    
+    public void updateTimeEntriesForDateRangeChange();
 }

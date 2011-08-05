@@ -19,10 +19,18 @@ package com.cristal.storm.prototype.client.mvp.presenter;
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.mvp.view.MainPageUiHandlers;
 import com.cristal.storm.prototype.client.util.Resources;
+import com.cristal.storm.prototype.shared.proxy.AccountProxy;
+import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.AccountRequestContext;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.ActivityListRequestContext;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
+import com.google.web.bindery.requestfactory.shared.Receiver;
+import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -86,7 +94,8 @@ public class MainPagePresenter
             HasUiHandlers<MainPageUiHandlers> {
 
     }
-
+    
+    
     // /////////////////////////////////////////////////////////////////////////
     // Constructors
     // /////////////////////////////////////////////////////////////////////////
@@ -101,9 +110,8 @@ public class MainPagePresenter
         this.placeManager = placeManager;
         this.dispatcher = dispatcher;
         this.dataProxy = dataProxy;
-
-        
     }
+
 
     @Inject
     CompanyPresenter companyPresenter;
@@ -133,7 +141,6 @@ public class MainPagePresenter
     // /////////////////////////////////////////////////////////////////////////
     @Override
     protected void onBind() {
-        super.onBind();
     }
 
     @Override

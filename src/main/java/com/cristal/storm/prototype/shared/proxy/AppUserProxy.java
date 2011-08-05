@@ -6,6 +6,6 @@ import com.google.web.bindery.requestfactory.shared.ProxyFor;
 import com.google.web.bindery.requestfactory.shared.EntityProxy;
 
 @ProxyFor(value = AppUser.class, locator = ObjectifyLocator.class)
-public interface AppUserProxy extends EntityProxy {
+public interface AppUserProxy extends BaseProxy {
     public String getEmail();
 }

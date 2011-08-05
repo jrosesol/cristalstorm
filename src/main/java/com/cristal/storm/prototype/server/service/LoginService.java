@@ -1,8 +1,11 @@
 package com.cristal.storm.prototype.server.service;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.cristal.storm.prototype.server.domain.AppUser;
 import com.cristal.storm.prototype.shared.TooManyResultsException;
 import com.google.appengine.api.users.User;
@@ -20,8 +23,9 @@ public class LoginService {
     public static final String AUTH_USER = "loggedInUser";
     
     // TEMP //
-    public static Boolean USER_INITIALIZED = false;
     private static AppUser LOGGED_USER;
+    private static String EMAIL = "a_user@email.com";
+    //////////
 
     public static AppUser login(HttpServletRequest req, HttpServletResponse res) {
 
@@ -48,10 +52,28 @@ public class LoginService {
         //return (AppUser) RequestFactoryServlet.getThreadLocalRequest().getAttribute(AUTH_USER);
         
         //
-        if (!USER_INITIALIZED) {
-            LOGGED_USER = addUser("email@host.com");
-            USER_INITIALIZED = true;
+        LOGGED_USER = findUser(EMAIL);
+        if (LOGGED_USER == null) {
+            LOGGED_USER = addUser(EMAIL);
+            Log.info("New User Created: " + LOGGED_USER);
         }
+//        if (Log.isLoggingEnabled())
+//            System.out.print("Log enabled");
+//        
+//        if (Log.isInfoEnabled())
+//            System.out.print("Info enabled");
+//        if (Log.isDebugEnabled())
+//            System.out.print("Debug enabled");
+//        if (Log.isErrorEnabled())
+//            System.out.print("Error enabled");
+//        if (Log.isFatalEnabled())
+//            System.out.print("Fatal enabled");
+//        if (Log.isTraceEnabled())
+//            System.out.print("Trace enabled");
+//        if (Log.isWarnEnabled())
+//            System.out.print("Warn enabled");
+        
+        Log.info("Current User: " + LOGGED_USER);
         
         return LOGGED_USER;
     }

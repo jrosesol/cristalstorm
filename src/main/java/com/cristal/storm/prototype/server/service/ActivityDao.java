@@ -7,6 +7,9 @@ import com.cristal.storm.prototype.server.domain.Account;
 import com.cristal.storm.prototype.server.domain.Activity;
 import com.cristal.storm.prototype.server.domain.AppUser;
 import com.cristal.storm.prototype.server.domain.TimeEntry;
+import com.cristal.storm.prototype.shared.proxy.AccountProxy;
+import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
+import com.google.web.bindery.requestfactory.shared.Request;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 
@@ -35,9 +38,10 @@ public class ActivityDao extends ObjectifyDao<Activity> {
      * 
      * @param obj
      */
-    public void save(Activity activity) {
+    public void save(Activity activity, Account account) {
         AppUser loggedInUser = LoginService.getLoggedInUser();
         activity.setOwner(loggedInUser);
+        activity.setOwningAccount(account);
         
 //        // NOCOMMIT
 //        // TEST //
@@ -81,12 +85,12 @@ public class ActivityDao extends ObjectifyDao<Activity> {
         this.put(activity);
     }
 
-    public Activity saveAndReturn(Activity activity) {
+    public Activity saveActivityAndReturn(Activity activity, Account account) {
         AppUser loggedInUser = LoginService.getLoggedInUser();
         activity.setOwner(loggedInUser);
         Key<Activity> key = this.put(activity);
         try {
-            return this.get(key);
+            return activity;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

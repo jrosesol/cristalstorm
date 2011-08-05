@@ -7,6 +7,7 @@ import com.cristal.storm.prototype.server.domain.Account;
 import com.cristal.storm.prototype.server.domain.Activity;
 import com.cristal.storm.prototype.server.domain.AppUser;
 import com.cristal.storm.prototype.server.domain.TimeEntry;
+import com.googlecode.objectify.Key;
 
 public class TimeEntryDao extends ObjectifyDao<TimeEntry> {
 
@@ -35,9 +36,20 @@ public class TimeEntryDao extends ObjectifyDao<TimeEntry> {
         // Persist the time entry
         this.put(timeEntry);
     }
+    
+    public TimeEntry saveTimeEntryAndReturn(TimeEntry timeEntry, Account account, Activity activity) {
+        // Persist the time entry
+        saveTimeEntry(timeEntry, account, activity);
         
-    public List<TimeEntry> readInRangeTimeEntries(Date fromDate, Date thruDate) {
-        return this.listAllInRangeForUser(fromDate, thruDate);
+        try {
+            return timeEntry;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+        
+    public List<TimeEntry> readInRangeTimeEntries(Date fromTime, Date thruTime) {
+        return this.listAllInRangeForUser(fromTime, thruTime);
     }
     
     public void deleteTimeEntry(TimeEntry timeEntry) {

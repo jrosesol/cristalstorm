@@ -6,6 +6,10 @@
  */
 package com.cristal.storm.prototype.client.mvp.presenter;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -84,7 +88,7 @@ public class ProjectPopupDetailsPresenter extends
     protected void onReveal() {
         
         if (timesheetCellList == null) {
-            System.out.print("NULL????");
+            Log.error("Why is this null????");
         }
         
         this.setInSlot(TYPE_SetPopupContent, timesheetCellList);

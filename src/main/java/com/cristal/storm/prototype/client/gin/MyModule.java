@@ -16,6 +16,8 @@
 
 package com.cristal.storm.prototype.client.gin;
 
+import java.util.logging.Logger;
+
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.controller.MyPlaceManager;
 import com.cristal.storm.prototype.client.mvp.presenter.CompanyPresenter;
@@ -35,9 +37,19 @@ import com.cristal.storm.prototype.client.mvp.view.ReportsView;
 import com.cristal.storm.prototype.client.mvp.view.TasksView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetCellListView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetView;
+import com.cristal.storm.prototype.client.ui.ActivityCalendarWidgetPresenter;
+import com.cristal.storm.prototype.client.ui.ActivityCalendarWidgetPresenter.ActivityCalendarWidgetViewInterface;
+import com.cristal.storm.prototype.client.ui.ActivityCalendarWidgetView;
+import com.cristal.storm.prototype.client.util.DemoDataLoader;
 import com.cristal.storm.prototype.shared.service.CommandWatchDog;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.TimeEntryRequestContext;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.AccountRequestContext;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.ActivityListRequestContext;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
 import com.gwtplatform.mvp.client.RootPresenter;
@@ -63,6 +75,8 @@ public class MyModule extends AbstractPresenterModule {
         // User bindings
         bind(DataStoreProxy.class).asEagerSingleton();
         bind(CommandWatchDog.class).asEagerSingleton();
+        //bind(TimesheetRequestFactory.class).asEagerSingleton();
+        bind(DemoDataLoader.class).asEagerSingleton();
 
         // Presenters
         bindPresenter(MainPagePresenter.class, MainPagePresenter.MainPageViewInterface.class, MainPageView.class,
@@ -79,8 +93,35 @@ public class MyModule extends AbstractPresenterModule {
         // Presenter widgets
         bindSingletonPresenterWidget(TimesheetCellListPresenter.class, TimesheetCellListViewInterface.class,
                                      TimesheetCellListView.class);
-        
+
         bindSingletonPresenterWidget(ProjectPopupDetailsPresenter.class,
                                      ProjectPopupDetailsViewInterface.class, ProjectPopupDetailsView.class);
+
+        bindPresenterWidget(ActivityCalendarWidgetPresenter.class,
+                            ActivityCalendarWidgetViewInterface.class, ActivityCalendarWidgetView.class);
     }
+
+    @Provides
+    @Singleton
+    public TimesheetRequestFactory createTimesheetRequestFactory( EventBus eventBus ) {
+        TimesheetRequestFactory factory = GWT.create( TimesheetRequestFactory.class );
+        factory.initialize( eventBus );
+        return factory;
+    }
+
+    @Provides
+    public TimeEntryRequestContext createTimeEntryRequestContext( TimesheetRequestFactory factory ) {
+        return factory.timeEntryRequest();
+    }
+
+    @Provides
+    public ActivityListRequestContext createActivityListRequestContext( TimesheetRequestFactory factory ) {
+        return factory.activityListRequest();
+    }
+
+    @Provides
+    public AccountRequestContext createAccountRequestContext( TimesheetRequestFactory factory ) {
+        return factory.accountRequest();
+    }
+   
 }

@@ -23,6 +23,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
@@ -44,7 +45,6 @@ public class DroppablePanel extends DroppableWidget<FlowPanel> {
         init();
         initWidget(innerPanel);
         setupDrop();
-        
     }
 
     // /////////////////////////////////////////////////////////////////////////
@@ -60,7 +60,8 @@ public class DroppablePanel extends DroppableWidget<FlowPanel> {
         innerPanel.add(amPlaceHolder);
         
         Portlet aPortlet = new Portlet("Title", "Content");
-        aPortlet.setHandlers(eventBus, commandWatchDog);
+        // TODO : FIX THIS CALL
+        aPortlet.setHandlers(eventBus, commandWatchDog, null, null);
         add(aPortlet);
     }
 
@@ -68,7 +69,7 @@ public class DroppablePanel extends DroppableWidget<FlowPanel> {
     // Functions
     // /////////////////////////////////////////////////////////////////////////
 
-    public void add(Portlet p) {
+    public void add(Widget p) {
         innerPanel.add(p);
     }
 

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:u="urn:import:com.cristal.storm.prototype.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:u="urn:import:com.cristal.storm.prototype.client.ui"
+	xmlns:dp="urn:import:com.google.gwt.user.datepicker.client">
 
-	<ui:with field="res" type="com.cristal.storm.prototype.client.util.Resources" />
-	
+	<ui:with field="res"
+		type="com.cristal.storm.prototype.client.util.Resources" />
+
 	<ui:style>
 		.heading {
 			width: 913px;
@@ -22,93 +23,57 @@
 			font-weight: normal;
 			padding: 0px 10px 0px 0px;
 		}
-
+		
 		.heading img {
 			float: rightright;
 			margin: 3px 0px 0px 0px;
 		}
 		
-		.focusStyle {
-			width: 100px;
-			height: 200px;
-			padding: 0.4em;
-			padding-left: 0.2em;
-		}
 		.focusStyleColor1 {
-			background-color: #E6E6E6;
+			background-color: #DDDDDD;
 		}
-		.focusStyleColor2 {
-			background-color: #DBDBDB;
-		}
-		.focusStyleColor3 {
-			background-color: #E6E6E6;
-		}
-		.focusStyleColor4 {
-			background-color: #DBDBDB;
-		}
-		.focusStyleColor5 {
-			background-color: #E6E6E6;
-		}
-		
 	</ui:style>
-		
+
 	<g:HTMLPanel>
 		<!-- Main page content start -->
 		<div class="{res.style.weekContent}">
-		    <div class="{style.heading}">
-		        <h2>Periods:</h2>
-		        <div id="period">
-		            <select>
-		                <option>2011-01-01 to 2011-01-07</option>
-		                <option>2011-01-08 to 2011-01-14</option>
-		                <option>2011-01-15 to 2011-01-21</option>
-		                <option>2011-01-22 to 2011-01-28</option>
-		            </select>
-		        </div>
-		    </div>
-		    <div>
-		        <div class="{res.style.subheading}">
-		            <ul>
-		                <li>Date</li>
-		                <li>Day</li>
-		                <li>In Time</li>
-		                <li>Out Time</li>
-		                <li>Away</li>
-		                <li>Total time</li>
-		                <li>All event</li>
-		            </ul>
-		        </div>
-		        <div class="{res.style.dayTable}">
-		            <table class="{res.style.innerDayTable}">
-		                <tr>
-		                    <th>
-		                    	<g:VerticalPanel>
-		                    		<g:HorizontalPanel>
-		                    			<g:FocusPanel styleName="{style.focusStyle} {style.focusStyleColor1}">
-		                    				<u:DroppablePanel ui:field="mondayDropPanel"></u:DroppablePanel>
-		                    			</g:FocusPanel>
-		                    			<g:FocusPanel styleName="{style.focusStyle} {style.focusStyleColor2}">
-		                    				<u:DroppablePanel></u:DroppablePanel>
-		                    			</g:FocusPanel>
-		                    			<g:FocusPanel styleName="{style.focusStyle} {style.focusStyleColor3}">
-		                    				<u:DroppablePanel></u:DroppablePanel>
-		                    			</g:FocusPanel>
-		                    			<g:FocusPanel styleName="{style.focusStyle} {style.focusStyleColor4}">
-		                    				<u:DroppablePanel></u:DroppablePanel>
-		                    			</g:FocusPanel>
-		                    			<g:FocusPanel styleName="{style.focusStyle} {style.focusStyleColor5}">
-		                    				<u:DroppablePanel></u:DroppablePanel>
-		                    			</g:FocusPanel>
-		                    		</g:HorizontalPanel>
-		                    	</g:VerticalPanel>
-		                    </th>
-		                </tr>
-		            </table>
-		        </div>
+			<div class="{style.heading}">
+				<h2>Periods:</h2>
+				<div id="period">
+					<table>
+						<tr>
+							<td>
+								<dp:DateBox ui:field="beginDateBoxPicker"></dp:DateBox>
+							</td>
+							<td>
+								<g:Label text=" to "></g:Label>
+							</td>
+							<td>
+								<dp:DateBox ui:field="endDateBoxPicker"></dp:DateBox>
+							</td>
+						</tr>					
+					</table>
+				</div>
+			</div>
+			<div>
+				<div class="{res.style.dayTable}">
+					<table class="{res.style.innerDayTable}">
+						<tr>
+							<td>
+								<g:HorizontalPanel ui:field="dayColumns" styleName="{style.focusStyleColor1}" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<g:Button ui:field="saveActivity">Save Time Entry</g:Button>
+							</td>
+						</tr>
+					</table>
+				</div>
 			</div>
 		</div>
 		<!-- Main page content ends -->
 
-	</g:HTMLPanel>	
+	</g:HTMLPanel>
 
 </ui:UiBinder>

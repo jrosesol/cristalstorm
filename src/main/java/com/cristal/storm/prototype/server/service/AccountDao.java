@@ -42,7 +42,8 @@ public class AccountDao extends ObjectifyDao<Account> {
         account.addOwner(loggedInUser);
         Key<Account> key = this.put(account);
         try {
-            return this.get(key);
+            //return this.get(key);
+            return account;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

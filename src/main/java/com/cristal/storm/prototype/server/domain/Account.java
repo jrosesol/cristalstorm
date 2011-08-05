@@ -15,24 +15,32 @@ public class Account extends DatastoreObject {
     private String name;
     
     //Keys
-    private List<Key<AppUser>> owners;
+    private List<Key<AppUser>> owningUser;
 
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     
     public Account() {
-        owners = new ArrayList();
+        owningUser = new ArrayList();
     }
 
     ///////////////////////////////////////////////////////////////////////////
     // Functions
     ///////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public String toString() {
+        return "[name : " + getName() + ", id: " + getId() + ", owners : " + getOwners() + "]";
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // Get / Set
     ///////////////////////////////////////////////////////////////////////////
-
+    
+    public String getString() {
+        return this.toString();
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -43,10 +51,10 @@ public class Account extends DatastoreObject {
     }
 
     public void addOwner(AppUser owner) {
-        this.owners.add(new Key<AppUser>(AppUser.class, owner.getId()));
+        this.owningUser.add(new Key<AppUser>(AppUser.class, owner.getId()));
     }
 
     public List<Key<AppUser>> getOwners() {
-        return owners;
+        return owningUser;
     }
 }

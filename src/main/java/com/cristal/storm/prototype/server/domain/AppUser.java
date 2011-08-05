@@ -18,8 +18,8 @@ public class AppUser extends DatastoreObject {
     private String email;
 
     // Keys
-    Key<AppUser>    boss;
-    Key<AppUser>[]  subodinates;
+    private Key<AppUser>    boss;
+    private Key<AppUser>[]  subodinates;
 
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
@@ -34,16 +34,20 @@ public class AppUser extends DatastoreObject {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    // Handlers
+    // Overrides
     ///////////////////////////////////////////////////////////////////////////
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Functions
-    ///////////////////////////////////////////////////////////////////////////
+    @Override
+    public String toString() {
+        return "[email : " + getEmail() + ", id: " + getId() + ", boss : " + getBoss() + ", subodinates : " + getSubodinates() + "]";
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // Get / Set
     ///////////////////////////////////////////////////////////////////////////
+    
+    public String getString() {
+        return this.toString();
+    }
 
     protected void setEmail(String email) {
         this.email = email;
@@ -51,5 +55,21 @@ public class AppUser extends DatastoreObject {
 
     public String getEmail() {
         return email;
+    }
+
+    void setBoss(Key<AppUser> boss) {
+        this.boss = boss;
+    }
+
+    Key<AppUser> getBoss() {
+        return boss;
+    }
+
+    private void setSubodinates(Key<AppUser>[] subodinates) {
+        this.subodinates = subodinates;
+    }
+
+    private Key<AppUser>[] getSubodinates() {
+        return subodinates;
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 
-import com.cristal.storm.prototype.server.domain.Account;
+import com.allen_sauer.gwt.log.client.Log;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
@@ -52,6 +52,8 @@ public class RequestFactoryTest extends TestCase {
         return new TestSuite(RequestFactoryTest.class);
     }
     
+    AccountProxy accountProxyReturnValue;
+    
     @Before 
     public void setUp() throws Exception {
         helper.setUp();
@@ -64,11 +66,12 @@ public class RequestFactoryTest extends TestCase {
         AccountProxy mutableObject = accountCtx.edit(testAccountProxy);
         mutableObject.setName("Demo Project");
         Boolean changed = accountCtx.isChanged();
-        accountCtx.saveAccount(mutableObject).fire(new Receiver<Void>() {
+        accountCtx.saveAccountAndReturn(mutableObject).fire(new Receiver<AccountProxy>() {
 
             @Override
-            public void onSuccess(Void response) {
+            public void onSuccess(AccountProxy response) {
                 System.out.print("RequestFactory seems to be working!\n");
+                accountProxyReturnValue = response;
             }
             
             @Override
@@ -80,7 +83,7 @@ public class RequestFactoryTest extends TestCase {
         ActivityListRequestContext activityCtx = rf.activityListRequest();        
         testActivityProxy = activityCtx.create(ActivityProxy.class);
         testActivityProxy.setName("Demo task");
-        activityCtx.save(testActivityProxy).fire(new Receiver<Void>() {
+        activityCtx.save(testActivityProxy, accountProxyReturnValue).fire(new Receiver<Void>() {
 
             @Override
             public void onSuccess(Void response) {
@@ -185,7 +188,7 @@ public class RequestFactoryTest extends TestCase {
             
             @Override
             public void onFailure(ServerFailure error) {
-                System.out.print("listAll failed");
+                Log.warn("RF Call Failed: " + error);
             }
         });
     }

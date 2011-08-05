@@ -21,6 +21,7 @@ import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.ReportsPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TasksPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter;
+import com.cristal.storm.prototype.client.util.DemoDataLoader;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.inject.client.AsyncProvider;
 import com.google.gwt.inject.client.GinModules;
@@ -43,6 +44,8 @@ public interface MyGinjector extends Ginjector {
 	Provider<MainPagePresenter> getMainPagePresenter();
 
 	PlaceManager getPlaceManager();
+	
+	DemoDataLoader getDemoDataLoader();
 	
 	// Asynch providers
 	AsyncProvider<TimesheetPresenter> getTimesheetPresenter();
