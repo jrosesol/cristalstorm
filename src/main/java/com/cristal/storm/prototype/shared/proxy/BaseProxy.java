@@ -13,5 +13,5 @@ import com.google.web.bindery.requestfactory.shared.EntityProxy;
  *
  */
 public interface BaseProxy extends EntityProxy {
-    public String getString();
+    public String getDescription();
 }

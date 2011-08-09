@@ -1,0 +1,43 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    
+	<ui:style>
+		.portletContentControls {
+			padding-left: 0.2em;
+			margin-top: 5px;
+			background-color: #EEEEEE;
+			border: 1px solid #DDDDDD;
+			width: 90px;
+		}
+
+		.portlet {
+			margin-top: 5px;
+			background-color: #FFFFFF;
+			border: 1px solid #000000;
+			width: 100px;
+		}
+
+		.header {
+			margin: 0.3em;
+			padding-bottom: 4px;
+			padding-left: 0.2em;
+			background-color: #3F91C4;
+			border: 1px solid #02024F;
+			color: #FFFFFF;
+			font-weight: bold;
+		}
+	</ui:style>
+
+	<g:HTMLPanel>
+        <g:VerticalPanel>
+    		<g:Label ui:field="lblAccount"/>
+    		<g:ListBox ui:field="accountBox"/>
+    		<g:Label ui:field="lblActivity"/>
+    		<g:ListBox ui:field="activityBox"/>
+    		<g:Label ui:field="lblActivityTime"/>
+    		<g:TextBox ui:field="timeEntryTime"/>
+        </g:VerticalPanel>
+	</g:HTMLPanel>
+
+</ui:UiBinder> 

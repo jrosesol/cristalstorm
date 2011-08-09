@@ -24,5 +24,10 @@ public interface AppsConstants extends Constants {
 	String activityTime();
 	String timesheet();
 	String to();
+	String normalTimeCode();
+	String vacationTimeCode();
+	String sicknessTimeCode();
+	String holidayTimeCode();
+	String lunchTimeCode();
 
 }

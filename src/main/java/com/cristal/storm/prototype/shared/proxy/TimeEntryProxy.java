@@ -18,4 +18,7 @@ public interface TimeEntryProxy extends BaseProxy {
     public long getOwningUserId();
     public long getOwningActivityId();
     public long getOwningAccountId();
+    public long getTimeEntryCodeId();
+    public TimeEntryCode getTimeCode();
+    public void setTimeCode(TimeEntryCode timeEntryCode);
 }

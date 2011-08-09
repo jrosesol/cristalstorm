@@ -3,14 +3,18 @@ package com.cristal.storm.prototype.shared.service;
 import java.util.Date;
 import java.util.List;
 
-import com.cristal.storm.prototype.server.domain.Account;
-import com.cristal.storm.prototype.server.domain.TimeEntry;
+import com.cristal.storm.prototype.server.domain.DomainTimeCodes;
 import com.cristal.storm.prototype.server.locator.DaoServiceLocator;
 import com.cristal.storm.prototype.server.service.AccountDao;
 import com.cristal.storm.prototype.server.service.ActivityDao;
+import com.cristal.storm.prototype.server.service.DomainDao;
+import com.cristal.storm.prototype.server.service.DomainTimeCodesDao;
 import com.cristal.storm.prototype.server.service.TimeEntryDao;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
+import com.cristal.storm.prototype.shared.proxy.DomainProxy;
+import com.cristal.storm.prototype.shared.proxy.DomainTimeCodesProxy;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryCode;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.google.web.bindery.requestfactory.shared.Request;
 import com.google.web.bindery.requestfactory.shared.RequestContext;
@@ -67,4 +71,32 @@ public interface TimesheetRequestFactory extends RequestFactory {
         Request<Void> deleteAccount(AccountProxy account);
     }
     AccountRequestContext accountRequest();
+    
+    
+    /**
+     * Service stub for methods in DomainDao
+     * 
+     * TODO Enhance RequestFactory to enable service stubs to extend a base
+     * interface so we don't have to repeat methods from the base ObjectifyDao
+     * in each stub
+     */
+    @Service(value = DomainDao.class, locator = DaoServiceLocator.class)
+    interface DomainRequestContext extends RequestContext {
+        Request<DomainProxy> registerDomain(DomainProxy newDomain);
+    }
+    DomainRequestContext domainRequest();
+    
+    /**
+     * Service stub for methods in DomainTimeCodesDao
+     * 
+     * TODO Enhance RequestFactory to enable service stubs to extend a base
+     * interface so we don't have to repeat methods from the base ObjectifyDao
+     * in each stub
+     */
+    @Service(value = DomainTimeCodesDao.class, locator = DaoServiceLocator.class)
+    interface DomainTimeCodeRequestContext extends RequestContext {
+        Request<DomainTimeCodesProxy> listTimeCodes();
+        Request<DomainTimeCodesProxy> addDomainTimeCodeAndReturn(TimeEntryCode timeEntryCode);
+    }
+    DomainTimeCodeRequestContext domainTimeCodeRequest();
 }

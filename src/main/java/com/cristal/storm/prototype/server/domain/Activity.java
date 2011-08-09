@@ -1,6 +1,5 @@
 package com.cristal.storm.prototype.server.domain;
 
-import com.cristal.storm.prototype.server.service.AccountDao;
 import com.cristal.storm.prototype.server.service.AppUserDao;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.googlecode.objectify.Key;
@@ -43,7 +42,7 @@ public class Activity extends DatastoreObject {
     // Get / Set
     // /////////////////////////////////////////////////////////////////////////
     
-    public String getString() {
+    public String getDescription() {
         return this.toString();
     }
     

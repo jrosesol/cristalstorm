@@ -51,6 +51,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -59,6 +60,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
@@ -73,11 +75,10 @@ import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
+ * TODO: D&D, enable the drag and drop
  */
-public class Portlet extends DraggableWidget<Widget> {
+public class Portlet extends Composite /*DraggableWidget<Widget>*/ {
     
-    private final TimesheetRequestFactory rf = GWT.create(TimesheetRequestFactory.class);
-
     interface PortletUiBinder extends UiBinder<Widget, Portlet> {
     }
 
@@ -88,43 +89,31 @@ public class Portlet extends DraggableWidget<Widget> {
      * @author Julien Dramaix (julien.dramaix@gmail.com)
      * 
      */
-    private static class DraggablePositionHandler implements BeforeDragStartEventHandler, DragStopEventHandler {
-
-        /**
-         * before that the drag operation starts, we will "visually" detach the
-         * draggable by setting it css position to absolute.
-         */
-        public void onBeforeDragStart(BeforeDragStartEvent event) {
-            // "detach" visually the element of the parent
-            $(event.getDraggable()).css("position", "absolute");
-
-        }
-
-        public void onDragStop(DragStopEvent event) {
-            // "reattach" the element
-            $(event.getDraggable()).css("position", "relative").css("top", null).css("left", null);
-
-        }
-    }
+//    private static class DraggablePositionHandler implements BeforeDragStartEventHandler, DragStopEventHandler {
+//
+//        /**
+//         * before that the drag operation starts, we will "visually" detach the
+//         * draggable by setting it css position to absolute.
+//         */
+//        public void onBeforeDragStart(BeforeDragStartEvent event) {
+//            // "detach" visually the element of the parent
+//            $(event.getDraggable()).css("position", "absolute");
+//
+//        }
+//
+//        public void onDragStop(DragStopEvent event) {
+//            // "reattach" the element
+//            $(event.getDraggable()).css("position", "relative").css("top", null).css("left", null);
+//
+//        }
+//    }
 
     // This handler is stateless
-    private static DraggablePositionHandler HANDLER = new DraggablePositionHandler();
+//    private static DraggablePositionHandler HANDLER = new DraggablePositionHandler();
     private static PortletUiBinder uiBinder = GWT.create(PortletUiBinder.class);
 
     @UiField
-    DivElement header;
-    @UiField
     FocusPanel portletFocus;
-    @UiField
-    ListBox accountBox;
-    @UiField
-    ListBox activityBox;
-    @UiField
-    TextBox timeEntryTime;
-    
-    @UiField Label lblAccount;
-    @UiField Label lblActivity;
-    @UiField Label lblActivityTime;    
         
     private final TimeEntryProxy portletTimeEntry;
     
@@ -133,65 +122,38 @@ public class Portlet extends DraggableWidget<Widget> {
         setup();
         
         this.portletTimeEntry = timeEntry;
-        
-        // Set the correct language
-        AppsConstants lConstants = (AppsConstants) GWT.create(AppsConstants.class);
-        lblAccount.setText(lConstants.account() + ":");
-        lblActivity.setText(lConstants.activity() + ":");
-        lblActivityTime.setText(lConstants.activityTime() + ":");
-        
     }
     
     public void setHandlers(final CommandWatchDog commandWatchDog, final DataStoreProxy dataStoreProxy) {
-        // Populate the time entry boxes
-        for (AccountProxy curAccount : dataStoreProxy.getAccountData()) {
-            accountBox.addItem(curAccount.getName());
-        }
-        accountBox.addItem("a");
-        accountBox.addItem("b");
-        accountBox.addItem("c");
-        accountBox.setSelectedIndex(2);
-        accountBox.setEnabled(true);
-        
-        accountBox.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                accountBox.setFocus(true);
-            }
-            
-        });
-        
-        for (ActivityProxy curActivity : dataStoreProxy.getActivityData()) {
-            activityBox.addItem(curActivity.getName());
-        }
-        activityBox.setSelectedIndex(0);
-        activityBox.setEnabled(true);
-        
-        timeEntryTime.setText(Double.toString(portletTimeEntry.getSpentTime()));
+//        // Populate the time entry boxes
+//        for (AccountProxy curAccount : dataStoreProxy.getAccountData()) {
+//            accountBox.addItem(curAccount.getName());
+//        }
+//        accountBox.setSelectedIndex(0);
+//        accountBox.setEnabled(true);
+//        
+//        accountBox.addClickHandler(new ClickHandler() {
+//
+//            @Override
+//            public void onClick(ClickEvent event) {
+//                accountBox.setFocus(true);
+//            }
+//            
+//        });
+//        
+//        for (ActivityProxy curActivity : dataStoreProxy.getActivityData()) {
+//            activityBox.addItem(curActivity.getName());
+//        }
+//        activityBox.setSelectedIndex(0);
+//        activityBox.setEnabled(true);
+//        
+//        timeEntryTime.setText(Double.toString(portletTimeEntry.getSpentTime()));
         
         // Create a basic popup widget
         final DecoratedPopupPanel simplePopup = new DecoratedPopupPanel(true);
         simplePopup.ensureDebugId("cwBasicPopup-simplePopup");
         simplePopup.setWidth("150px");
-        simplePopup.setWidget(new HTML("You double clicked me."));
-
-        portletFocus.addDoubleClickHandler(new DoubleClickHandler() {
-
-            @Override
-            public void onDoubleClick(DoubleClickEvent event) {
-                // Reposition the popup relative to the button
-                Widget source = (Widget) event.getSource();
-                int left = source.getAbsoluteLeft() + 10;
-                int top = source.getAbsoluteTop() + 10;
-                simplePopup.setPopupPosition(left, top);
-
-                // Show the popup
-                //simplePopup.show();
-                
-                //eventBus.fireEvent(new UpdateDataBindedObjectsEvent());
-            }
-        });
+        simplePopup.setWidget(new WorkActivityView());
 
         portletFocus.addKeyDownHandler(new KeyDownHandler() {
 
@@ -201,33 +163,45 @@ public class Portlet extends DraggableWidget<Widget> {
                 if (event.getNativeKeyCode() == 13) {
                     // Reposition the popup relative to the button
                     Widget source = (Widget) event.getSource();
-                    int left = source.getAbsoluteLeft() + 10;
-                    int top = source.getAbsoluteTop() + 10;
-                    simplePopup.setPopupPosition(left, top);
+                    int left = source.getAbsoluteLeft() + 20;
+                    int top = source.getAbsoluteTop() + 20;
+                    simplePopup.setPopupPosition(left, top);                    
+                    simplePopup.setAutoHideEnabled(true);
+                    simplePopup.setGlassEnabled(true);
 
                     // Show the popup
                     simplePopup.show();
                 }
             }
         });
-
-        portletFocus.addBlurHandler(new BlurHandler() {
+        
+        portletFocus.addClickHandler(new ClickHandler() {
 
             @Override
-            public void onBlur(BlurEvent event) {
-                simplePopup.hide();
+            public void onClick(ClickEvent event) {
+                // Reposition the popup relative to the button
+                Widget source = (Widget) event.getSource();
+                int left = source.getAbsoluteLeft() + 20;
+                int top = source.getAbsoluteTop() + 20;
+                simplePopup.setPopupPosition(left, top);                    
+                simplePopup.setAutoHideEnabled(true);
+                simplePopup.setGlassEnabled(true);
+
+                // Show the popup
+                simplePopup.show();
             }
+            
         });
-
     }
-
+    
+    // TODO: D&D, enable the drag and drop
     private void setup() {
         // opacity of the portlet during the drag
         //setDraggingOpacity(new Float(0.8));
         // zIndex of the portlet during the drag
-        setDraggingZIndex(1000);
+        //setDraggingZIndex(1000);
         // add position handler
-        addBeforeDragHandler(HANDLER);
-        addDragStopHandler(HANDLER);
+        //addBeforeDragHandler(HANDLER);
+        //addDragStopHandler(HANDLER);
     }
 }

@@ -47,7 +47,7 @@ public class TimeEntryDao extends ObjectifyDao<TimeEntry> {
             throw new RuntimeException(e);
         }
     }
-        
+
     public List<TimeEntry> readInRangeTimeEntries(Date fromTime, Date thruTime) {
         return this.listAllInRangeForUser(fromTime, thruTime);
     }

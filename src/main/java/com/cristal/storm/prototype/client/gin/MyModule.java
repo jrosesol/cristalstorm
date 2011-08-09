@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.controller.MyPlaceManager;
+import com.cristal.storm.prototype.client.i18n.AppsConstants;
 import com.cristal.storm.prototype.client.mvp.presenter.CompanyPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.MyRootPresenter;
@@ -130,5 +131,11 @@ public class MyModule extends AbstractPresenterModule {
     public AccountRequestContext createAccountRequestContext( TimesheetRequestFactory factory ) {
         return factory.accountRequest();
     }
-   
+    
+    @Provides
+    @Singleton
+    public AppsConstants createAppConstants() {
+        AppsConstants lConstants = (AppsConstants) GWT.create(AppsConstants.class);
+        return lConstants;
+    }   
 }

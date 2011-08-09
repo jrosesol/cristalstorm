@@ -1,48 +1,56 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<ui:style>
-		.portlet {
-			margin-top: 5px;
-			background-color: #FFFFFF;
-			border: 1px solid #000000;
-			width: 100px;
-		}
-		
-		.header {
-			margin: 0.3em;
-			padding-bottom: 4px;
-			padding-left: 0.2em;
-			background-color: #3F91C4;
-			border: 1px solid #02024F;
-			color: #FFFFFF;
-			font-weight: bold;
-		}
-		
-		.content {
-			padding: 0.4em;
-			color: #333333;
-		}
-		
-		.portletContentControls {
-			padding-left: 0.2em;
-			margin-top: 5px;
-			background-color: #EEEEEE;
-			border: 1px solid #DDDDDD;
-			width: 90px;
-		}
-	</ui:style>
+    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:style>
+        .portlet {
+        	margin-top: 5px;
+        	background-color: #FFFFFF;
+        	border: 1px solid #000000;
+        	width: 150px;
+        }
+        
+        .content {
+        	padding: 0.4em;
+        	color: #333333;
+        }
+        
+        .portletContentControls {
+        	padding-left: 0.2em;
+        	margin-top: 5px;
+        	background-color: #EEEEEE;
+        	border: 1px solid #DDDDDD;
+        	width: 90px;
+        }
 
-	<g:FocusPanel ui:field="portletFocus">
-		<g:HTMLPanel addStyleNames="{style.portlet}">
-			<div ui:field="header" class="{style.header}"></div>
-			<g:Label ui:field="lblAccount"></g:Label>
-			<g:ListBox ui:field="accountBox" addStyleNames="{style.portletContentControls}" />
-			<g:Label ui:field="lblActivity"></g:Label>
-			<g:ListBox ui:field="activityBox" addStyleNames="{style.portletContentControls}"/>
-			<g:Label ui:field="lblActivityTime"></g:Label>
-			<g:TextBox ui:field="timeEntryTime" addStyleNames="{style.portletContentControls}"/>
-		</g:HTMLPanel>
-	</g:FocusPanel>
+		
+    </ui:style>
+
+    <g:FocusPanel ui:field="portletFocus">
+        <g:HTMLPanel addStyleNames="{style.portlet}">
+            <blockquote style="margin: 0 0 0 2px; border: none; padding: 1px;">
+                <h2 >
+                    <br />
+                    <table >
+                        <tbody>
+                            <tr>
+                                <td style="text-align: center;">4.5 Hours</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;">
+                                    Been working on the reverse-proxy
+                                    system.
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="" style="text-align: center;">TERAFLOP Project /
+                                    System Integration</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </h2>
+            </blockquote>
+        </g:HTMLPanel>
+    </g:FocusPanel>
 
 </ui:UiBinder> 

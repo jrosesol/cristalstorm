@@ -159,12 +159,13 @@ public class ActivityCalendarWidgetView extends DroppableWidget<FlowPanel> imple
 
     /**
      * Register drop handler !
+     * TODO: D&D, enable the drag and drop
      */
     private void setupDrop(final FlowPanel weekdayFlowPanel) {
-        SortableDragAndDropHandler sortableHandler = new SortableDragAndDropHandler(weekdayFlowPanel);
-        addDropHandler(sortableHandler);
-        addOutDroppableHandler(sortableHandler);
-        addOverDroppableHandler(sortableHandler);
+//        SortableDragAndDropHandler sortableHandler = new SortableDragAndDropHandler(weekdayFlowPanel);
+//        addDropHandler(sortableHandler);
+//        addOutDroppableHandler(sortableHandler);
+//        addOverDroppableHandler(sortableHandler);
     }
 
     @Override

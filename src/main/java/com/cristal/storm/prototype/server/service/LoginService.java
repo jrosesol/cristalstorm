@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.cristal.storm.prototype.client.util.DemoDataLoader;
 import com.cristal.storm.prototype.server.domain.AppUser;
 import com.cristal.storm.prototype.shared.TooManyResultsException;
 import com.google.appengine.api.users.User;
@@ -24,7 +25,7 @@ public class LoginService {
     
     // TEMP //
     private static AppUser LOGGED_USER;
-    private static String EMAIL = "a_user@email.com";
+    private static String EMAIL = "user_1@" + DemoDataLoader.domainName;
     //////////
 
     public static AppUser login(HttpServletRequest req, HttpServletResponse res) {
@@ -37,11 +38,12 @@ public class LoginService {
         // User is logged into GAE
         // Find or add user in our app Datastore
         String userEmail = loggedUser.getEmail();
-        AppUserDao userDao = new AppUserDao();
         AppUser loggedInUser = findUser(userEmail);
         if (loggedInUser == null) {
+            loggedInUser = new AppUser();
+            loggedInUser.setEmail(userEmail);
             // Auto-add user
-            loggedInUser = addUser(userEmail);
+            loggedInUser = addUser(loggedInUser);
         }
         req.setAttribute(AUTH_USER, loggedInUser);
         return loggedInUser;
@@ -54,24 +56,12 @@ public class LoginService {
         //
         LOGGED_USER = findUser(EMAIL);
         if (LOGGED_USER == null) {
-            LOGGED_USER = addUser(EMAIL);
+            LOGGED_USER = new AppUser();
+            LOGGED_USER.setEmail(EMAIL);
+            
+            LOGGED_USER = addUser(LOGGED_USER);
             Log.info("New User Created: " + LOGGED_USER);
         }
-//        if (Log.isLoggingEnabled())
-//            System.out.print("Log enabled");
-//        
-//        if (Log.isInfoEnabled())
-//            System.out.print("Info enabled");
-//        if (Log.isDebugEnabled())
-//            System.out.print("Debug enabled");
-//        if (Log.isErrorEnabled())
-//            System.out.print("Error enabled");
-//        if (Log.isFatalEnabled())
-//            System.out.print("Fatal enabled");
-//        if (Log.isTraceEnabled())
-//            System.out.print("Trace enabled");
-//        if (Log.isWarnEnabled())
-//            System.out.print("Warn enabled");
         
         Log.info("Current User: " + LOGGED_USER);
         
@@ -83,17 +73,16 @@ public class LoginService {
         try {
             AppUserDao userDao = new AppUserDao();
             // Query for user by email
-            appUser = userDao.getByProperty("email", userEmail);
+            appUser = userDao.getByProperty(AppUser.EMAIL_FIELD_NAME, userEmail);
         } catch (TooManyResultsException e) {
             throw new RuntimeException(e);
         }
         return appUser;
     }
 
-    private static AppUser addUser(String email) {
+    private static AppUser addUser(AppUser newUser) {
         AppUserDao userDao = new AppUserDao();
-        AppUser newUser = new AppUser(email);
-        Key<AppUser> newUserKey = userDao.put(newUser);
+        userDao.registerUser(newUser);
 
         return newUser;
     }

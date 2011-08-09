@@ -1,9 +1,9 @@
 package com.cristal.storm.prototype.server.domain;
 
 import java.util.Date;
-import java.util.List;
 
 import com.cristal.storm.prototype.server.service.AppUserDao;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryCode;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 
@@ -17,9 +17,10 @@ public class TimeEntry extends DatastoreObject {
     private double spentTime;
     
     // Keys
-    private Key<AppUser>  owningUser;
-    private Key<Activity> owningActivity;
-    private Key<Account>  owningAccount;
+    private Key<AppUser>   owningUser;
+    private Key<Activity>  owningActivity;
+    private Key<Account>   owningAccount;
+    private TimeEntryCode timeEntryCode;
 
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
@@ -43,7 +44,7 @@ public class TimeEntry extends DatastoreObject {
     // Get / Set
     ///////////////////////////////////////////////////////////////////////////
     
-    public String getString() {
+    public String getDescription() {
         return this.toString();
     }
     
@@ -87,6 +88,14 @@ public class TimeEntry extends DatastoreObject {
         return owningAccount;
     }
     
+    public void setTimeCode(TimeEntryCode timeCode) {
+        this.timeEntryCode =  timeCode;
+    }
+
+    public TimeEntryCode getTimeCode() {
+        return timeEntryCode;
+    }
+   
     public long getOwningUserId() {
         return getOwningUser().getId();
     }

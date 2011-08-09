@@ -48,6 +48,7 @@ public class TimeEntryWizardPopupPresenter extends
     
     private final EventBus eventBus;
 
+    // TODO : Find a better way to do this... 
     private int eventSourceUID;
     
     /**

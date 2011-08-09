@@ -98,7 +98,7 @@ public class CommandWatchDog implements HasHandlers {
                 if (Log.isDebugEnabled()) {
                     for (T t : response) {
                         BaseProxy obj = (BaseProxy)t;
-                        Log.debug("Returned objects: " + obj.getString());
+                        Log.debug("Returned objects: " + obj.getDescription());
                     }
                 }
 

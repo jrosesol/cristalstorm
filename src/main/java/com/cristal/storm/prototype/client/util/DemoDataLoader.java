@@ -15,10 +15,15 @@ import java.util.logging.Logger;
 import com.allen_sauer.gwt.log.client.Log;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
+import com.cristal.storm.prototype.shared.proxy.DomainProxy;
+import com.cristal.storm.prototype.shared.proxy.DomainTimeCodesProxy;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryCode;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.AccountRequestContext;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.ActivityListRequestContext;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.DomainRequestContext;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.DomainTimeCodeRequestContext;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.TimeEntryRequestContext;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.inject.Inject;
@@ -35,10 +40,12 @@ import com.google.web.bindery.requestfactory.shared.Receiver;
 public class DemoDataLoader {
 
     private final TimesheetRequestFactory rf;
+    
+    /* Has to be the same as in LoginSerce.java */
+    public static String domainName = "domain.com";
 
     @Inject
     public DemoDataLoader(final TimesheetRequestFactory rf) {
-
         this.rf = rf;
     }
     
@@ -48,6 +55,28 @@ public class DemoDataLoader {
          * Here we will create dummy accounts and activities for the current
          * dummy user.
          */
+        
+        // Try to register the domain
+        DomainRequestContext domainCtx = rf.domainRequest();
+        DomainProxy newDomain = domainCtx.create(DomainProxy.class);
+        domainCtx.registerDomain(newDomain).fire(new Receiver<DomainProxy>() {
+
+            @Override
+            public void onSuccess(DomainProxy response) {
+                Log.info("Domain : " + response.getDescription());
+            }
+        });
+        
+        // Try to register time codes for domain
+//        DomainTimeCodeRequestContext domainTimeCodesCtx = rf.domainTimeCodeRequest();
+//        domainTimeCodesCtx.addDomainTimeCodeAndReturn(new TimeEntryCode(TimeEntryCode.TimeCodeType.NORMAL)).fire(new Receiver<DomainTimeCodesProxy>() {
+//
+//            @Override
+//            public void onSuccess(DomainTimeCodesProxy response) {
+//                Log.info("DomainTimeCodes : " + response.getDescription());
+//            }
+//        });
+        
         
         // Check if we have some data registered for current user
         AccountRequestContext accountCheckCtx = rf.accountRequest();
@@ -78,7 +107,7 @@ public class DemoDataLoader {
                 // Save a dummy activity
                 createActivity("Something todo", response);
                 
-                Log.info("Account was created: " + response.getString());
+                Log.info("Account was created: " + response.getDescription());
             }
         });
 
@@ -92,7 +121,7 @@ public class DemoDataLoader {
                 // Save a dummy activity
                 createActivity("Some activity", response);
                 
-                Log.info("Account was created: " + response.getString());
+                Log.info("Account was created: " + response.getDescription());
             }
         });
     }
@@ -139,7 +168,7 @@ public class DemoDataLoader {
 
             @Override
             public void onSuccess(TimeEntryProxy response) {
-                Log.info("Time Entry was created: " + response.getString());
+                Log.info("Time Entry was created: " + response.getDescription());
             }
         });
     }

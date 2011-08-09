@@ -1,17 +1,11 @@
 package com.cristal.storm.prototype.server.service;
 
-import java.util.Date;
 import java.util.List;
 
 import com.cristal.storm.prototype.server.domain.Account;
 import com.cristal.storm.prototype.server.domain.Activity;
 import com.cristal.storm.prototype.server.domain.AppUser;
-import com.cristal.storm.prototype.server.domain.TimeEntry;
-import com.cristal.storm.prototype.shared.proxy.AccountProxy;
-import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
-import com.google.web.bindery.requestfactory.shared.Request;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.ObjectifyService;
 
 public class ActivityDao extends ObjectifyDao<Activity> {
     // /////////////////////////////////////////////////////////////////////////
@@ -42,46 +36,6 @@ public class ActivityDao extends ObjectifyDao<Activity> {
         AppUser loggedInUser = LoginService.getLoggedInUser();
         activity.setOwner(loggedInUser);
         activity.setOwningAccount(account);
-        
-//        // NOCOMMIT
-//        // TEST //
-//        // Do some tests
-//        
-//        ObjectifyService.register(Account.class);
-//        ObjectifyService.register(TimeEntry.class);
-//        
-//        // Create an Account
-//        Account anAccount = new Account();
-//        anAccount.setName("Sample Account");
-//        anAccount.addOwner(loggedInUser);
-//        ofy().put(anAccount);
-//        
-//        // Create an activity
-//        Activity anActivity = new Activity();
-//        anActivity.setName("Sample Activity");
-//        anActivity.setOwner(loggedInUser);
-//        anActivity.setOwningAccount(anAccount);
-//        ofy().put(anActivity);
-//        
-//        // Create a TimeEntry
-//        TimeEntry aTimeEntry = new TimeEntry();
-//        aTimeEntry.setSpentTime(5.5);
-//        aTimeEntry.setTimeEntryTimestamp(new Date(2011, 7, 22));
-//        aTimeEntry.setOwningUser(loggedInUser);
-//        aTimeEntry.setOwningActivity(anActivity);
-//        aTimeEntry.setOwningAccount(anAccount);
-//        Key<TimeEntry> timeEntry = ofy().put(aTimeEntry);
-//        
-//        // Get all the data back!
-//        TimeEntry savedTimeEntry = ofy().get(timeEntry);
-//        Activity owningActivity  = ofy().get(savedTimeEntry.getOwningActivity());
-//        Account owningAccount    = ofy().get(savedTimeEntry.getOwningAccount());
-//        System.out.print(savedTimeEntry.getSpentTime()  + "\n");
-//        System.out.print(owningActivity.getName()       + "\n");
-//        System.out.print(owningAccount.getName()        + "\n");
-//        
-//        //////////////////////
-        
         this.put(activity);
     }
 

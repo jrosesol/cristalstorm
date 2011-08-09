@@ -9,7 +9,7 @@
         .dayDock {
         	margin-top: 5px;
         	background-color: #EEEEEE;
-        	width: 120px;
+        	width: 170px;
         }
         
         .focusStyleColor1 {
