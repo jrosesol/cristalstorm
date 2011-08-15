@@ -31,6 +31,7 @@ public class UpdateDataBindedObjectsEvent extends GwtEvent<UpdateDataBindedObjec
         LIST_ALL_TIME_ENTRIES,
         LIST_ALL_ACCOUNTS,
         LIST_ALL_ACTIVITIES,
+        LIST_ALL_TIME_CODES,
         REVEAL_PRESENTERS,
         DATA_IS_AVAILABLE,
         PREPARE_DATA

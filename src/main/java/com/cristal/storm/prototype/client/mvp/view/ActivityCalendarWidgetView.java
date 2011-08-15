@@ -4,7 +4,7 @@
  * @author Jose Rose
  * 2011-07-25
  */
-package com.cristal.storm.prototype.client.ui;
+package com.cristal.storm.prototype.client.mvp.view;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,10 @@ import java.util.List;
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
+import com.cristal.storm.prototype.client.mvp.presenter.ActivityCalendarWidgetPresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.ActivityCalendarWidgetPresenter.ActivityCalendarWidgetViewInterface;
+import com.cristal.storm.prototype.client.ui.Portlet;
+import com.cristal.storm.prototype.client.ui.PortletPlaceholder;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.cristal.storm.prototype.client.util.UtilFunc;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;

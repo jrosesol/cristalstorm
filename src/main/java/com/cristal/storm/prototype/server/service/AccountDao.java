@@ -20,7 +20,8 @@ public class AccountDao extends ObjectifyDao<Account> {
     // /////////////////////////////////////////////////////////////////////////
     @Override
     public List<Account> listAll() {
-        return this.listAllForUser();
+        List<Account> result = this.listAllForUser();
+        return result;
     }
 
     // /////////////////////////////////////////////////////////////////////////

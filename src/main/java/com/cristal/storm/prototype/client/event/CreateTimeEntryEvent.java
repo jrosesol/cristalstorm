@@ -6,6 +6,7 @@
  */
 package com.cristal.storm.prototype.client.event;
 
+import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
@@ -21,6 +22,7 @@ public class CreateTimeEntryEvent extends GwtEvent<CreateTimeEntryEvent.CreateTi
     private static final Type<CreateTimeEntryHandler> TYPE = new Type<CreateTimeEntryHandler>();
 
     private final int VIEW_UID;
+    private final TimeCodeType timeCode;
     
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -28,13 +30,13 @@ public class CreateTimeEntryEvent extends GwtEvent<CreateTimeEntryEvent.CreateTi
     public interface CreateTimeEntryHandler extends EventHandler {
         public void onCreateTimeEntry(CreateTimeEntryEvent event);
     }
-    
 
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
-    public CreateTimeEntryEvent(final int VIEW_UID) {
+    public CreateTimeEntryEvent(final int VIEW_UID, final TimeCodeType timeCode) {
         this.VIEW_UID = VIEW_UID;
+        this.timeCode = timeCode;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -57,8 +59,8 @@ public class CreateTimeEntryEvent extends GwtEvent<CreateTimeEntryEvent.CreateTi
         return TYPE;
     }
 
-    public static void fire(HasHandlers source, final int VIEW_UID) {
-        source.fireEvent(new CreateTimeEntryEvent(VIEW_UID));
+    public static void fire(HasHandlers source, final int VIEW_UID, final TimeCodeType timeCode) {
+        source.fireEvent(new CreateTimeEntryEvent(VIEW_UID, timeCode));
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -66,6 +68,10 @@ public class CreateTimeEntryEvent extends GwtEvent<CreateTimeEntryEvent.CreateTi
     ///////////////////////////////////////////////////////////////////////////
     public int getVIEW_UID() {
         return VIEW_UID;
+    }
+    
+    public TimeCodeType getTimeCode() {
+        return timeCode;
     }
 }
 

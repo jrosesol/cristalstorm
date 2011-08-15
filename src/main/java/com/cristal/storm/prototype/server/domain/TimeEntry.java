@@ -2,8 +2,11 @@ package com.cristal.storm.prototype.server.domain;
 
 import java.util.Date;
 
+import javax.persistence.Embedded;
+
 import com.cristal.storm.prototype.server.service.AppUserDao;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryCode;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 
@@ -20,6 +23,8 @@ public class TimeEntry extends DatastoreObject {
     private Key<AppUser>   owningUser;
     private Key<Activity>  owningActivity;
     private Key<Account>   owningAccount;
+    
+    @Embedded
     private TimeEntryCode timeEntryCode;
 
     ///////////////////////////////////////////////////////////////////////////
@@ -27,7 +32,7 @@ public class TimeEntry extends DatastoreObject {
     ///////////////////////////////////////////////////////////////////////////
 
     public TimeEntry() {
-        
+        this.timeEntryCode = new TimeEntryCode();
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -88,12 +93,20 @@ public class TimeEntry extends DatastoreObject {
         return owningAccount;
     }
     
-    public void setTimeCode(TimeEntryCode timeCode) {
-        this.timeEntryCode =  timeCode;
+    public void setTimeCode(TimeCodeType timeCode) {
+        this.timeEntryCode.setTimeEntryCode(timeCode);
     }
 
-    public TimeEntryCode getTimeCode() {
-        return timeEntryCode;
+    public TimeCodeType getTimeCode() {
+        return timeEntryCode.getTimeEntryCode();
+    }
+    
+    public String getTimeCodeValue() {
+        return timeEntryCode.getTimeEntryValue();
+    }
+    
+    public void setTimeCodeValue(String timeCodeValue) {
+        timeEntryCode.setTimeEntryValue(timeCodeValue);
     }
    
     public long getOwningUserId() {

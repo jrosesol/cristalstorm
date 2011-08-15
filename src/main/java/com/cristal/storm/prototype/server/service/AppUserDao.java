@@ -13,12 +13,14 @@ public class AppUserDao extends ObjectifyDao<AppUser> {
     // Functions
     // /////////////////////////////////////////////////////////////////////////
     
+    /**
+     * @param user This is a logged user. Only a logged user should (using
+     * OpenID) access this registration process.
+     * @return
+     */
     public AppUser registerUser(AppUser user) {
-        AppUser loggedInUser = LoginService.getLoggedInUser();
         
-        // Strip the domain from the email
-        StringTokenizer token = new StringTokenizer(loggedInUser.getEmail(), "@");
-        String userDomainName = token.nextToken();
+        String userDomainName = getDomain(user.getEmail());
         
         // We have to determine the user domain from the user credentials
         // For Google App users this comes from directly from the user
@@ -49,5 +51,13 @@ public class AppUserDao extends ObjectifyDao<AppUser> {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    public static String getDomain(String userEmail) {
+        // Strip the domain from the email
+        StringTokenizer token = new StringTokenizer(userEmail, "@");
+        token.nextToken();
+        String userDomainName = token.nextToken();
+        return userDomainName;
     }
 }

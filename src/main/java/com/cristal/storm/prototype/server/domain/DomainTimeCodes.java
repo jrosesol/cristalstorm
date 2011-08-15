@@ -13,6 +13,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Transient;
 
 import com.cristal.storm.prototype.shared.proxy.TimeEntryCode;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 
@@ -67,12 +68,30 @@ public class DomainTimeCodes extends DatastoreObject {
         return this.toString();
     }
     
-    public void addTimeEntryCode(TimeEntryCode timeEntryCode) {
-        domainTimeEntryCodes.add(timeEntryCode);
+    public void addTimeCode(TimeCodeType timeCodeType, String timeCodeValue) {
+        domainTimeEntryCodes.add(new TimeEntryCode(timeCodeType, timeCodeValue));
     }
     
-    public List<TimeEntryCode> getTimeEntryCodes() {
-        return domainTimeEntryCodes;
+    public void addTimeCode(TimeCodeType timeCodeType) {
+        domainTimeEntryCodes.add(new TimeEntryCode(timeCodeType));
+    }
+
+    public List<TimeCodeType> getTimeCodeTypes() {
+        List<TimeCodeType> timeCodeList = new ArrayList<TimeCodeType>();
+
+        for (TimeEntryCode timeCode : domainTimeEntryCodes) {
+            timeCodeList.add(timeCode.getTimeEntryCode());
+        }
+        return timeCodeList;
+    }
+    
+    public List<String> getTimeCodeValues() {
+        List<String> timeCodeList = new ArrayList<String>();
+
+        for (TimeEntryCode timeCode : domainTimeEntryCodes) {
+            timeCodeList.add(timeCode.getTimeEntryValue());
+        }
+        return timeCodeList;
     }
 
     public void setDomain(Key<Domain> domain) {

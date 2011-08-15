@@ -1,4 +1,4 @@
-package com.cristal.storm.prototype.client.ui;
+package com.cristal.storm.prototype.client.mvp.view;
 
 import com.gwtplatform.mvp.client.UiHandlers;
 

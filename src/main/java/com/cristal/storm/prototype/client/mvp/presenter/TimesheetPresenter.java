@@ -15,11 +15,10 @@ import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.event.RemovePortletsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_EVENT_TYPE;
+import com.cristal.storm.prototype.client.mvp.presenter.ActivityCalendarWidgetPresenter.ActivityCalendarWidgetViewInterface;
+import com.cristal.storm.prototype.client.mvp.view.ActivityCalendarWidgetView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetUiHandlers;
-import com.cristal.storm.prototype.client.ui.ActivityCalendarWidgetPresenter;
 import com.cristal.storm.prototype.client.ui.Portlet;
-import com.cristal.storm.prototype.client.ui.ActivityCalendarWidgetPresenter.ActivityCalendarWidgetViewInterface;
-import com.cristal.storm.prototype.client.ui.ActivityCalendarWidgetView;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
@@ -83,10 +82,6 @@ public class TimesheetPresenter extends
     
     @Inject
     final EventBus eventBus;
-
-
-    final Map<TimeEntryProxy, AccountProxy> timeEntryAccountMap = new HashMap<TimeEntryProxy, AccountProxy>();
-    final Map<TimeEntryProxy, ActivityProxy> timeEntryActivityMap = new HashMap<TimeEntryProxy, ActivityProxy>();
     
     private final ActivityCalendarWidgetPresenter mondayActivities;
     private final ActivityCalendarWidgetPresenter thuesdayActivities;
@@ -178,48 +173,6 @@ public class TimesheetPresenter extends
                 }
             }
         } );
-
-        
-        // Create a high level representation of the data, that is a map of 
-        // time entries for each activity for each account.
-        registerHandler(eventBus.addHandler(UpdateDataBindedObjectsEvent.getType(), new UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler() {
-
-            @Override
-            public void onUpdateDataBindedObjects(UpdateDataBindedObjectsEvent updateDataBindedObjectsEvent,
-                    DATA_EVENT_TYPE eventType) {
-                if (eventType == DATA_EVENT_TYPE.PREPARE_DATA) {
-                    
-                    // Create a map of time entries (key) to accounts (values) for fast access
-                    // of user data
-                    for (TimeEntryProxy timeEntry : dataStoreProxy.getTimeEntryData()) {
-                        Long curAccountId = timeEntry.getOwningAccountId();
-                        
-                        for (AccountProxy curAccount : dataStoreProxy.getAccountData()) {
-                            
-                            // Map the values
-                            if (curAccountId == curAccount.getId()) {
-                                timeEntryAccountMap.put(timeEntry, curAccount);
-                            }
-                        }
-                    }
-                    
-                    // Create a map of time entries (key) to activities (values) for fast access
-                    // of user data
-                    for (TimeEntryProxy timeEntry : dataStoreProxy.getTimeEntryData()) {
-                        Long curActivityId = timeEntry.getOwningActivityId();
-                        
-                        for (ActivityProxy curActivity : dataStoreProxy.getActivityData()) {
-                            
-                            // Map the values
-                            if (curActivityId == curActivity.getId()) {
-                                timeEntryActivityMap.put(timeEntry, curActivity);
-                            }
-                        }
-                    }
-                }
-            }
-        }));
-
     }
     
     @Override

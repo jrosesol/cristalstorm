@@ -13,11 +13,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.cristal.storm.prototype.client.i18n.AppsConstants;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
 import com.cristal.storm.prototype.shared.proxy.DomainProxy;
 import com.cristal.storm.prototype.shared.proxy.DomainTimeCodesProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryCode;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.AccountRequestContext;
@@ -27,7 +29,9 @@ import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.Domain
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.TimeEntryRequestContext;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.web.bindery.requestfactory.shared.Receiver;
+import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
 /**
  * Create demo data to populate the server
@@ -42,7 +46,7 @@ public class DemoDataLoader {
     private final TimesheetRequestFactory rf;
     
     /* Has to be the same as in LoginSerce.java */
-    public static String domainName = "domain.com";
+    public static String DOMAIN_NAME = "domain24.com";
 
     @Inject
     public DemoDataLoader(final TimesheetRequestFactory rf) {
@@ -59,40 +63,47 @@ public class DemoDataLoader {
         // Try to register the domain
         DomainRequestContext domainCtx = rf.domainRequest();
         DomainProxy newDomain = domainCtx.create(DomainProxy.class);
+        newDomain.setName(DOMAIN_NAME);
         domainCtx.registerDomain(newDomain).fire(new Receiver<DomainProxy>() {
 
             @Override
             public void onSuccess(DomainProxy response) {
                 Log.info("Domain : " + response.getDescription());
-            }
-        });
-        
-        // Try to register time codes for domain
-//        DomainTimeCodeRequestContext domainTimeCodesCtx = rf.domainTimeCodeRequest();
-//        domainTimeCodesCtx.addDomainTimeCodeAndReturn(new TimeEntryCode(TimeEntryCode.TimeCodeType.NORMAL)).fire(new Receiver<DomainTimeCodesProxy>() {
-//
-//            @Override
-//            public void onSuccess(DomainTimeCodesProxy response) {
-//                Log.info("DomainTimeCodes : " + response.getDescription());
-//            }
-//        });
-        
-        
-        // Check if we have some data registered for current user
-        AccountRequestContext accountCheckCtx = rf.accountRequest();
-        accountCheckCtx.listAll().fire(new Receiver<List<AccountProxy>>() {
+                
+                // Check if we have some data registered for current user
+                AccountRequestContext accountCheckCtx = rf.accountRequest();
+                accountCheckCtx.listAll().fire(new Receiver<List<AccountProxy>>() {
 
+                    @Override
+                    public void onSuccess(List<AccountProxy> response) {
+                                                
+                        if (response.size() > 0) {
+                            Log.info("DEMO DATA IS ALREADY REGISTERED");
+                            return;   
+                        }
+                        else {
+                            // Try to register time codes for domain
+                            registerTimeCode(TimeEntryCode.TimeCodeType.NORMAL);
+                            registerTimeCode(TimeEntryCode.TimeCodeType.HOLIDAY);
+                            registerTimeCode(TimeEntryCode.TimeCodeType.LUNCH);
+                            registerTimeCode(TimeEntryCode.TimeCodeType.PAID_VACATION);
+                            registerTimeCode(TimeEntryCode.TimeCodeType.SICKNESS);
+                            registerTimeCodeExtended(TimeEntryCode.TimeCodeType.EXTENDED, "Super Thing To Do Code");                            
+                            
+                            // Load the default data
+                            loadDataFromDataStore();
+                        }
+                    }
+                });
+            }
+            
             @Override
-            public void onSuccess(List<AccountProxy> response) {
-                
-                Log.info("DEMO DATA IS ALREADY REGISTERED");
-                
-                if (response.size() > 0)
-                    return;
-                else
-                    loadDataFromDataStore();
+            public void onFailure(ServerFailure error) {
+                // TODO Auto-generated method stub
+                super.onFailure(error);
             }
         });
+        
     }
 
     private void loadDataFromDataStore() {
@@ -135,25 +146,25 @@ public class DemoDataLoader {
             @Override
             public void onSuccess(ActivityProxy response) {
 
-                saveTimeEntry(owningAccount, response, 0);
-                saveTimeEntry(owningAccount, response, 1);
-                saveTimeEntry(owningAccount, response, 2);
-                saveTimeEntry(owningAccount, response, 3);
-                saveTimeEntry(owningAccount, response, -1);
-                saveTimeEntry(owningAccount, response, -2);
-                saveTimeEntry(owningAccount, response, -3);
-                saveTimeEntry(owningAccount, response, -4);
-                saveTimeEntry(owningAccount, response, -5);
-                saveTimeEntry(owningAccount, response, -6);
-                saveTimeEntry(owningAccount, response, -7);
-                saveTimeEntry(owningAccount, response, -8);
-                saveTimeEntry(owningAccount, response, -9);
-                saveTimeEntry(owningAccount, response, -10);
+                saveTimeEntry(owningAccount, response, 0, TimeEntryCode.TimeCodeType.NORMAL);
+                saveTimeEntry(owningAccount, response, 1, TimeEntryCode.TimeCodeType.NORMAL);
+                saveTimeEntry(owningAccount, response, 2, TimeEntryCode.TimeCodeType.PAID_VACATION);
+                saveTimeEntry(owningAccount, response, 3, TimeEntryCode.TimeCodeType.HOLIDAY);
+                saveTimeEntry(owningAccount, response, -1, TimeEntryCode.TimeCodeType.SICKNESS);
+                saveTimeEntry(owningAccount, response, -2, TimeEntryCode.TimeCodeType.NORMAL);
+                saveTimeEntry(owningAccount, response, -3, TimeEntryCode.TimeCodeType.NORMAL);
+                saveTimeEntry(owningAccount, response, -4, TimeEntryCode.TimeCodeType.NORMAL);
+                saveTimeEntry(owningAccount, response, -5, TimeEntryCode.TimeCodeType.NORMAL);
+                saveTimeEntry(owningAccount, response, -6, TimeEntryCode.TimeCodeType.NORMAL);
+                saveTimeEntry(owningAccount, response, -7, TimeEntryCode.TimeCodeType.NORMAL);
+                saveTimeEntry(owningAccount, response, -8, TimeEntryCode.TimeCodeType.NORMAL);
+                saveTimeEntry(owningAccount, response, -9, TimeEntryCode.TimeCodeType.NORMAL);
+                saveTimeEntry(owningAccount, response, -10, TimeEntryCode.TimeCodeType.NORMAL);
             }
         });
     }
 
-    private void saveTimeEntry(final AccountProxy owningAccount, ActivityProxy response, int dayOffset) {
+    private void saveTimeEntry(final AccountProxy owningAccount, ActivityProxy response, int dayOffset, TimeCodeType timeCode) {
         // Save dummy time entries
         Random randomGenerator = new Random();
 
@@ -163,6 +174,7 @@ public class DemoDataLoader {
         Date currentTime = new Date(System.currentTimeMillis());
         CalendarUtil.addDaysToDate(currentTime, dayOffset);
         newTimeEntry.setTimeEntryTimestamp(currentTime);
+        newTimeEntry.setTimeCode(timeCode);
 
         reqCtx.saveTimeEntryAndReturn(newTimeEntry, owningAccount, response).fire(new Receiver<TimeEntryProxy>() {
 
@@ -170,6 +182,38 @@ public class DemoDataLoader {
             public void onSuccess(TimeEntryProxy response) {
                 Log.info("Time Entry was created: " + response.getDescription());
             }
+        });
+    }
+
+    private void registerTimeCode(TimeCodeType timeCode) {
+        DomainTimeCodeRequestContext domainTimeCodesCtx = rf.domainTimeCodeRequest();
+        domainTimeCodesCtx.addDomainTimeCodeAndReturn2(timeCode).fire(new Receiver<DomainTimeCodesProxy>() {
+
+            @Override
+            public void onSuccess(DomainTimeCodesProxy response) {
+                Log.info("DomainTimeCodes : " + response.getDescription());
+            }
+            
+            @Override
+            public void onFailure(ServerFailure error) {
+                Log.info("registerTimeCode FAILED : " + error.getMessage());
+            }    
+        });
+    }
+    
+    private void registerTimeCodeExtended(TimeCodeType timeCode, String timeCodeValue) {
+        DomainTimeCodeRequestContext domainTimeCodesCtx = rf.domainTimeCodeRequest();
+        domainTimeCodesCtx.addDomainTimeCodeAndReturn1(timeCode, timeCodeValue).fire(new Receiver<DomainTimeCodesProxy>() {
+
+            @Override
+            public void onSuccess(DomainTimeCodesProxy response) {
+                Log.info("DomainTimeCodes : " + response.getDescription());
+            }
+            
+            @Override
+            public void onFailure(ServerFailure error) {
+                Log.info("registerTimeCodeExtended FAILED : " + error.getMessage());
+            }            
         });
     }
 

@@ -12,6 +12,7 @@ import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DAT
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
 import com.cristal.storm.prototype.shared.proxy.BaseProxy;
+import com.cristal.storm.prototype.shared.proxy.DomainTimeCodesProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -41,25 +42,31 @@ public class CommandWatchDog implements HasHandlers {
     }
 
     public void listAllTimeEntries(final List<TimeEntryProxy> dstResult) {
-        rf.timeEntryRequest().listAll().fire(getListReceiver("listAll", dstResult, eventBus, DATA_EVENT_TYPE.LIST_ALL_TIME_ENTRIES));
+        rf.timeEntryRequest().listAll().fire(getListReceiver(dstResult, eventBus, DATA_EVENT_TYPE.LIST_ALL_TIME_ENTRIES));
     }
     
     public void listAllTimeEntriesInRange(final List<TimeEntryProxy> dstResult, Date startDate, Date endDate) {
-        rf.timeEntryRequest().readInRangeTimeEntries(startDate, endDate).fire(getListReceiver("listAll", dstResult, eventBus, DATA_EVENT_TYPE.LIST_ALL_TIME_ENTRIES));
+        rf.timeEntryRequest().readInRangeTimeEntries(startDate, endDate).fire(getListReceiver(dstResult, eventBus, DATA_EVENT_TYPE.LIST_ALL_TIME_ENTRIES));
     }
     
     ///////////////////////////////////////////////////////////////////////////
     
     public void listAllAccounts(final List<AccountProxy> dstResult) {
-        rf.accountRequest().listAll().fire(getListReceiver("listAll", dstResult, eventBus, DATA_EVENT_TYPE.LIST_ALL_ACCOUNTS));
+        rf.accountRequest().listAll().fire(getListReceiver(dstResult, eventBus, DATA_EVENT_TYPE.LIST_ALL_ACCOUNTS));
     }
     
     ///////////////////////////////////////////////////////////////////////////
     
     public void listAllActivies(final List<ActivityProxy> dstResult) {
-        rf.activityListRequest().listAll().fire(getListReceiver("listAll", dstResult, eventBus, DATA_EVENT_TYPE.LIST_ALL_ACTIVITIES));
+        rf.activityListRequest().listAll().fire(getListReceiver(dstResult, eventBus, DATA_EVENT_TYPE.LIST_ALL_ACTIVITIES));
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    
+    public void listAllTimeCodes(final List<DomainTimeCodesProxy> dstResult) {
+        rf.domainTimeCodeRequest().listAll().fire(getListReceiver(dstResult, eventBus, DATA_EVENT_TYPE.LIST_ALL_TIME_CODES));
+    }
+    
     ///////////////////////////////////////////////////////////////////////////
     
     private static Receiver<Void> getVoidReceiver(final String serviceCallName) {
@@ -87,13 +94,13 @@ public class CommandWatchDog implements HasHandlers {
      * @param type
      * @return
      */
-    private static <T> Receiver<List<T>> getListReceiver(final String serviceCallName, final List<T> dstResult,
+    private static <T> Receiver<List<T>> getListReceiver(final List<T> dstResult,
             final EventBus eventBus, final DATA_EVENT_TYPE eventType) {
         Receiver<List<T>> voidReceiver = new Receiver<List<T>>() {
 
             @Override
             public void onSuccess(List<T> response) {
-                Log.info("RF Call Success: " + serviceCallName);
+                Log.info("RF Call Success: " + eventType);
                 
                 if (Log.isDebugEnabled()) {
                     for (T t : response) {
@@ -114,7 +121,7 @@ public class CommandWatchDog implements HasHandlers {
 
             @Override
             public void onFailure(ServerFailure error) {
-                Log.warn("RF Call Failed: " + serviceCallName);
+                Log.warn("RF Call Failed: " + eventType.toString());
             }
         };
 

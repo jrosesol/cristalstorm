@@ -25,7 +25,9 @@ import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_EVENT_TYPE;
 import com.cristal.storm.prototype.client.i18n.AppsConstants;
+import com.cristal.storm.prototype.client.i18n.UtilFunc;
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter;
+import com.cristal.storm.prototype.client.ui.WorkActivityView.ContentDisplayType;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
@@ -57,6 +59,7 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -114,46 +117,33 @@ public class Portlet extends Composite /*DraggableWidget<Widget>*/ {
 
     @UiField
     FocusPanel portletFocus;
+    
+    @UiField
+    SimplePanel timeEntryContent;
         
     private final TimeEntryProxy portletTimeEntry;
     
-    public Portlet(TimeEntryProxy timeEntry) {
+    private Provider<AppsConstants> appCteProvider;
+    
+    @Inject
+    public Portlet(TimeEntryProxy timeEntry, final Provider<AppsConstants> appCteProvider) {
         initWidget(uiBinder.createAndBindUi(this));
         setup();
+        
+        this.appCteProvider = appCteProvider;
         
         this.portletTimeEntry = timeEntry;
     }
     
     public void setHandlers(final CommandWatchDog commandWatchDog, final DataStoreProxy dataStoreProxy) {
-//        // Populate the time entry boxes
-//        for (AccountProxy curAccount : dataStoreProxy.getAccountData()) {
-//            accountBox.addItem(curAccount.getName());
-//        }
-//        accountBox.setSelectedIndex(0);
-//        accountBox.setEnabled(true);
-//        
-//        accountBox.addClickHandler(new ClickHandler() {
-//
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                accountBox.setFocus(true);
-//            }
-//            
-//        });
-//        
-//        for (ActivityProxy curActivity : dataStoreProxy.getActivityData()) {
-//            activityBox.addItem(curActivity.getName());
-//        }
-//        activityBox.setSelectedIndex(0);
-//        activityBox.setEnabled(true);
-//        
-//        timeEntryTime.setText(Double.toString(portletTimeEntry.getSpentTime()));
+        
+        timeEntryContent.add(new WorkActivityView(appCteProvider, ContentDisplayType.VIEWABLE, dataStoreProxy, portletTimeEntry));
         
         // Create a basic popup widget
         final DecoratedPopupPanel simplePopup = new DecoratedPopupPanel(true);
         simplePopup.ensureDebugId("cwBasicPopup-simplePopup");
         simplePopup.setWidth("150px");
-        simplePopup.setWidget(new WorkActivityView());
+        simplePopup.setWidget(new WorkActivityView(appCteProvider, ContentDisplayType.EDITABLE, dataStoreProxy, portletTimeEntry));
 
         portletFocus.addKeyDownHandler(new KeyDownHandler() {
 
@@ -175,10 +165,10 @@ public class Portlet extends Composite /*DraggableWidget<Widget>*/ {
             }
         });
         
-        portletFocus.addClickHandler(new ClickHandler() {
+        portletFocus.addDoubleClickHandler(new DoubleClickHandler() {
 
             @Override
-            public void onClick(ClickEvent event) {
+            public void onDoubleClick(DoubleClickEvent event) {
                 // Reposition the popup relative to the button
                 Widget source = (Widget) event.getSource();
                 int left = source.getAbsoluteLeft() + 20;
@@ -188,7 +178,7 @@ public class Portlet extends Composite /*DraggableWidget<Widget>*/ {
                 simplePopup.setGlassEnabled(true);
 
                 // Show the popup
-                simplePopup.show();
+                simplePopup.show();                
             }
             
         });

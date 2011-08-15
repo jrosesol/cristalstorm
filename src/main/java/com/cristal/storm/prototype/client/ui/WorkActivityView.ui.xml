@@ -31,12 +31,21 @@
 
 	<g:HTMLPanel>
         <g:VerticalPanel>
-    		<g:Label ui:field="lblAccount"/>
-    		<g:ListBox ui:field="accountBox"/>
-    		<g:Label ui:field="lblActivity"/>
-    		<g:ListBox ui:field="activityBox"/>
-    		<g:Label ui:field="lblActivityTime"/>
-    		<g:TextBox ui:field="timeEntryTime"/>
+            <!-- This is the content which is shown when we are in edit mode -->
+            <g:VerticalPanel ui:field="editableContent">            
+        		<g:Label ui:field="lblAccount"/>
+        		<g:ListBox ui:field="accountBox"/>
+        		<g:Label ui:field="lblActivity"/>
+        		<g:ListBox ui:field="activityBox"/>
+        		<g:Label ui:field="lblActivityTime"/>
+        		<g:TextBox ui:field="timeEntryTime"/>
+            </g:VerticalPanel>
+            <!-- This is the content which is shown when we are in view mode -->
+            <g:VerticalPanel ui:field="viewableContent">
+                <g:Label ui:field="workedTimeLbl"></g:Label>
+                <g:Label ui:field="timeCodeLbl">WORK</g:Label>
+                <g:Label ui:field="associationLbl"></g:Label>
+            </g:VerticalPanel>
         </g:VerticalPanel>
 	</g:HTMLPanel>
 

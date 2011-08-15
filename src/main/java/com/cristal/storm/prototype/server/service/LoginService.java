@@ -25,7 +25,7 @@ public class LoginService {
     
     // TEMP //
     private static AppUser LOGGED_USER;
-    private static String EMAIL = "user_1@" + DemoDataLoader.domainName;
+    private static String EMAIL = "user_1@" + DemoDataLoader.DOMAIN_NAME;
     //////////
 
     public static AppUser login(HttpServletRequest req, HttpServletResponse res) {

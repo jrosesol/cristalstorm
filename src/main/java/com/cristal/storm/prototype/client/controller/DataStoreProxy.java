@@ -5,13 +5,16 @@ package com.cristal.storm.prototype.client.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_EVENT_TYPE;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
+import com.cristal.storm.prototype.shared.proxy.DomainTimeCodesProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.cristal.storm.prototype.shared.service.CommandWatchDog;
 import com.google.gwt.event.shared.EventBus;
@@ -43,10 +46,15 @@ public class DataStoreProxy implements HasHandlers {
     private List<AccountProxy> accountData;
     private List<ActivityProxy> activityData;
     private List<TimeEntryProxy> timeEntryData;
+    private List<DomainTimeCodesProxy> domainTimeCodes;
     
     private Boolean accountDataIsReady;
     private Boolean activityDataIsReady;
     private Boolean timeEntryDataIsReady;
+    private Boolean timeCodeDataIsReady;
+
+    final Map<TimeEntryProxy, AccountProxy> timeEntryAccountMap = new HashMap<TimeEntryProxy, AccountProxy>();
+    final Map<TimeEntryProxy, ActivityProxy> timeEntryActivityMap = new HashMap<TimeEntryProxy, ActivityProxy>();
 
     // /////////////////////////////////////////////////////////////////////////
     // Constructors
@@ -60,6 +68,7 @@ public class DataStoreProxy implements HasHandlers {
         this.watchDog = commandWatchDog;
         
         accountData = new ArrayList<AccountProxy>();
+        domainTimeCodes = new ArrayList<DomainTimeCodesProxy>();
         setActivityData(new ArrayList<ActivityProxy>());
         setTimeEntryData(new ArrayList<TimeEntryProxy>());
         
@@ -67,13 +76,25 @@ public class DataStoreProxy implements HasHandlers {
         accountDataIsReady = false;
         activityDataIsReady = false;
         timeEntryDataIsReady = false;
+        timeCodeDataIsReady = false;
         
         // TODO:  Remove binded events;
         // Attach to the events from data inputs
-        HandlerRegistration handlerReg = this.eventBus.addHandler(UpdateDataBindedObjectsEvent.getType(), getListAccountHandler(DATA_EVENT_TYPE.LIST_ALL_ACCOUNTS));
-        this.eventBus.addHandler(UpdateDataBindedObjectsEvent.getType(), getListAccountHandler(DATA_EVENT_TYPE.LIST_ALL_ACTIVITIES));
-        this.eventBus.addHandler(UpdateDataBindedObjectsEvent.getType(), getListAccountHandler(DATA_EVENT_TYPE.LIST_ALL_TIME_ENTRIES));
+        eventBus.addHandler(UpdateDataBindedObjectsEvent.getType(), getListAccountHandler(DATA_EVENT_TYPE.LIST_ALL_ACCOUNTS));
+        eventBus.addHandler(UpdateDataBindedObjectsEvent.getType(), getListAccountHandler(DATA_EVENT_TYPE.LIST_ALL_ACTIVITIES));
+        eventBus.addHandler(UpdateDataBindedObjectsEvent.getType(), getListAccountHandler(DATA_EVENT_TYPE.LIST_ALL_TIME_ENTRIES));
+        eventBus.addHandler(UpdateDataBindedObjectsEvent.getType(), getListAccountHandler(DATA_EVENT_TYPE.LIST_ALL_TIME_CODES));
 
+        eventBus.addHandler(UpdateDataBindedObjectsEvent.getType(), new UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler() {
+
+            @Override
+            public void onUpdateDataBindedObjects(UpdateDataBindedObjectsEvent updateDataBindedObjectsEvent,
+                    DATA_EVENT_TYPE eventType) {
+                if (eventType == DATA_EVENT_TYPE.PREPARE_DATA) {
+                    updateTimeEntryMapping();
+                }
+            }
+        });
     }
     
     // /////////////////////////////////////////////////////////////////////////
@@ -103,31 +124,26 @@ public class DataStoreProxy implements HasHandlers {
     // Functions
     // /////////////////////////////////////////////////////////////////////////
 
-    public void listAllAccountsData() {
+    private void listAllAccountsData() {
         watchDog.listAllAccounts(accountData);
     }
     
-    public void listAllActivitiesData() {
+    private void listAllActivitiesData() {
         watchDog.listAllActivies(getActivityData());
     }
     
-    public void listAllTimeEntries() {
-        watchDog.listAllTimeEntries(getTimeEntryData());
-    }
-    
-    public void listAllTimeEntries(Date startDate, Date endDate) {
+    private void listAllTimeEntries(Date startDate, Date endDate) {
         watchDog.listAllTimeEntriesInRange(getTimeEntryData(), startDate, endDate);
     }
     
-    public void getAllDataForUser() {
-        listAllAccountsData();
-        listAllActivitiesData();
-        listAllTimeEntries();
+    private void listAllTimeCodes() {
+        watchDog.listAllTimeCodes(getDomainTimeCodesProxy());
     }
-    
+  
     public void getAllDataForUser(Date startDate, Date endDate) {
         listAllAccountsData();
         listAllActivitiesData();
+        listAllTimeCodes();
         listAllTimeEntries(startDate, endDate);
     }
     
@@ -138,15 +154,51 @@ public class DataStoreProxy implements HasHandlers {
         accountData.clear();
         activityData.clear();
         timeEntryData.clear();
+        domainTimeCodes.clear();
         
         accountDataIsReady = false;
         activityDataIsReady = false;
         timeEntryDataIsReady = false;
+        timeCodeDataIsReady = false;
     }
 
     @Override
     public void fireEvent(GwtEvent<?> event) {
         eventBus.fireEvent(event);
+    }
+    
+    /**
+     * 
+     */
+    protected void updateTimeEntryMapping() {
+        // Create a map of time entries (key) to accounts (values) for fast access
+        // of user data
+        for (TimeEntryProxy timeEntry : getTimeEntryData()) {
+            Long ownAccountId = timeEntry.getOwningAccountId();
+            
+            for (AccountProxy curAccount : getAccountData()) {
+                Long curAccoundId = curAccount.getId();
+                
+                // Map the values
+                if (ownAccountId.longValue() == curAccoundId.longValue()) {
+                    timeEntryAccountMap.put(timeEntry, curAccount);
+                }
+            }
+        }
+        
+        // Create a map of time entries (key) to activities (values) for fast access
+        // of user data
+        for (TimeEntryProxy timeEntry : getTimeEntryData()) {
+            Long curActivityId = timeEntry.getOwningActivityId();
+            
+            for (ActivityProxy curActivity : getActivityData()) {
+                
+                // Map the values
+                if (curActivityId.longValue() == curActivity.getId().longValue()) {
+                    timeEntryActivityMap.put(timeEntry, curActivity);
+                }
+            }
+        }
     }
 
     // /////////////////////////////////////////////////////////////////////////
@@ -154,7 +206,7 @@ public class DataStoreProxy implements HasHandlers {
     // /////////////////////////////////////////////////////////////////////////
     
     public Boolean isDataReady() {
-        return accountDataIsReady & activityDataIsReady & timeEntryDataIsReady;
+        return accountDataIsReady & activityDataIsReady & timeEntryDataIsReady & timeCodeDataIsReady;
     }
     
     public void syncDataAndPresenters(DATA_EVENT_TYPE dataEventType) {
@@ -168,10 +220,12 @@ public class DataStoreProxy implements HasHandlers {
         else if (dataEventType == DATA_EVENT_TYPE.LIST_ALL_TIME_ENTRIES) {
             timeEntryDataIsReady = true;
         }
+        else if (dataEventType == DATA_EVENT_TYPE.LIST_ALL_TIME_CODES) {
+            timeCodeDataIsReady = true;
+        }
         else {
             throw new IllegalArgumentException();
         }
-
         
         if (isDataReady()) {
             
@@ -204,6 +258,18 @@ public class DataStoreProxy implements HasHandlers {
 
     public List<TimeEntryProxy> getTimeEntryData() {
         return timeEntryData;
+    }
+    
+    public List<DomainTimeCodesProxy> getDomainTimeCodesProxy() {
+       return domainTimeCodes;
+    }
+    
+    public AccountProxy getAssociatedAccountProxy(TimeEntryProxy timeEntry) {
+        return timeEntryAccountMap.get(timeEntry);
+    }
+    
+    public ActivityProxy getAssociatedActivityProxy(TimeEntryProxy timeEntry) {
+        return timeEntryActivityMap.get(timeEntry);
     }
 
 }

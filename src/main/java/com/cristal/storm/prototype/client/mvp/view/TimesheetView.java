@@ -11,9 +11,8 @@ import java.util.Date;
 
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.i18n.AppsConstants;
+import com.cristal.storm.prototype.client.mvp.presenter.ActivityCalendarWidgetPresenter.ActivityCalendarWidgetViewInterface;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter.TimesheetViewInterface;
-import com.cristal.storm.prototype.client.ui.ActivityCalendarWidgetPresenter.ActivityCalendarWidgetViewInterface;
-import com.cristal.storm.prototype.client.ui.ActivityCalendarWidgetView;
 import com.cristal.storm.prototype.client.ui.DroppablePanel;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.cristal.storm.prototype.shared.service.CommandWatchDog;

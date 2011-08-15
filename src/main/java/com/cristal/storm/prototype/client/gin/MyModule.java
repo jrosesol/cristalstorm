@@ -21,10 +21,12 @@ import java.util.logging.Logger;
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.controller.MyPlaceManager;
 import com.cristal.storm.prototype.client.i18n.AppsConstants;
+import com.cristal.storm.prototype.client.mvp.presenter.ActivityCalendarWidgetPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.CompanyPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.MainPagePresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.MyRootPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter;
+import com.cristal.storm.prototype.client.mvp.presenter.ActivityCalendarWidgetPresenter.ActivityCalendarWidgetViewInterface;
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter.ProjectPopupDetailsViewInterface;
 import com.cristal.storm.prototype.client.mvp.presenter.ReportsPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.ApprovalPresenter;
@@ -33,6 +35,7 @@ import com.cristal.storm.prototype.client.mvp.presenter.TimeEntryWizardPopupPres
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetCellListPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter;
 import com.cristal.storm.prototype.client.mvp.presenter.TimesheetCellListPresenter.TimesheetCellListViewInterface;
+import com.cristal.storm.prototype.client.mvp.view.ActivityCalendarWidgetView;
 import com.cristal.storm.prototype.client.mvp.view.CompanyView;
 import com.cristal.storm.prototype.client.mvp.view.MainPageView;
 import com.cristal.storm.prototype.client.mvp.view.ProjectPopupDetailsView;
@@ -41,10 +44,8 @@ import com.cristal.storm.prototype.client.mvp.view.ApprovalView;
 import com.cristal.storm.prototype.client.mvp.view.TimeEntryWizardPopupView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetCellListView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetView;
-import com.cristal.storm.prototype.client.ui.ActivityCalendarWidgetPresenter;
-import com.cristal.storm.prototype.client.ui.ActivityCalendarWidgetPresenter.ActivityCalendarWidgetViewInterface;
-import com.cristal.storm.prototype.client.ui.ActivityCalendarWidgetView;
 import com.cristal.storm.prototype.client.util.DemoDataLoader;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryCode;
 import com.cristal.storm.prototype.shared.service.CommandWatchDog;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.TimeEntryRequestContext;
@@ -73,7 +74,6 @@ public class MyModule extends AbstractPresenterModule {
         bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
         bind(PlaceManager.class).to(MyPlaceManager.class).in(Singleton.class);
         bind(TokenFormatter.class).to(ParameterTokenFormatter.class).in(Singleton.class);
-        // bind(RootPresenter.class).asEagerSingleton();
         bind(RootPresenter.class).to(MyRootPresenter.class).asEagerSingleton();
 
         // User bindings

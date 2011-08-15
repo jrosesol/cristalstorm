@@ -4,7 +4,7 @@
  * @author Jose Rose
  * 2011-07-25
  */
-package com.cristal.storm.prototype.client.ui;
+package com.cristal.storm.prototype.client.mvp.presenter;
 
 import java.util.Date;
 import java.util.List;
@@ -20,15 +20,15 @@ import com.cristal.storm.prototype.client.event.CreateTimeEntryEvent.CreateTimeE
 import com.cristal.storm.prototype.client.event.RemovePortletsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_EVENT_TYPE;
-import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter;
-import com.cristal.storm.prototype.client.mvp.presenter.TimeEntryWizardPopupPresenter;
-import com.cristal.storm.prototype.client.mvp.presenter.TimesheetCellListPresenter;
-import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter.ProjectPopupDetailsViewInterface;
-import com.cristal.storm.prototype.client.mvp.presenter.TimesheetPresenter;
+import com.cristal.storm.prototype.client.i18n.AppsConstants;
+import com.cristal.storm.prototype.client.mvp.view.ActivityCalendarWidgetUiHandlers;
 import com.cristal.storm.prototype.client.mvp.view.CompanyUiHandlers;
+import com.cristal.storm.prototype.client.ui.Portlet;
+import com.cristal.storm.prototype.client.ui.PortletPlaceholder;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.cristal.storm.prototype.client.util.UtilFunc;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.cristal.storm.prototype.shared.service.CommandWatchDog;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -67,6 +67,9 @@ public class ActivityCalendarWidgetPresenter extends
     
     @Inject
     CommandWatchDog commandWatchDog;
+    
+    @Inject
+    Provider<AppsConstants> appCteProvider;
     
     final TimeEntryWizardPopupPresenter timeEntryWizPopup;
     
@@ -137,8 +140,9 @@ public class ActivityCalendarWidgetPresenter extends
                 // Only if the event is set for us
                 if (event.getVIEW_UID() == VIEW_UID) {
                     TimeEntryProxy timeEntry = timeEntryContextProvider.get().create(TimeEntryProxy.class);
+                    timeEntry.setTimeCode(event.getTimeCode());
                     
-                    Portlet aPortlet = new Portlet(timeEntry);
+                    Portlet aPortlet = new Portlet(timeEntry, appCteProvider);
                     aPortlet.setHandlers(commandWatchDog, dataStoreProxy);
                     getView().addPortlet(aPortlet);
                 }
@@ -167,7 +171,7 @@ public class ActivityCalendarWidgetPresenter extends
                     List<TimeEntryProxy> timeEntryList = dataStoreProxy.getTimeEntryData();
                     
                     for (TimeEntryProxy timeEntry : timeEntryList) {
-                        Portlet aPortlet = new Portlet(timeEntry);
+                        Portlet aPortlet = new Portlet(timeEntry, appCteProvider);
                         aPortlet.setHandlers(commandWatchDog, dataStoreProxy);
                         
                         if (widgetDate != null) {

@@ -6,13 +6,20 @@
  */
 package com.cristal.storm.prototype.client.mvp.presenter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.event.CreateTimeEntryEvent;
+import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
+import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_EVENT_TYPE;
 import com.cristal.storm.prototype.client.ui.Portlet;
+import com.cristal.storm.prototype.shared.proxy.DomainTimeCodesProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -47,16 +54,11 @@ public class TimeEntryWizardPopupPresenter extends
     ///////////////////////////////////////////////////////////////////////////
     
     private final EventBus eventBus;
+    private final DataStoreProxy dataStoreProxy;
 
     // TODO : Find a better way to do this... 
     private int eventSourceUID;
     
-    /**
-     * Use this in leaf presenters, inside their {@link #revealInParent} method.
-     */
-    @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetPopupContent = new Type<RevealContentHandler<?>>();
-
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
     ///////////////////////////////////////////////////////////////////////////
@@ -67,16 +69,21 @@ public class TimeEntryWizardPopupPresenter extends
      */
     public interface TimeEntryWizardPopupViewInterface extends PopupView {
         public HasClickHandlers onWizardOkButton();
+        public int getSelectedTimeCodeIdx();
+        public void setTimeEntryCodes(List<String> domainTimeCodes);
     }
 
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     @Inject
-    public TimeEntryWizardPopupPresenter(EventBus eventBus, TimeEntryWizardPopupViewInterface view, TimesheetCellListPresenter timesheetList) {
+    public TimeEntryWizardPopupPresenter(EventBus eventBus, TimeEntryWizardPopupViewInterface view, DataStoreProxy dataStoreProxy) {
         super(eventBus, view);
         
-        this.eventBus = eventBus;        
+        this.eventBus = eventBus;
+        this.dataStoreProxy = dataStoreProxy;
+        
+
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -92,7 +99,16 @@ public class TimeEntryWizardPopupPresenter extends
             
             @Override
             public void onClick(ClickEvent event) {
-                CreateTimeEntryEvent.fire(eventBus, getEventSourceUID());
+                // Add the possible time codes
+                TimeCodeType selectedTimeCode = TimeCodeType.NORMAL;
+                for (DomainTimeCodesProxy domainTimeCodesProxy : dataStoreProxy.getDomainTimeCodesProxy()) {
+
+                    List<TimeCodeType> timeCodes = domainTimeCodesProxy.getTimeCodeTypes();
+                    
+                    selectedTimeCode = timeCodes.get(getView().getSelectedTimeCodeIdx());
+                }
+                
+                CreateTimeEntryEvent.fire(eventBus, getEventSourceUID(), selectedTimeCode);
             }
         };
     }
@@ -100,17 +116,35 @@ public class TimeEntryWizardPopupPresenter extends
     ///////////////////////////////////////////////////////////////////////////
     // Overrides
     ///////////////////////////////////////////////////////////////////////////
-    
-    @Override
-    protected void onReveal() {
-        this.setInSlot(TYPE_SetPopupContent, null);
-    }
-    
+        
     @Override
     protected void onBind() {
         super.onBind();
         
         registerHandler(getView().onWizardOkButton().addClickHandler(onWizardOkButton()));
+        
+        registerHandler(eventBus.addHandler(UpdateDataBindedObjectsEvent.getType(), new UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler() {
+            
+            @Override
+            public void onUpdateDataBindedObjects(UpdateDataBindedObjectsEvent updateDataBindedObjectsEvent,
+                    DATA_EVENT_TYPE eventType) {
+                if (eventType == DATA_EVENT_TYPE.REVEAL_PRESENTERS) {
+                    List<String> timeCodesList = new ArrayList<String>();
+                    
+                    // Add the possible time codes
+                    for (DomainTimeCodesProxy domainTimeCodesProxy : dataStoreProxy.getDomainTimeCodesProxy()) {
+
+                        List<TimeCodeType> timeCodes = domainTimeCodesProxy.getTimeCodeTypes();
+                        
+                        for (TimeCodeType timeCodeType : timeCodes) {
+                            timeCodesList.add(com.cristal.storm.prototype.client.i18n.UtilFunc.getTimeCodeValue(timeCodeType));
+                        }
+                    }
+                    
+                    getView().setTimeEntryCodes(timeCodesList);
+                }
+            }
+        }));
     }
 
     ///////////////////////////////////////////////////////////////////////////

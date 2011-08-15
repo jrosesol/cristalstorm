@@ -13,6 +13,8 @@ import java.util.List;
 
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter.ProjectPopupDetailsViewInterface;
 import com.cristal.storm.prototype.client.mvp.presenter.TimeEntryWizardPopupPresenter.TimeEntryWizardPopupViewInterface;
+import com.cristal.storm.prototype.shared.proxy.DomainTimeCodesProxy;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
@@ -96,12 +98,7 @@ public class TimeEntryWizardPopupView extends PopupViewImpl implements
 
         // Has to be at the beginning
         widget = uiBinder.createAndBindUi(this);
-        
-        // TODO : Get this from DataStore
-        timeEntryTypes.addItem("TIME ENTRY TYPE 1");
-        timeEntryTypes.addItem("TIME ENTRY TYPE 2");
-        timeEntryTypes.addItem("TIME ENTRY TYPE 3");
-        timeEntryTypes.addItem("TIME ENTRY TYPE 4");
+      
     }
 
     // /////////////////////////////////////////////////////////////////////////
@@ -120,6 +117,20 @@ public class TimeEntryWizardPopupView extends PopupViewImpl implements
             wizardContent.add(content);
         }
     }
+    
+    @Override
+    public int getSelectedTimeCodeIdx() {
+        return timeEntryTypes.getSelectedIndex();
+    }
+    
+    @Override
+    public void setTimeEntryCodes(List<String> domainTimeCodes) {
+        timeEntryTypes.clear();
+        // Add the possible time codes
+        for (String timeCodeType : domainTimeCodes) {
+            timeEntryTypes.addItem(timeCodeType);
+        }
+    }
 
     // /////////////////////////////////////////////////////////////////////////
     // Functions
@@ -127,6 +138,11 @@ public class TimeEntryWizardPopupView extends PopupViewImpl implements
     
     @UiHandler("okButton")
     void okButtonClicked(ClickEvent event) {
+        widget.hide();
+    }
+    
+    @UiHandler("cancelButton")
+    void cancelButtonClicked(ClickEvent event) {
         widget.hide();
     }
 

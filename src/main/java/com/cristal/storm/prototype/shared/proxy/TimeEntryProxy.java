@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.cristal.storm.prototype.server.domain.TimeEntry;
 import com.cristal.storm.prototype.server.locator.ObjectifyLocator;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.google.web.bindery.requestfactory.shared.EntityProxy;
 import com.google.web.bindery.requestfactory.shared.ProxyFor;
 
@@ -18,7 +19,8 @@ public interface TimeEntryProxy extends BaseProxy {
     public long getOwningUserId();
     public long getOwningActivityId();
     public long getOwningAccountId();
-    public long getTimeEntryCodeId();
-    public TimeEntryCode getTimeCode();
-    public void setTimeCode(TimeEntryCode timeEntryCode);
+    public TimeCodeType getTimeCode();
+    public void setTimeCode(TimeCodeType timeEntryCode);
+    public String getTimeCodeValue();
+    public void setTimeCodeValue(String timeCodeValue);
 }

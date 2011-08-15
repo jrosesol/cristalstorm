@@ -29,22 +29,10 @@
         <g:HTMLPanel addStyleNames="{style.portlet}">
             <blockquote style="margin: 0 0 0 2px; border: none; padding: 1px;">
                 <h2 >
-                    <br />
                     <table >
                         <tbody>
                             <tr>
-                                <td style="text-align: center;">4.5 Hours</td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;">
-                                    Been working on the reverse-proxy
-                                    system.
-                                    <br />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="" style="text-align: center;">TERAFLOP Project /
-                                    System Integration</td>
+                                <g:SimplePanel ui:field="timeEntryContent"></g:SimplePanel>
                             </tr>
                         </tbody>
                     </table>

@@ -6,8 +6,13 @@
  */
 package com.cristal.storm.prototype.client.ui;
 
+import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.i18n.AppsConstants;
+import com.cristal.storm.prototype.client.i18n.UtilFunc;
 import com.cristal.storm.prototype.client.ui.Portlet.PortletUiBinder;
+import com.cristal.storm.prototype.shared.proxy.AccountProxy;
+import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -15,6 +20,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -31,6 +37,11 @@ public class WorkActivityView extends Composite {
     interface WorkActivityViewUiBinder extends UiBinder<Widget, WorkActivityView> {
     }
     
+    enum ContentDisplayType {
+        EDITABLE,
+        VIEWABLE
+    }
+    
     private static WorkActivityViewUiBinder uiBinder = GWT.create(WorkActivityViewUiBinder.class);
     
     @UiField
@@ -39,31 +50,85 @@ public class WorkActivityView extends Composite {
     ListBox activityBox;
     @UiField
     TextBox timeEntryTime;
+    @UiField
+    VerticalPanel editableContent;
+    @UiField
+    VerticalPanel viewableContent;
     
     @UiField Label lblAccount;
     @UiField Label lblActivity;
     @UiField Label lblActivityTime;
-
-    @Inject
-    Provider<AppsConstants> appCteProvider;
+    
+    @UiField Label workedTimeLbl;
+    @UiField Label timeCodeLbl;
+    @UiField Label associationLbl;
+    
+    private final ContentDisplayType contentType;
+    private final Widget rootWidget;
+    private final TimeEntryProxy timeEntry;
 
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
-    public WorkActivityView() {
-        initWidget(uiBinder.createAndBindUi(this));
+    public WorkActivityView(final Provider<AppsConstants> appCteProvider,
+            ContentDisplayType contentType,
+            final DataStoreProxy dataStoreProxy,
+            final TimeEntryProxy timeEntry) {
+        rootWidget = uiBinder.createAndBindUi(this);
+        initWidget(rootWidget);
         
-        accountBox.addItem("TERAFLOP");
-        accountBox.addItem("Some Other Project");
-        activityBox.addItem("System integration");
-        activityBox.addItem("System testing");
-        activityBox.addItem("Module testing");
+        this.timeEntry = timeEntry;
+        
+        // Populate the time entry boxes
+        int accountBoxIdx = 0;
+        int selectedAccountBoxIdx = 0;
+        AccountProxy associatedAccount = dataStoreProxy.getAssociatedAccountProxy(timeEntry);
+        for (AccountProxy curAccount : dataStoreProxy.getAccountData()) {
+            accountBox.addItem(curAccount.getName());
+            
+            if (associatedAccount == curAccount) {
+                selectedAccountBoxIdx = accountBoxIdx;
+            }
+            accountBoxIdx++;
+        }
+        accountBox.setSelectedIndex(selectedAccountBoxIdx);
+
+        int activityBoxIdx = 0;
+        int selectedActiviyBoxIdx = 0;
+        ActivityProxy associatedActivity = dataStoreProxy.getAssociatedActivityProxy(timeEntry);
+        for (ActivityProxy curActivity : dataStoreProxy.getActivityData()) {
+            activityBox.addItem(curActivity.getName());
+            
+            if (associatedActivity == curActivity) {
+                selectedActiviyBoxIdx = activityBoxIdx;
+            }            
+            activityBoxIdx++;
+        }
+        activityBox.setSelectedIndex(selectedActiviyBoxIdx);
+        
+        // The the time spent
+        timeEntryTime.setText(Double.toString(timeEntry.getSpentTime()));
+                
+        this.contentType = contentType;
 
         // Set the correct language
         AppsConstants appCte = appCteProvider.get();
         lblAccount.setText(appCte.account() + ":");
         lblActivity.setText(appCte.activity() + ":");
         lblActivityTime.setText(appCte.activityTime() + ":");
+        
+        if (contentType == ContentDisplayType.EDITABLE) {
+            viewableContent.setVisible(false);
+        }
+        else {
+            editableContent.setVisible(false);
+        }
+        
+        
+        // Set the viewable content
+        workedTimeLbl.setText(Double.toString(timeEntry.getSpentTime()));
+        timeCodeLbl.setText(UtilFunc.getTimeCodeValue(timeEntry));
+        associationLbl.setText(accountBox.getValue(accountBox.getSelectedIndex()) + " / " + activityBox.getValue(activityBox.getSelectedIndex()));
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -73,6 +138,17 @@ public class WorkActivityView extends Composite {
     ///////////////////////////////////////////////////////////////////////////
     // Functions
     ///////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public Widget asWidget() {
+        if (contentType == ContentDisplayType.EDITABLE) {
+            viewableContent.setVisible(false);
+        }
+        else {
+            editableContent.setVisible(false);
+        }
+        return rootWidget;
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // Get / Set

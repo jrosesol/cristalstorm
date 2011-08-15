@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.cristal.storm.prototype.server.domain.DomainTimeCodes;
 import com.cristal.storm.prototype.server.locator.ObjectifyLocator;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.google.web.bindery.requestfactory.shared.ProxyFor;
 
 /**
@@ -18,6 +19,6 @@ import com.google.web.bindery.requestfactory.shared.ProxyFor;
  */
 @ProxyFor(value = DomainTimeCodes.class, locator = ObjectifyLocator.class)
 public interface DomainTimeCodesProxy extends BaseProxy {
-    public List<TimeEntryCode> getTimeEntryCodes();
-    public void addTimeEntryCode(TimeEntryCode timeEntryCode);
+    public List<TimeCodeType> getTimeCodeTypes();
+    public List<String> getTimeCodeValues();
 }
