@@ -10,11 +10,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import com.cristal.storm.prototype.client.controller.DataStoreProxy;
+import com.cristal.storm.prototype.client.i18n.AppsConstants;
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter.ProjectPopupDetailsViewInterface;
 import com.cristal.storm.prototype.client.mvp.presenter.TimeEntryWizardPopupPresenter.TimeEntryWizardPopupViewInterface;
+import com.cristal.storm.prototype.client.ui.ContentDisplayType;
+import com.cristal.storm.prototype.client.ui.ListBoxWithKey;
+import com.cristal.storm.prototype.client.ui.WorkActivityView;
 import com.cristal.storm.prototype.shared.proxy.DomainTimeCodesProxy;
-import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.TimeEntryRequestContext;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
@@ -24,6 +32,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -36,6 +45,7 @@ import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
@@ -52,6 +62,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.gwtplatform.mvp.client.PopupViewImpl;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
@@ -68,18 +79,19 @@ public class TimeEntryWizardPopupView extends PopupViewImpl implements
     
     private static ProjectPopupDetailsViewUiBinder uiBinder = GWT.create(ProjectPopupDetailsViewUiBinder.class);
     
-    @UiField
-    protected PopupPanel widget;
+    @UiField protected PopupPanel widget;
     
-    @UiField
-    protected VerticalPanel wizardContent;
+    @UiField protected VerticalPanel wizardContent;
     
-    @UiField
-    protected ListBox timeEntryTypes;
+    @UiField protected ListBoxWithKey timeEntryTypes;
     
-    @UiField
-    protected Button okButton;
+    @UiField protected Button okButton;
     
+    @UiField protected SimplePanel timeEntryConf;
+    
+    final Provider<AppsConstants> appCteProvider;
+    final Provider<TimeEntryRequestContext> timeEntryContextProvider;
+    final DataStoreProxy dataStoreProxy;
 
     // /////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -92,13 +104,20 @@ public class TimeEntryWizardPopupView extends PopupViewImpl implements
     // Constructors
     // /////////////////////////////////////////////////////////////////////////
     @Inject
-    public TimeEntryWizardPopupView(EventBus eventBus) {
+    public TimeEntryWizardPopupView(EventBus eventBus,
+            final Provider<AppsConstants> appCteProvider,
+            final DataStoreProxy dataStoreProxy,
+            final Provider<TimeEntryRequestContext> timeEntryContextProvider) {
         
         super(eventBus);
 
         // Has to be at the beginning
         widget = uiBinder.createAndBindUi(this);
-      
+        
+        this.appCteProvider = appCteProvider;
+        this.dataStoreProxy = dataStoreProxy;
+        this.timeEntryContextProvider = timeEntryContextProvider;
+        
     }
 
     // /////////////////////////////////////////////////////////////////////////
@@ -108,27 +127,22 @@ public class TimeEntryWizardPopupView extends PopupViewImpl implements
     public Widget asWidget() {
         return widget;
     }    
-
+    
     @Override
-    public void setInSlot(Object slot, Widget content) {
-        wizardContent.clear();
-                
-        if (content != null) {            
-            wizardContent.add(content);
-        }
+    public TimeEntryProxy getTimeEntryProxy() {
+        return wizardTimeEntryProxy;
     }
     
     @Override
-    public int getSelectedTimeCodeIdx() {
-        return timeEntryTypes.getSelectedIndex();
-    }
-    
-    @Override
-    public void setTimeEntryCodes(List<String> domainTimeCodes) {
+    public void setTimeEntryCodes(Map<Long, String> domainTimeCodes) {
+        
         timeEntryTypes.clear();
+        
+        Set<Long> keySet = domainTimeCodes.keySet();
+        
         // Add the possible time codes
-        for (String timeCodeType : domainTimeCodes) {
-            timeEntryTypes.addItem(timeCodeType);
+        for (Long key : keySet) {
+            timeEntryTypes.addItem(domainTimeCodes.get(key), key);
         }
     }
 
@@ -144,6 +158,22 @@ public class TimeEntryWizardPopupView extends PopupViewImpl implements
     @UiHandler("cancelButton")
     void cancelButtonClicked(ClickEvent event) {
         widget.hide();
+    }
+    
+    TimeEntryProxy wizardTimeEntryProxy = null;
+    
+    @UiHandler("timeEntryTypes")
+    void onTimeEntrySelect(ChangeEvent event) {
+        timeEntryConf.clear();
+        
+        wizardTimeEntryProxy = timeEntryContextProvider.get().create(TimeEntryProxy.class);
+        wizardTimeEntryProxy.setTimeCode(timeEntryTypes.getKeyValue());
+        
+        if (timeEntryTypes.getKeyValue() == DomainTimeCodesProxy.NORMAL) {
+            timeEntryConf.add(new WorkActivityView(appCteProvider, ContentDisplayType.EDITABLE, dataStoreProxy, wizardTimeEntryProxy));
+        } else {
+            timeEntryConf.add(new Label(timeEntryTypes.getValue(timeEntryTypes.getSelectedIndex())));
+        }
     }
 
     @Override

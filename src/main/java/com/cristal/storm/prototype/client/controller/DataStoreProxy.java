@@ -6,6 +6,7 @@ package com.cristal.storm.prototype.client.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -46,8 +47,12 @@ public class DataStoreProxy implements HasHandlers {
     private List<AccountProxy> accountData;
     private List<ActivityProxy> activityData;
     private List<TimeEntryProxy> timeEntryData;
-    private List<DomainTimeCodesProxy> domainTimeCodes;
     
+    /**
+     * This is used to fetch the data out of the async EntityProxy.
+     */
+    private List<DomainTimeCodesProxy> tempDomainTimeCodes;
+       
     private Boolean accountDataIsReady;
     private Boolean activityDataIsReady;
     private Boolean timeEntryDataIsReady;
@@ -68,7 +73,7 @@ public class DataStoreProxy implements HasHandlers {
         this.watchDog = commandWatchDog;
         
         accountData = new ArrayList<AccountProxy>();
-        domainTimeCodes = new ArrayList<DomainTimeCodesProxy>();
+        tempDomainTimeCodes = new ArrayList<DomainTimeCodesProxy>();
         setActivityData(new ArrayList<ActivityProxy>());
         setTimeEntryData(new ArrayList<TimeEntryProxy>());
         
@@ -137,7 +142,7 @@ public class DataStoreProxy implements HasHandlers {
     }
     
     private void listAllTimeCodes() {
-        watchDog.listAllTimeCodes(getDomainTimeCodesProxy());
+        watchDog.listAllTimeCodes(tempDomainTimeCodes);
     }
   
     public void getAllDataForUser(Date startDate, Date endDate) {
@@ -154,7 +159,7 @@ public class DataStoreProxy implements HasHandlers {
         accountData.clear();
         activityData.clear();
         timeEntryData.clear();
-        domainTimeCodes.clear();
+        tempDomainTimeCodes.clear();
         
         accountDataIsReady = false;
         activityDataIsReady = false;
@@ -260,8 +265,25 @@ public class DataStoreProxy implements HasHandlers {
         return timeEntryData;
     }
     
-    public List<DomainTimeCodesProxy> getDomainTimeCodesProxy() {
-       return domainTimeCodes;
+    public DomainTimeCodesProxy getDomainTimeCodesProxy() {
+       return tempDomainTimeCodes.get(0);
+    }
+    
+    public Map<Long, String> getDomainTimeCodeMap() {
+        DomainTimeCodesProxy timeCodeProxy = getDomainTimeCodesProxy();
+        
+        List<Long> timeCodes = timeCodeProxy.getTimeCodes();
+        List<String> timeCodeValues = timeCodeProxy.getTimeCodeValues();
+        
+        Iterator<String> timeCodeValuesItr = timeCodeValues.iterator();
+        
+        Map<Long, String> timeCodeMap = new HashMap<Long, String>();
+        
+        for (Long timeCodeKey : timeCodes) {
+            timeCodeMap.put(timeCodeKey, timeCodeValuesItr.next());
+        }
+        
+        return timeCodeMap;
     }
     
     public AccountProxy getAssociatedAccountProxy(TimeEntryProxy timeEntry) {

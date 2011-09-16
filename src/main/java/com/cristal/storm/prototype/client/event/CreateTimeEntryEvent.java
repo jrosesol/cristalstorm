@@ -6,7 +6,7 @@
  */
 package com.cristal.storm.prototype.client.event;
 
-import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
@@ -21,8 +21,8 @@ public class CreateTimeEntryEvent extends GwtEvent<CreateTimeEntryEvent.CreateTi
     ///////////////////////////////////////////////////////////////////////////
     private static final Type<CreateTimeEntryHandler> TYPE = new Type<CreateTimeEntryHandler>();
 
-    private final int VIEW_UID;
-    private final TimeCodeType timeCode;
+    private final long VIEW_UID;
+    private final TimeEntryProxy timeEntryProxy;
     
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -34,9 +34,9 @@ public class CreateTimeEntryEvent extends GwtEvent<CreateTimeEntryEvent.CreateTi
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
-    public CreateTimeEntryEvent(final int VIEW_UID, final TimeCodeType timeCode) {
+    public CreateTimeEntryEvent(final long VIEW_UID, final TimeEntryProxy timeEntryProxy) {
         this.VIEW_UID = VIEW_UID;
-        this.timeCode = timeCode;
+        this.timeEntryProxy = timeEntryProxy;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -59,19 +59,19 @@ public class CreateTimeEntryEvent extends GwtEvent<CreateTimeEntryEvent.CreateTi
         return TYPE;
     }
 
-    public static void fire(HasHandlers source, final int VIEW_UID, final TimeCodeType timeCode) {
-        source.fireEvent(new CreateTimeEntryEvent(VIEW_UID, timeCode));
+    public static void fire(HasHandlers source, final long VIEW_UID, final TimeEntryProxy timeEntryProxy) {
+        source.fireEvent(new CreateTimeEntryEvent(VIEW_UID, timeEntryProxy));
     }
 
     ///////////////////////////////////////////////////////////////////////////
     // Get / Set
     ///////////////////////////////////////////////////////////////////////////
-    public int getVIEW_UID() {
+    public long getVIEW_UID() {
         return VIEW_UID;
     }
     
-    public TimeCodeType getTimeCode() {
-        return timeCode;
+    public TimeEntryProxy getTimeEntry() {
+        return timeEntryProxy;
     }
 }
 

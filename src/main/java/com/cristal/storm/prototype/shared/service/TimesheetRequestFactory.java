@@ -14,7 +14,6 @@ import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
 import com.cristal.storm.prototype.shared.proxy.DomainProxy;
 import com.cristal.storm.prototype.shared.proxy.DomainTimeCodesProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
-import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.google.web.bindery.requestfactory.shared.Request;
 import com.google.web.bindery.requestfactory.shared.RequestContext;
 import com.google.web.bindery.requestfactory.shared.RequestFactory;
@@ -94,9 +93,8 @@ public interface TimesheetRequestFactory extends RequestFactory {
      */
     @Service(value = DomainTimeCodesDao.class, locator = DaoServiceLocator.class)
     interface DomainTimeCodeRequestContext extends RequestContext {
-        Request<List<DomainTimeCodesProxy>> listAll();
-        Request<DomainTimeCodesProxy> addDomainTimeCodeAndReturn1(TimeCodeType timeCodeType, String timeCodeValue);
-        Request<DomainTimeCodesProxy> addDomainTimeCodeAndReturn2(TimeCodeType timeCodeType);
+        Request<DomainTimeCodesProxy> getTimeCodes();
+        Request<DomainTimeCodesProxy> addDomainTimeCodeAndReturn(String timeCodeValue);
     }
     DomainTimeCodeRequestContext domainTimeCodeRequest();
 }

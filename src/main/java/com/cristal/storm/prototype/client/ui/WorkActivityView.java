@@ -37,23 +37,13 @@ public class WorkActivityView extends Composite {
     interface WorkActivityViewUiBinder extends UiBinder<Widget, WorkActivityView> {
     }
     
-    enum ContentDisplayType {
-        EDITABLE,
-        VIEWABLE
-    }
-    
     private static WorkActivityViewUiBinder uiBinder = GWT.create(WorkActivityViewUiBinder.class);
     
-    @UiField
-    ListBox accountBox;
-    @UiField
-    ListBox activityBox;
-    @UiField
-    TextBox timeEntryTime;
-    @UiField
-    VerticalPanel editableContent;
-    @UiField
-    VerticalPanel viewableContent;
+    @UiField ListBox accountBox;
+    @UiField ListBox activityBox;
+    @UiField TextBox timeEntryTime;
+    @UiField VerticalPanel editableContent;
+    @UiField VerticalPanel viewableContent;
     
     @UiField Label lblAccount;
     @UiField Label lblActivity;
@@ -124,10 +114,9 @@ public class WorkActivityView extends Composite {
             editableContent.setVisible(false);
         }
         
-        
         // Set the viewable content
         workedTimeLbl.setText(Double.toString(timeEntry.getSpentTime()));
-        timeCodeLbl.setText(UtilFunc.getTimeCodeValue(timeEntry));
+        timeCodeLbl.setText(UtilFunc.getTimeCodeValue(timeEntry, dataStoreProxy.getDomainTimeCodeMap()));
         associationLbl.setText(accountBox.getValue(accountBox.getSelectedIndex()) + " / " + activityBox.getValue(activityBox.getSelectedIndex()));
     }
 

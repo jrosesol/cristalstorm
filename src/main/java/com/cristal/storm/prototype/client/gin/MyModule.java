@@ -45,7 +45,7 @@ import com.cristal.storm.prototype.client.mvp.view.TimeEntryWizardPopupView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetCellListView;
 import com.cristal.storm.prototype.client.mvp.view.TimesheetView;
 import com.cristal.storm.prototype.client.util.DemoDataLoader;
-import com.cristal.storm.prototype.shared.proxy.TimeEntryCode;
+import com.cristal.storm.prototype.server.domain.TimeEntryCodes;
 import com.cristal.storm.prototype.shared.service.CommandWatchDog;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.TimeEntryRequestContext;

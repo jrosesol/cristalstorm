@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client">
+    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client"
+    xmlns:u="urn:import:com.cristal.storm.prototype.client.ui">
 
     <ui:style>
         .popup {
@@ -19,7 +20,8 @@
     <g:PopupPanel ui:field="widget" modal="true"
         glassEnabled="true">
         <g:VerticalPanel ui:field="wizardContent">
-            <g:ListBox ui:field="timeEntryTypes"></g:ListBox>
+            <u:ListBoxWithKey ui:field="timeEntryTypes"></u:ListBoxWithKey>
+            <g:SimplePanel ui:field="timeEntryConf"></g:SimplePanel>
             <g:Button ui:field="okButton">Ok</g:Button>
             <g:Button ui:field="cancelButton">Cancel</g:Button>
         </g:VerticalPanel>

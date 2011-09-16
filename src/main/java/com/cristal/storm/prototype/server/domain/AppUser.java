@@ -19,12 +19,12 @@ public class AppUser extends DatastoreObject {
     
     @Transient
     public static String EMAIL_FIELD_NAME = "email"; 
-    private String email;
+    protected String email;
     
     // Keys
-    private Key<AppUser>   boss;
-    private Key<AppUser>[] subordinates;
-    private Key<Domain>    userDomain;
+    protected Key<AppUser>   boss;
+    protected Key<AppUser>[] subordinates;
+    protected Key<Domain>    userDomain;
 
     ///////////////////////////////////////////////////////////////////////////
     // Constructors

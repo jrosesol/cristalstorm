@@ -27,7 +27,6 @@ import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DAT
 import com.cristal.storm.prototype.client.i18n.AppsConstants;
 import com.cristal.storm.prototype.client.i18n.UtilFunc;
 import com.cristal.storm.prototype.client.mvp.presenter.ProjectPopupDetailsPresenter;
-import com.cristal.storm.prototype.client.ui.WorkActivityView.ContentDisplayType;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;

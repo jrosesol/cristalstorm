@@ -2,31 +2,32 @@
  *
  *
  * @author Jose Rose
- * 2011-08-08
+ * 2011-08-15
  */
 package com.cristal.storm.prototype.server.domain;
 
-import javax.persistence.Transient;
-
-import com.googlecode.objectify.annotation.Indexed;
+import com.googlecode.objectify.Key;
 
 /**
- * TODO: Add comments for Domain
+ * TODO: Add comments for DomainSettings
  *
  */
-public class Domain extends DatastoreObject {
+public class DomainSettings extends DatastoreObject {
     ///////////////////////////////////////////////////////////////////////////
     // Members
     ///////////////////////////////////////////////////////////////////////////
     
-    @Transient public static String NAME_FIELD_NAME = "name";
-    @Indexed private String name;
+    /**
+     * The time codes for the domain.
+     */
+    Key<DomainTimeCodes> timeCodes;
 
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     
-    public Domain() {        
+    public DomainSettings() {
+        
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -34,9 +35,9 @@ public class Domain extends DatastoreObject {
     ///////////////////////////////////////////////////////////////////////////
     @Override
     public String toString() {
-        return "";
+        return "DomainTimeCodes";
     }
-    
+
     ///////////////////////////////////////////////////////////////////////////
     // Functions
     ///////////////////////////////////////////////////////////////////////////
@@ -44,16 +45,5 @@ public class Domain extends DatastoreObject {
     ///////////////////////////////////////////////////////////////////////////
     // Get / Set
     ///////////////////////////////////////////////////////////////////////////
-    
-    public String getDescription() {
-        return this.toString();
-    }
 
-    public void setName(String domainName) {
-        this.name = domainName;
-    }
-
-    public String getName() {
-        return name;
-    }
 }

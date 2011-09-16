@@ -28,7 +28,6 @@ import com.cristal.storm.prototype.client.ui.PortletPlaceholder;
 import com.cristal.storm.prototype.client.util.Resources;
 import com.cristal.storm.prototype.client.util.UtilFunc;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
-import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.cristal.storm.prototype.shared.service.CommandWatchDog;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -78,7 +77,7 @@ public class ActivityCalendarWidgetPresenter extends
     private Date widgetDate;    
 
     /** Uniquely represent the view to distinguish it when serving events. */
-    public final int VIEW_UID = UtilFunc.generateUID(); 
+    public final long VIEW_UID = UtilFunc.generateUID(); 
 
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -138,11 +137,8 @@ public class ActivityCalendarWidgetPresenter extends
             public void onCreateTimeEntry(CreateTimeEntryEvent event) {
                 
                 // Only if the event is set for us
-                if (event.getVIEW_UID() == VIEW_UID) {
-                    TimeEntryProxy timeEntry = timeEntryContextProvider.get().create(TimeEntryProxy.class);
-                    timeEntry.setTimeCode(event.getTimeCode());
-                    
-                    Portlet aPortlet = new Portlet(timeEntry, appCteProvider);
+                if (event.getVIEW_UID() == VIEW_UID) {                    
+                    Portlet aPortlet = new Portlet(event.getTimeEntry(), appCteProvider);
                     aPortlet.setHandlers(commandWatchDog, dataStoreProxy);
                     getView().addPortlet(aPortlet);
                 }

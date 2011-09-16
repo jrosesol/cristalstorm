@@ -14,12 +14,11 @@ import java.util.logging.Logger;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.cristal.storm.prototype.client.i18n.AppsConstants;
+import com.cristal.storm.prototype.server.domain.TimeEntryCodes;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
 import com.cristal.storm.prototype.shared.proxy.DomainProxy;
 import com.cristal.storm.prototype.shared.proxy.DomainTimeCodesProxy;
-import com.cristal.storm.prototype.shared.proxy.TimeEntryCode;
-import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory;
 import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.AccountRequestContext;
@@ -46,7 +45,7 @@ public class DemoDataLoader {
     private final TimesheetRequestFactory rf;
     
     /* Has to be the same as in LoginSerce.java */
-    public static String DOMAIN_NAME = "domain24.com";
+    public static String DOMAIN_NAME = "domain38.com";
 
     @Inject
     public DemoDataLoader(final TimesheetRequestFactory rf) {
@@ -83,12 +82,8 @@ public class DemoDataLoader {
                         }
                         else {
                             // Try to register time codes for domain
-                            registerTimeCode(TimeEntryCode.TimeCodeType.NORMAL);
-                            registerTimeCode(TimeEntryCode.TimeCodeType.HOLIDAY);
-                            registerTimeCode(TimeEntryCode.TimeCodeType.LUNCH);
-                            registerTimeCode(TimeEntryCode.TimeCodeType.PAID_VACATION);
-                            registerTimeCode(TimeEntryCode.TimeCodeType.SICKNESS);
-                            registerTimeCodeExtended(TimeEntryCode.TimeCodeType.EXTENDED, "Super Thing To Do Code");                            
+                            registerTimeCode("Super Thing To Do Code");
+                            //registerTimeCode("Super Other Thing");
                             
                             // Load the default data
                             loadDataFromDataStore();
@@ -146,25 +141,21 @@ public class DemoDataLoader {
             @Override
             public void onSuccess(ActivityProxy response) {
 
-                saveTimeEntry(owningAccount, response, 0, TimeEntryCode.TimeCodeType.NORMAL);
-                saveTimeEntry(owningAccount, response, 1, TimeEntryCode.TimeCodeType.NORMAL);
-                saveTimeEntry(owningAccount, response, 2, TimeEntryCode.TimeCodeType.PAID_VACATION);
-                saveTimeEntry(owningAccount, response, 3, TimeEntryCode.TimeCodeType.HOLIDAY);
-                saveTimeEntry(owningAccount, response, -1, TimeEntryCode.TimeCodeType.SICKNESS);
-                saveTimeEntry(owningAccount, response, -2, TimeEntryCode.TimeCodeType.NORMAL);
-                saveTimeEntry(owningAccount, response, -3, TimeEntryCode.TimeCodeType.NORMAL);
-                saveTimeEntry(owningAccount, response, -4, TimeEntryCode.TimeCodeType.NORMAL);
-                saveTimeEntry(owningAccount, response, -5, TimeEntryCode.TimeCodeType.NORMAL);
-                saveTimeEntry(owningAccount, response, -6, TimeEntryCode.TimeCodeType.NORMAL);
-                saveTimeEntry(owningAccount, response, -7, TimeEntryCode.TimeCodeType.NORMAL);
-                saveTimeEntry(owningAccount, response, -8, TimeEntryCode.TimeCodeType.NORMAL);
-                saveTimeEntry(owningAccount, response, -9, TimeEntryCode.TimeCodeType.NORMAL);
-                saveTimeEntry(owningAccount, response, -10, TimeEntryCode.TimeCodeType.NORMAL);
+                saveTimeEntry(owningAccount, response, 0, DomainTimeCodesProxy.NORMAL);
+                saveTimeEntry(owningAccount, response, 1, DomainTimeCodesProxy.NORMAL);
+                saveTimeEntry(owningAccount, response, 2, DomainTimeCodesProxy.PAID_VACATION);
+                saveTimeEntry(owningAccount, response, 3, DomainTimeCodesProxy.HOLIDAY);
+                saveTimeEntry(owningAccount, response, -1, DomainTimeCodesProxy.SICKNESS);
+                saveTimeEntry(owningAccount, response, -2, DomainTimeCodesProxy.NORMAL);
+                saveTimeEntry(owningAccount, response, -3, DomainTimeCodesProxy.NORMAL);
+                saveTimeEntry(owningAccount, response, -4, DomainTimeCodesProxy.NORMAL);
+                saveTimeEntry(owningAccount, response, -5, DomainTimeCodesProxy.NORMAL);
+                saveTimeEntry(owningAccount, response, -6, DomainTimeCodesProxy.NORMAL);
             }
         });
     }
 
-    private void saveTimeEntry(final AccountProxy owningAccount, ActivityProxy response, int dayOffset, TimeCodeType timeCode) {
+    private void saveTimeEntry(final AccountProxy owningAccount, ActivityProxy response, int dayOffset, long timeCode) {
         // Save dummy time entries
         Random randomGenerator = new Random();
 
@@ -185,9 +176,9 @@ public class DemoDataLoader {
         });
     }
 
-    private void registerTimeCode(TimeCodeType timeCode) {
-        DomainTimeCodeRequestContext domainTimeCodesCtx = rf.domainTimeCodeRequest();
-        domainTimeCodesCtx.addDomainTimeCodeAndReturn2(timeCode).fire(new Receiver<DomainTimeCodesProxy>() {
+    private void registerTimeCode(String timeCodeValue) {
+        DomainTimeCodeRequestContext domainTimeCodesCtx = rf.domainTimeCodeRequest();        
+        domainTimeCodesCtx.addDomainTimeCodeAndReturn(timeCodeValue).fire(new Receiver<DomainTimeCodesProxy>() {
 
             @Override
             public void onSuccess(DomainTimeCodesProxy response) {
@@ -198,22 +189,6 @@ public class DemoDataLoader {
             public void onFailure(ServerFailure error) {
                 Log.info("registerTimeCode FAILED : " + error.getMessage());
             }    
-        });
-    }
-    
-    private void registerTimeCodeExtended(TimeCodeType timeCode, String timeCodeValue) {
-        DomainTimeCodeRequestContext domainTimeCodesCtx = rf.domainTimeCodeRequest();
-        domainTimeCodesCtx.addDomainTimeCodeAndReturn1(timeCode, timeCodeValue).fire(new Receiver<DomainTimeCodesProxy>() {
-
-            @Override
-            public void onSuccess(DomainTimeCodesProxy response) {
-                Log.info("DomainTimeCodes : " + response.getDescription());
-            }
-            
-            @Override
-            public void onFailure(ServerFailure error) {
-                Log.info("registerTimeCodeExtended FAILED : " + error.getMessage());
-            }            
         });
     }
 

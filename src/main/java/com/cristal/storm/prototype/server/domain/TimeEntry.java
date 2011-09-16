@@ -5,34 +5,33 @@ import java.util.Date;
 import javax.persistence.Embedded;
 
 import com.cristal.storm.prototype.server.service.AppUserDao;
-import com.cristal.storm.prototype.shared.proxy.TimeEntryCode;
-import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Unindexed;
 
 @Entity
 public class TimeEntry extends DatastoreObject {
+    
     ///////////////////////////////////////////////////////////////////////////
     // Members
     ///////////////////////////////////////////////////////////////////////////
     
     private Date timeEntryTimestamp;
-    private double spentTime;
+    @Unindexed private double spentTime;
     
     // Keys
     private Key<AppUser>   owningUser;
-    private Key<Activity>  owningActivity;
-    private Key<Account>   owningAccount;
+    @Unindexed private Key<Activity>  owningActivity;
+    @Unindexed private Key<Account>   owningAccount;
     
-    @Embedded
-    private TimeEntryCode timeEntryCode;
+    @Embedded private TimeCodePair timeEntryCode;
 
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
 
     public TimeEntry() {
-        this.timeEntryCode = new TimeEntryCode();
+        this.timeEntryCode = new TimeCodePair();
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -93,20 +92,20 @@ public class TimeEntry extends DatastoreObject {
         return owningAccount;
     }
     
-    public void setTimeCode(TimeCodeType timeCode) {
-        this.timeEntryCode.setTimeEntryCode(timeCode);
+    public void setTimeCode(Long timeCode) {
+        this.timeEntryCode.setTimeCode(timeCode);
     }
 
-    public TimeCodeType getTimeCode() {
-        return timeEntryCode.getTimeEntryCode();
+    public Long getTimeCode() {
+        return timeEntryCode.getTimeCode();
     }
     
     public String getTimeCodeValue() {
-        return timeEntryCode.getTimeEntryValue();
+        return timeEntryCode.getTimeCodeValue();
     }
     
     public void setTimeCodeValue(String timeCodeValue) {
-        timeEntryCode.setTimeEntryValue(timeCodeValue);
+        timeEntryCode.setTimeCodeValue(timeCodeValue);
     }
    
     public long getOwningUserId() {

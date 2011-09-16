@@ -6,8 +6,10 @@
  */
 package com.cristal.storm.prototype.client.i18n;
 
+import java.util.Map;
+
 import com.allen_sauer.gwt.log.client.Log;
-import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
+import com.cristal.storm.prototype.shared.proxy.DomainTimeCodesProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.google.gwt.core.client.GWT;
 
@@ -26,42 +28,39 @@ public class UtilFunc {
     // Functions
     ///////////////////////////////////////////////////////////////////////////
     
-    public static String getTimeCodeValue(TimeCodeType timeCode) {
+    public static String getTimeCodeValue(Long timeCode, Map<Long, String> domainTimeCodeMap) {
         String timeCodeValue = "";
-        switch (timeCode) {
-            case NORMAL:
+        int integerValer = (int) timeCode.longValue();
+        switch (integerValer) {
+            case (int) DomainTimeCodesProxy.NORMAL:
                 timeCodeValue = lConstants.normalTimeCode();
                 break;
-            case PAID_VACATION:
+            case (int) DomainTimeCodesProxy.PAID_VACATION:
                 timeCodeValue = lConstants.vacationTimeCode();
                 break;
-            case SICKNESS:
+            case (int) DomainTimeCodesProxy.SICKNESS:
                 timeCodeValue = lConstants.sicknessTimeCode();
                 break;
-            case HOLIDAY:
+            case (int) DomainTimeCodesProxy.HOLIDAY:
                 timeCodeValue = lConstants.holidayTimeCode();
                 break;
-            case LUNCH:
+            case (int) DomainTimeCodesProxy.LUNCH:
                 timeCodeValue = lConstants.lunchTimeCode();
                 break;
-            case EXTENDED:
-                timeCodeValue = "FIND A WAY TO GET USER DEFINED";
+            case (int) DomainTimeCodesProxy.EXTENDED:
+                Log.fatal("WHY DID WE STORE THIS VALUE????");
                 break;
             default:
-                Log.fatal("WHAT OTHER CASE?");
+                // This one does not support multi-language as it is user defined. 
+                timeCodeValue = domainTimeCodeMap.get(timeCode);
                 break;
         }
         
         return timeCodeValue;
     }
     
-    public static String getTimeCodeValue(TimeEntryProxy timeEntryProxy) {
-        if (timeEntryProxy.getTimeCode() == TimeCodeType.EXTENDED) {
-            return timeEntryProxy.getTimeCodeValue();
-        }
-        else {
-            return getTimeCodeValue(timeEntryProxy.getTimeCode());
-        }
+    public static String getTimeCodeValue(TimeEntryProxy timeEntryProxy, Map<Long, String> domainTimeCodeMap) {
+        return getTimeCodeValue(timeEntryProxy.getTimeCode(), domainTimeCodeMap);
     }
 
     ///////////////////////////////////////////////////////////////////////////

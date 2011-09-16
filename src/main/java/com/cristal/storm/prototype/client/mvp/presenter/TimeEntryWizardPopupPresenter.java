@@ -7,7 +7,10 @@
 package com.cristal.storm.prototype.client.mvp.presenter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,10 +19,10 @@ import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.event.CreateTimeEntryEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent;
 import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.DATA_EVENT_TYPE;
+import com.cristal.storm.prototype.client.event.UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler;
 import com.cristal.storm.prototype.client.ui.Portlet;
 import com.cristal.storm.prototype.shared.proxy.DomainTimeCodesProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
-import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -57,7 +60,7 @@ public class TimeEntryWizardPopupPresenter extends
     private final DataStoreProxy dataStoreProxy;
 
     // TODO : Find a better way to do this... 
-    private int eventSourceUID;
+    private long eventSourceUID;
     
     ///////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -69,8 +72,8 @@ public class TimeEntryWizardPopupPresenter extends
      */
     public interface TimeEntryWizardPopupViewInterface extends PopupView {
         public HasClickHandlers onWizardOkButton();
-        public int getSelectedTimeCodeIdx();
-        public void setTimeEntryCodes(List<String> domainTimeCodes);
+        public TimeEntryProxy getTimeEntryProxy();
+        public void setTimeEntryCodes(Map<Long, String> domainTimeCodes);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -82,8 +85,6 @@ public class TimeEntryWizardPopupPresenter extends
         
         this.eventBus = eventBus;
         this.dataStoreProxy = dataStoreProxy;
-        
-
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -99,16 +100,26 @@ public class TimeEntryWizardPopupPresenter extends
             
             @Override
             public void onClick(ClickEvent event) {
-                // Add the possible time codes
-                TimeCodeType selectedTimeCode = TimeCodeType.NORMAL;
-                for (DomainTimeCodesProxy domainTimeCodesProxy : dataStoreProxy.getDomainTimeCodesProxy()) {
-
-                    List<TimeCodeType> timeCodes = domainTimeCodesProxy.getTimeCodeTypes();
-                    
-                    selectedTimeCode = timeCodes.get(getView().getSelectedTimeCodeIdx());
+                CreateTimeEntryEvent.fire(eventBus, getEventSourceUID(), getView().getTimeEntryProxy());
+            }
+        };
+    }
+    
+    /**
+     * Fill the time code values to the time entry wizard.
+     * 
+     * @return The handler
+     */
+    private UpdateDataBindedObjectsHandler onRevealPresenters() {
+        return new UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler() {
+            
+            @Override
+            public void onUpdateDataBindedObjects(UpdateDataBindedObjectsEvent updateDataBindedObjectsEvent,
+                    DATA_EVENT_TYPE eventType) {
+                if (eventType == DATA_EVENT_TYPE.REVEAL_PRESENTERS) {
+                    Map<Long, String> timeCodes = dataStoreProxy.getDomainTimeCodeMap();                    
+                    getView().setTimeEntryCodes(timeCodes);
                 }
-                
-                CreateTimeEntryEvent.fire(eventBus, getEventSourceUID(), selectedTimeCode);
             }
         };
     }
@@ -123,28 +134,7 @@ public class TimeEntryWizardPopupPresenter extends
         
         registerHandler(getView().onWizardOkButton().addClickHandler(onWizardOkButton()));
         
-        registerHandler(eventBus.addHandler(UpdateDataBindedObjectsEvent.getType(), new UpdateDataBindedObjectsEvent.UpdateDataBindedObjectsHandler() {
-            
-            @Override
-            public void onUpdateDataBindedObjects(UpdateDataBindedObjectsEvent updateDataBindedObjectsEvent,
-                    DATA_EVENT_TYPE eventType) {
-                if (eventType == DATA_EVENT_TYPE.REVEAL_PRESENTERS) {
-                    List<String> timeCodesList = new ArrayList<String>();
-                    
-                    // Add the possible time codes
-                    for (DomainTimeCodesProxy domainTimeCodesProxy : dataStoreProxy.getDomainTimeCodesProxy()) {
-
-                        List<TimeCodeType> timeCodes = domainTimeCodesProxy.getTimeCodeTypes();
-                        
-                        for (TimeCodeType timeCodeType : timeCodes) {
-                            timeCodesList.add(com.cristal.storm.prototype.client.i18n.UtilFunc.getTimeCodeValue(timeCodeType));
-                        }
-                    }
-                    
-                    getView().setTimeEntryCodes(timeCodesList);
-                }
-            }
-        }));
+        registerHandler(eventBus.addHandler(UpdateDataBindedObjectsEvent.getType(), onRevealPresenters()));
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -155,11 +145,11 @@ public class TimeEntryWizardPopupPresenter extends
     // Getters / Setters
     ///////////////////////////////////////////////////////////////////////////
     
-    public void setEventSourceUID(int eventSourceUID) {
+    public void setEventSourceUID(long eventSourceUID) {
         this.eventSourceUID = eventSourceUID;
     }
 
-    public int getEventSourceUID() {
+    public long getEventSourceUID() {
         return eventSourceUID;
     }
 

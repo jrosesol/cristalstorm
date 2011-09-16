@@ -7,15 +7,16 @@
 package com.cristal.storm.prototype.server.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Embedded;
 import javax.persistence.Transient;
 
-import com.cristal.storm.prototype.shared.proxy.TimeEntryCode;
-import com.cristal.storm.prototype.shared.proxy.TimeEntryCode.TimeCodeType;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Indexed;
 
 /**
  * TODO: Add comments for DomainTimeCodes
@@ -32,19 +33,20 @@ public class DomainTimeCodes extends DatastoreObject {
      * as this would be a data integrity issue. Once a time code is added
      * it will stay there.
      */
-    @Embedded
-    private List<TimeEntryCode> domainTimeEntryCodes;
+    @Embedded protected TimeEntryCodes domainTimeCodes;
     
-    @Transient
-    public static String DOMAIN_FIELD_NAME = "domain";
-    private Key<Domain> domain;
+    @Transient public static String NAME_FIELD_NAME = "name";
+    @Indexed private String name;
+    
+    @Transient public static String DOMAIN_FIELD_NAME = "domain";
+    @Indexed protected Key<Domain> domain;
 
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
     ///////////////////////////////////////////////////////////////////////////
     
     public DomainTimeCodes() {
-        this.domainTimeEntryCodes = new ArrayList<TimeEntryCode>();
+        domainTimeCodes = new TimeEntryCodes();
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -67,35 +69,34 @@ public class DomainTimeCodes extends DatastoreObject {
     public String getDescription() {
         return this.toString();
     }
-    
-    public void addTimeCode(TimeCodeType timeCodeType, String timeCodeValue) {
-        domainTimeEntryCodes.add(new TimeEntryCode(timeCodeType, timeCodeValue));
+   
+    public void setTimeCode(Long timeCode, String timeCodeValue) {
+        domainTimeCodes.addTimeCode(timeCode, timeCodeValue);
     }
-    
-    public void addTimeCode(TimeCodeType timeCodeType) {
-        domainTimeEntryCodes.add(new TimeEntryCode(timeCodeType));
-    }
-
-    public List<TimeCodeType> getTimeCodeTypes() {
-        List<TimeCodeType> timeCodeList = new ArrayList<TimeCodeType>();
-
-        for (TimeEntryCode timeCode : domainTimeEntryCodes) {
-            timeCodeList.add(timeCode.getTimeEntryCode());
-        }
-        return timeCodeList;
+   
+    public List<Long> getTimeCodes() {
+        return domainTimeCodes.getTimeCodes();
     }
     
     public List<String> getTimeCodeValues() {
-        List<String> timeCodeList = new ArrayList<String>();
-
-        for (TimeEntryCode timeCode : domainTimeEntryCodes) {
-            timeCodeList.add(timeCode.getTimeEntryValue());
-        }
-        return timeCodeList;
+        return domainTimeCodes.getTimeCodeValues();
+    }
+    
+    public void initTimeCodes() {
+        domainTimeCodes.initTimeCodes();
     }
 
-    public void setDomain(Key<Domain> domain) {
-        this.domain = domain;
+    public void setDomain(Domain domain) {
+        this.domain = new Key<Domain>(Domain.class, domain.getId());
+        setDomainName(domain.getName());
+    }
+    
+    private void setDomainName(String name) {
+        this.name = name;
+    }
+    
+    public String getDomainName() {
+        return name;
     }
 
     public Key<Domain> getDomain() {
