@@ -138,7 +138,7 @@ public class ActivityCalendarWidgetPresenter extends
                 
                 // Only if the event is set for us
                 if (event.getVIEW_UID() == VIEW_UID) {                    
-                    Portlet aPortlet = new Portlet(event.getTimeEntry(), appCteProvider);
+                    Portlet aPortlet = new Portlet(event.getTimeEntry(), appCteProvider, eventBus);
                     aPortlet.setHandlers(commandWatchDog, dataStoreProxy);
                     getView().addPortlet(aPortlet);
                 }
@@ -167,7 +167,7 @@ public class ActivityCalendarWidgetPresenter extends
                     List<TimeEntryProxy> timeEntryList = dataStoreProxy.getTimeEntryData();
                     
                     for (TimeEntryProxy timeEntry : timeEntryList) {
-                        Portlet aPortlet = new Portlet(timeEntry, appCteProvider);
+                        Portlet aPortlet = new Portlet(timeEntry, appCteProvider, eventBus);
                         aPortlet.setHandlers(commandWatchDog, dataStoreProxy);
                         
                         if (widgetDate != null) {

@@ -45,7 +45,7 @@ public class DemoDataLoader {
     private final TimesheetRequestFactory rf;
     
     /* Has to be the same as in LoginSerce.java */
-    public static String DOMAIN_NAME = "domain38.com";
+    public static String DOMAIN_NAME = "domain50.com";
 
     @Inject
     public DemoDataLoader(final TimesheetRequestFactory rf) {
@@ -142,15 +142,15 @@ public class DemoDataLoader {
             public void onSuccess(ActivityProxy response) {
 
                 saveTimeEntry(owningAccount, response, 0, DomainTimeCodesProxy.NORMAL);
-                saveTimeEntry(owningAccount, response, 1, DomainTimeCodesProxy.NORMAL);
-                saveTimeEntry(owningAccount, response, 2, DomainTimeCodesProxy.PAID_VACATION);
-                saveTimeEntry(owningAccount, response, 3, DomainTimeCodesProxy.HOLIDAY);
-                saveTimeEntry(owningAccount, response, -1, DomainTimeCodesProxy.SICKNESS);
-                saveTimeEntry(owningAccount, response, -2, DomainTimeCodesProxy.NORMAL);
-                saveTimeEntry(owningAccount, response, -3, DomainTimeCodesProxy.NORMAL);
-                saveTimeEntry(owningAccount, response, -4, DomainTimeCodesProxy.NORMAL);
-                saveTimeEntry(owningAccount, response, -5, DomainTimeCodesProxy.NORMAL);
-                saveTimeEntry(owningAccount, response, -6, DomainTimeCodesProxy.NORMAL);
+//                saveTimeEntry(owningAccount, response, 1, DomainTimeCodesProxy.NORMAL);
+//                saveTimeEntry(owningAccount, response, 2, DomainTimeCodesProxy.PAID_VACATION);
+//                saveTimeEntry(owningAccount, response, 3, DomainTimeCodesProxy.HOLIDAY);
+//                saveTimeEntry(owningAccount, response, -1, DomainTimeCodesProxy.SICKNESS);
+//                saveTimeEntry(owningAccount, response, -2, DomainTimeCodesProxy.NORMAL);
+//                saveTimeEntry(owningAccount, response, -3, DomainTimeCodesProxy.NORMAL);
+//                saveTimeEntry(owningAccount, response, -4, DomainTimeCodesProxy.NORMAL);
+//                saveTimeEntry(owningAccount, response, -5, DomainTimeCodesProxy.NORMAL);
+//                saveTimeEntry(owningAccount, response, -6, DomainTimeCodesProxy.NORMAL);
             }
         });
     }
@@ -161,7 +161,7 @@ public class DemoDataLoader {
 
         TimeEntryRequestContext reqCtx = rf.timeEntryRequest();
         final TimeEntryProxy newTimeEntry = reqCtx.create(TimeEntryProxy.class);
-        newTimeEntry.setSpentTime(randomGenerator.nextInt(100));
+        newTimeEntry.setSpentTime(Integer.toString(randomGenerator.nextInt(100)));
         Date currentTime = new Date(System.currentTimeMillis());
         CalendarUtil.addDaysToDate(currentTime, dayOffset);
         newTimeEntry.setTimeEntryTimestamp(currentTime);

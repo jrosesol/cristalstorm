@@ -113,7 +113,7 @@ public class RequestFactoryTest extends TestCase {
 
         final TimeEntryRequestContext reqCtx = rf.timeEntryRequest();
         newTimeEntry = reqCtx.create(TimeEntryProxy.class);        
-        newTimeEntry.setSpentTime(10.0);
+        newTimeEntry.setSpentTime(Double.toString(10.0));
         newTimeEntry.setTimeEntryTimestamp(testDate);
 
         reqCtx.saveTimeEntry(newTimeEntry, testAccountProxy, testActivityProxy).fire(new Receiver<Void>() {
@@ -251,7 +251,7 @@ public class RequestFactoryTest extends TestCase {
     private void saveTimeEntry(double timeSpent, Date timestamp) {
         final TimeEntryRequestContext reqCtx = rf.timeEntryRequest();
         newTimeEntry = reqCtx.create(TimeEntryProxy.class);        
-        newTimeEntry.setSpentTime(timeSpent);
+        newTimeEntry.setSpentTime(Double.toString(timeSpent));
         newTimeEntry.setTimeEntryTimestamp(timestamp);
 
         reqCtx.saveTimeEntry(newTimeEntry, testAccountProxy, testActivityProxy).fire(new Receiver<Void>() {

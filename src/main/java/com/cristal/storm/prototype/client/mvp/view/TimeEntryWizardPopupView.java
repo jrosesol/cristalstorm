@@ -92,6 +92,7 @@ public class TimeEntryWizardPopupView extends PopupViewImpl implements
     final Provider<AppsConstants> appCteProvider;
     final Provider<TimeEntryRequestContext> timeEntryContextProvider;
     final DataStoreProxy dataStoreProxy;
+    final EventBus eventBus;
 
     // /////////////////////////////////////////////////////////////////////////
     // Interfaces
@@ -104,7 +105,7 @@ public class TimeEntryWizardPopupView extends PopupViewImpl implements
     // Constructors
     // /////////////////////////////////////////////////////////////////////////
     @Inject
-    public TimeEntryWizardPopupView(EventBus eventBus,
+    public TimeEntryWizardPopupView(final EventBus eventBus,
             final Provider<AppsConstants> appCteProvider,
             final DataStoreProxy dataStoreProxy,
             final Provider<TimeEntryRequestContext> timeEntryContextProvider) {
@@ -117,6 +118,7 @@ public class TimeEntryWizardPopupView extends PopupViewImpl implements
         this.appCteProvider = appCteProvider;
         this.dataStoreProxy = dataStoreProxy;
         this.timeEntryContextProvider = timeEntryContextProvider;
+        this.eventBus = eventBus;
         
     }
 
@@ -170,7 +172,7 @@ public class TimeEntryWizardPopupView extends PopupViewImpl implements
         wizardTimeEntryProxy.setTimeCode(timeEntryTypes.getKeyValue());
         
         if (timeEntryTypes.getKeyValue() == DomainTimeCodesProxy.NORMAL) {
-            timeEntryConf.add(new WorkActivityView(appCteProvider, ContentDisplayType.EDITABLE, dataStoreProxy, wizardTimeEntryProxy));
+            timeEntryConf.add(new WorkActivityView(appCteProvider, ContentDisplayType.EDITABLE, dataStoreProxy, wizardTimeEntryProxy, eventBus));
         } else {
             timeEntryConf.add(new Label(timeEntryTypes.getValue(timeEntryTypes.getSelectedIndex())));
         }

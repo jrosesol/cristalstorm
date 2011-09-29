@@ -10,8 +10,8 @@ import com.google.web.bindery.requestfactory.shared.ProxyFor;
 public interface TimeEntryProxy extends BaseProxy {
     public void setTimeEntryTimestamp(Date timeEntryTimestamp);
     public Date getTimeEntryTimestamp();
-    public void setSpentTime(double spentTime);
-    public double getSpentTime();
+    public void setSpentTime(String spentTime);
+    public String getSpentTime();
     public Long getId();
     public long getOwningUserId();
     public long getOwningActivityId();

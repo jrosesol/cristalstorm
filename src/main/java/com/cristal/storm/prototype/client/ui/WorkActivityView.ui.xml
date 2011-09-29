@@ -38,7 +38,7 @@
         		<g:Label ui:field="lblActivity"/>
         		<g:ListBox ui:field="activityBox"/>
         		<g:Label ui:field="lblActivityTime"/>
-        		<g:TextBox ui:field="timeEntryTime"/>
+        		<g:TextBox ui:field="spentTime"/>
             </g:VerticalPanel>
             <!-- This is the content which is shown when we are in view mode -->
             <g:VerticalPanel ui:field="viewableContent">
@@ -46,6 +46,7 @@
                 <g:Label ui:field="timeCodeLbl">WORK</g:Label>
                 <g:Label ui:field="associationLbl"></g:Label>
             </g:VerticalPanel>
+            <g:Button ui:field="saveButton">Save</g:Button>
         </g:VerticalPanel>
 	</g:HTMLPanel>
 

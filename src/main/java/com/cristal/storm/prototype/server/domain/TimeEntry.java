@@ -60,12 +60,12 @@ public class TimeEntry extends DatastoreObject {
         return timeEntryTimestamp;
     }
 
-    public void setSpentTime(double spentTime) {
-        this.spentTime = spentTime;
+    public void setSpentTime(String spentTime) {
+        this.spentTime = Double.parseDouble(spentTime);
     }
 
-    public double getSpentTime() {
-        return spentTime;
+    public String getSpentTime() {
+        return Double.toString(spentTime);
     }
 
     public void setOwningUser(AppUser owningUser) {

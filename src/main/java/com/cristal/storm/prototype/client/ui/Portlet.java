@@ -124,25 +124,29 @@ public class Portlet extends Composite /*DraggableWidget<Widget>*/ {
     
     private Provider<AppsConstants> appCteProvider;
     
+    private final EventBus eventBus;
+    
     @Inject
-    public Portlet(TimeEntryProxy timeEntry, final Provider<AppsConstants> appCteProvider) {
+    public Portlet(TimeEntryProxy timeEntry, final Provider<AppsConstants> appCteProvider, final EventBus eventBus) {
         initWidget(uiBinder.createAndBindUi(this));
         setup();
         
         this.appCteProvider = appCteProvider;
         
         this.portletTimeEntry = timeEntry;
+        
+        this.eventBus = eventBus;
     }
     
     public void setHandlers(final CommandWatchDog commandWatchDog, final DataStoreProxy dataStoreProxy) {
         
-        timeEntryContent.add(new WorkActivityView(appCteProvider, ContentDisplayType.VIEWABLE, dataStoreProxy, portletTimeEntry));
+        timeEntryContent.add(new WorkActivityView(appCteProvider, ContentDisplayType.VIEWABLE, dataStoreProxy, portletTimeEntry, eventBus));
         
         // Create a basic popup widget
         final DecoratedPopupPanel simplePopup = new DecoratedPopupPanel(true);
         simplePopup.ensureDebugId("cwBasicPopup-simplePopup");
         simplePopup.setWidth("150px");
-        simplePopup.setWidget(new WorkActivityView(appCteProvider, ContentDisplayType.EDITABLE, dataStoreProxy, portletTimeEntry));
+        simplePopup.setWidget(new WorkActivityView(appCteProvider, ContentDisplayType.EDITABLE, dataStoreProxy, portletTimeEntry, eventBus));
 
         portletFocus.addKeyDownHandler(new KeyDownHandler() {
 

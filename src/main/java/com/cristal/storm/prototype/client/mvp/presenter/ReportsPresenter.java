@@ -7,6 +7,7 @@
 package com.cristal.storm.prototype.client.mvp.presenter;
 
 import com.cristal.storm.prototype.client.mvp.view.ReportsUiHandlers;
+import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -20,6 +21,7 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
+import com.google.gwt.editor.client.Editor;
 import com.google.gwt.event.shared.EventBus;
 
 /**

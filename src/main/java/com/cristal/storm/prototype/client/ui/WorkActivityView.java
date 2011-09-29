@@ -6,6 +6,8 @@
  */
 package com.cristal.storm.prototype.client.ui;
 
+import java.util.Date;
+
 import com.cristal.storm.prototype.client.controller.DataStoreProxy;
 import com.cristal.storm.prototype.client.i18n.AppsConstants;
 import com.cristal.storm.prototype.client.i18n.UtilFunc;
@@ -13,9 +15,16 @@ import com.cristal.storm.prototype.client.ui.Portlet.PortletUiBinder;
 import com.cristal.storm.prototype.shared.proxy.AccountProxy;
 import com.cristal.storm.prototype.shared.proxy.ActivityProxy;
 import com.cristal.storm.prototype.shared.proxy.TimeEntryProxy;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory;
+import com.cristal.storm.prototype.shared.service.TimesheetRequestFactory.TimeEntryRequestContext;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.editor.client.Editor;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -24,38 +33,45 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.web.bindery.requestfactory.gwt.client.RequestFactoryEditorDriver;
+import com.google.web.bindery.requestfactory.shared.Receiver;
 
 /**
  * TODO: Add comments for WorkActivityView
  *
  */
-public class WorkActivityView extends Composite {
+public class WorkActivityView extends Composite implements Editor<TimeEntryProxy> {
     ///////////////////////////////////////////////////////////////////////////
     // Members
     ///////////////////////////////////////////////////////////////////////////
     
     interface WorkActivityViewUiBinder extends UiBinder<Widget, WorkActivityView> {
     }
-    
+
     private static WorkActivityViewUiBinder uiBinder = GWT.create(WorkActivityViewUiBinder.class);
     
-    @UiField ListBox accountBox;
-    @UiField ListBox activityBox;
-    @UiField TextBox timeEntryTime;
-    @UiField VerticalPanel editableContent;
-    @UiField VerticalPanel viewableContent;
+    interface EditorDriver extends RequestFactoryEditorDriver<TimeEntryProxy, WorkActivityView> {}
+    private final EditorDriver driver = GWT.create(EditorDriver.class);
     
-    @UiField Label lblAccount;
-    @UiField Label lblActivity;
-    @UiField Label lblActivityTime;
+    @UiField protected ListBox accountBox;
+    @UiField protected ListBox activityBox;
+    @UiField protected TextBox spentTime;
+    @UiField protected VerticalPanel editableContent;
+    @UiField protected VerticalPanel viewableContent;
     
-    @UiField Label workedTimeLbl;
-    @UiField Label timeCodeLbl;
-    @UiField Label associationLbl;
+    @Ignore @UiField protected Label lblAccount;
+    @Ignore @UiField protected Label lblActivity;
+    @Ignore @UiField protected Label lblActivityTime;
+    
+    @Ignore @UiField protected Label workedTimeLbl;
+    @Ignore @UiField protected Label timeCodeLbl;
+    @Ignore @UiField protected Label associationLbl;
     
     private final ContentDisplayType contentType;
     private final Widget rootWidget;
     private final TimeEntryProxy timeEntry;
+    
+    TimesheetRequestFactory factory = GWT.create( TimesheetRequestFactory.class );
 
     ///////////////////////////////////////////////////////////////////////////
     // Constructors
@@ -63,7 +79,8 @@ public class WorkActivityView extends Composite {
     public WorkActivityView(final Provider<AppsConstants> appCteProvider,
             ContentDisplayType contentType,
             final DataStoreProxy dataStoreProxy,
-            final TimeEntryProxy timeEntry) {
+            final TimeEntryProxy timeEntry,
+            final EventBus eventBus) {
         rootWidget = uiBinder.createAndBindUi(this);
         initWidget(rootWidget);
         
@@ -97,7 +114,7 @@ public class WorkActivityView extends Composite {
         activityBox.setSelectedIndex(selectedActiviyBoxIdx);
         
         // The the time spent
-        timeEntryTime.setText(Double.toString(timeEntry.getSpentTime()));
+        //spentTime.setText(Double.toString(timeEntry.getSpentTime()));
                 
         this.contentType = contentType;
 
@@ -115,9 +132,21 @@ public class WorkActivityView extends Composite {
         }
         
         // Set the viewable content
-        workedTimeLbl.setText(Double.toString(timeEntry.getSpentTime()));
+        workedTimeLbl.setText(timeEntry.getSpentTime());
         timeCodeLbl.setText(UtilFunc.getTimeCodeValue(timeEntry, dataStoreProxy.getDomainTimeCodeMap()));
         associationLbl.setText(accountBox.getValue(accountBox.getSelectedIndex()) + " / " + activityBox.getValue(activityBox.getSelectedIndex()));
+        
+        // Initialize the editor
+
+        factory.initialize( eventBus );
+        driver.initialize(factory, this);
+                
+        driver.edit(this.timeEntry, factory.timeEntryRequest());
+                
+        //TimeEntryRequestContext a = (TimeEntryRequestContext) driver.flush();
+        
+        // Fire the request
+        //a.listAll().fire(receiver);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -137,6 +166,18 @@ public class WorkActivityView extends Composite {
             editableContent.setVisible(false);
         }
         return rootWidget;
+    }
+    
+    @UiHandler("saveButton")
+    void handleSaveClick(ClickEvent e) {
+        TimeEntryRequestContext timeEntryRC = (TimeEntryRequestContext) driver.flush();
+        
+        timeEntryRC.fire(new Receiver<Void>() {
+            @Override
+            public void onSuccess(Void response) {
+                Window.alert("Success!");
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////////////
